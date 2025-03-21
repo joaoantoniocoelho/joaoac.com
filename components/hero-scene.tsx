@@ -5,7 +5,7 @@ import { OrbitControls, Sphere } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
 import { useMemo, useRef, useState, useCallback } from 'react'
-import { ChevronDownIcon } from 'lucide-react'
+import { FaChevronDown } from "react-icons/fa"
 
 interface ShipProps {
   position: [number, number, number]
@@ -30,7 +30,7 @@ function Spaceship({ position, rotation, color, teamId }: ShipProps) {
       // Slower rotation
       ship.current.rotation.z += delta * 0.2
       // Gentler wobble
-      ship.current.position.y = position[1] + Math.sin(state.clock.elapsedTime) * 0.05
+      ship.current.position.y = position[1] + Math.sin(state.clock.elapsedTime) * 0.1
 
       // Less frequent shooting (every 2-3 seconds)
       if (state.clock.elapsedTime - lastShot.current > 2 + Math.random()) {
@@ -161,7 +161,7 @@ function Galaxy() {
 
   useFrame((state, delta) => {
     if (points.current) {
-      points.current.rotation.y += delta * 0.1
+      points.current.rotation.y += delta * 0.02
     }
   })
 
@@ -192,45 +192,8 @@ function Galaxy() {
   )
 }
 
-function ParticleField({ mousePosition }) {
-  const points = useRef()
-  const count = 1000
-  
-  const positions = useMemo(() => {
-    const positions = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 10
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10
-    }
-    return positions
-  }, [])
-
-  useFrame((state, delta) => {
-    if (points.current && mousePosition.current) {
-      const { x, y } = mousePosition.current
-      points.current.rotation.x = y * 0.2
-      points.current.rotation.y = x * 0.2
-    }
-  })
-
-  return (
-    <points ref={points}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial size={0.02} color="#ffffff" sizeAttenuation />
-    </points>
-  )
-}
-
-function AnimatedSphere({ mousePosition }) {
-  const sphere = useRef()
+function AnimatedSphere({ mousePosition }: { mousePosition: React.RefObject<{x: number, y: number}> }) {
+  const sphere = useRef<THREE.Mesh>()
 
   useFrame((state, delta) => {
     if (sphere.current && mousePosition.current) {
@@ -241,9 +204,8 @@ function AnimatedSphere({ mousePosition }) {
       sphere.current.rotation.y += delta * 0.2
     }
   })
-
   return (
-    <Sphere ref={sphere} args={[1, 32, 32]}>
+    <Sphere ref={sphere as unknown as React.RefObject<THREE.Mesh>} args={[1, 32, 32]}>
       <meshStandardMaterial
         color="#000000"
         metalness={0.7}
@@ -256,7 +218,7 @@ function AnimatedSphere({ mousePosition }) {
 export function HeroScene() {
   const mousePosition = useRef({ x: 0, y: 0 })
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: MouseEvent) => {
     const { clientX, clientY } = event
     const { innerWidth, innerHeight } = window
     mousePosition.current = {
@@ -272,18 +234,17 @@ export function HeroScene() {
   return (
     <div 
       className="h-screen w-full relative"
-      onMouseMove={handleMouseMove}
+      onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => handleMouseMove(e.nativeEvent)}
     >
       <Canvas camera={{ position: [0, 2, 8] }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         <Galaxy />
-        <ParticleField mousePosition={mousePosition} />
         <BattleScene />
         <OrbitControls 
           enableZoom={false} 
           autoRotate 
-          autoRotateSpeed={0.5}
+          autoRotateSpeed={0.2}
           enableDamping
           dampingFactor={0.05}
           rotateSpeed={0.5}
@@ -312,7 +273,7 @@ export function HeroScene() {
         onClick={handleScrollClick}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 cursor-pointer"
       >
-        <ChevronDownIcon className="w-12 h-12 text-white opacity-75 hover:opacity-100 transition-opacity" />
+        <FaChevronDown className="w-12 h-12 text-white opacity-75 hover:opacity-100 transition-opacity" />
       </motion.button>
     </div>
   )

@@ -28,7 +28,7 @@ A modern, responsive portfolio website that combines creative 3D visualizations 
 - **Components**: shadcn/ui
 - **Animations**: Framer Motion
 - **Blog Integration**: Medium RSS Feed
-- **Icons**: React Icons & Lucide
+- **Icons**: React Icons
 
 ## Development
 

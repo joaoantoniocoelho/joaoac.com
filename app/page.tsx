@@ -3,13 +3,10 @@ import { motion } from 'framer-motion'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { 
-  BriefcaseIcon, 
-  MailIcon, 
-  PhoneIcon,
-  ArrowRightIcon,
-  ExternalLinkIcon
-} from 'lucide-react'
+import { FaBriefcase, FaExternalLinkAlt } from "react-icons/fa"
+import { FaLinkedin } from "react-icons/fa"
+import { FaArrowRight } from "react-icons/fa6"
+import { MdEmail } from "react-icons/md"
 import {
   Carousel,
   CarouselContent,
@@ -21,9 +18,6 @@ import Link from 'next/link'
 import { getMediumPosts } from './utils/medium'
 import { ReactElement, JSXElementConstructor, ReactNode, PromiseLikeOfReactNode, ReactPortal, Key } from 'react'
 import { experiences } from './data/experiences'
-import { FaBriefcase } from "react-icons/fa"
-import { FaLinkedin } from "react-icons/fa"
-import { FaArrowRight } from "react-icons/fa6"
 
 export default async function Home() {
   const blogPosts = await getMediumPosts()
@@ -50,7 +44,7 @@ export default async function Home() {
             <h2 className="text-4xl font-bold">Experience</h2>
             <Button variant="outline" asChild>
               <Link href="/experiences" className="flex items-center gap-2">
-                View all experiences <ArrowRightIcon className="w-4 h-4" />
+                View all experiences <FaArrowRight className="w-4 h-4" />
               </Link>
             </Button>
           </div>
@@ -98,7 +92,7 @@ export default async function Home() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2"
               >
-                View all posts <ExternalLinkIcon className="w-4 h-4" />
+                View all posts <FaExternalLinkAlt className="w-4 h-4" />
               </a>
             </Button>
           </div>
@@ -131,7 +125,7 @@ export default async function Home() {
                           rel="noopener noreferrer"
                           className="flex items-center justify-center gap-4"
                         >
-                          Read More <ArrowRightIcon className="w-4 h-4" />
+                          Read More <FaArrowRight className="w-4 h-4" />
                         </a>
                       </Button>
                     </div>
@@ -151,7 +145,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="p-6 bg-black/30 backdrop-blur">
               <div className="flex items-center gap-4 mb-4">
-                <MailIcon className="w-6 h-6" />
+                <MdEmail className="w-6 h-6" />
                 <div>
                   <h3 className="font-bold">Email</h3>
                   <a 

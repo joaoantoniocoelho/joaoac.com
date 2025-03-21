@@ -4,7 +4,7 @@ import * as React from 'react';
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from 'embla-carousel-react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -216,8 +216,19 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-4 w-4" />
-      <span className="sr-only">Previous slide</span>
+      <button
+        className={cn(
+          'flex h-8 w-8 items-center justify-center rounded-full border',
+          !canScrollPrev && 'opacity-50',
+          className
+        )}
+        disabled={!canScrollPrev}
+        onClick={scrollPrev}
+        {...props}
+      >
+        <FaArrowLeft className="h-4 w-4" />
+        <span className="sr-only">Previous slide</span>
+      </button>
     </Button>
   );
 });
@@ -245,8 +256,19 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-4 w-4" />
-      <span className="sr-only">Next slide</span>
+      <button
+        className={cn(
+          'flex h-8 w-8 items-center justify-center rounded-full border',
+          !canScrollNext && 'opacity-50',
+          className
+        )}
+        disabled={!canScrollNext}
+        onClick={scrollNext}
+        {...props}
+      >
+        <FaArrowRight className="h-4 w-4" />
+        <span className="sr-only">Next slide</span>
+      </button>
     </Button>
   );
 });
