@@ -1,7 +1,28 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
+  "name": "joaoac-portfolio",
+  "version": "1.0.0",
   "private": true,
+  "description": "João Coelho's personal portfolio website built with Next.js, React Three Fiber, and Tailwind CSS",
+  "author": {
+    "name": "João Coelho",
+    "email": "joaoantonioscoelho@gmail.com",
+    "url": "https://joaoac.com"
+  },
+  "homepage": "https://joaoac.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaoantoniocoelho/joaoac.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "react",
+    "threejs",
+    "software-engineer",
+    "tailwindcss",
+    "typescript"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
