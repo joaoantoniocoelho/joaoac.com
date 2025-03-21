@@ -37,7 +37,7 @@ export const experiences = [
     ]
   },
   {
-    "title": "Back End Developer",
+    "title": "Full Stack Developer",
     "company": "Pling Brasil",
     "period": "September 2018 - March 2019",
     "description": "Contributed to the development of “Universos,” a news aggregator leveraging web scraping to collect and consolidate real-time information from multiple sources. Engineered reliable Node.js backend services and integrated MongoDB to enhance data processing efficiency and scalability. Built intuitive UI components with React.js, improving content presentation and user engagement. Implemented REST APIs to streamline data retrieval and reduce latency, ultimately delivering a seamless end-to-end user experience.",
