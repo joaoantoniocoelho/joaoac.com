@@ -21,7 +21,7 @@ export function ExperienceCard({ title, company, companyUrl, period, description
   return (
     <Card className="p-4 sm:p-6 bg-black/30 backdrop-blur w-full">
       <div className="flex items-start gap-3 sm:gap-4">
-        <FaBriefcase className="w-5 h-5 sm:w-6 sm:h-6 mt-1 flex-shrink-0" />
+        <FaBriefcase className="w-5 h-5 sm:w-6 sm:h-6 mt-1 flex-shrink-0" aria-hidden="true" />
         <div className="w-full overflow-hidden">
           <h3 className="text-xl sm:text-2xl font-bold break-words">{title}</h3>
           <p className="text-gray-300">
@@ -30,6 +30,7 @@ export function ExperienceCard({ title, company, companyUrl, period, description
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-white underline"
+              aria-label={`Visit ${company} website`}
             >
               {company}
             </a>
@@ -55,9 +56,10 @@ export function ExperienceCard({ title, company, companyUrl, period, description
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center gap-1 mt-2 text-xs text-gray-300 hover:text-white"
+            aria-label={isExpanded ? 'Show less content' : 'Read more content'}
           >
             <span>{isExpanded ? 'Show less' : 'Read more'}</span>
-            <FaChevronDown className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            <FaChevronDown className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} aria-hidden="true" />
           </button>
           
           <div className="mt-4 flex flex-wrap gap-2">

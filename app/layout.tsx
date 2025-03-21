@@ -25,7 +25,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'João Antonio Coelho | Software Engineer',
     description: 'Software Engineer specializing in Java, Node.js, TypeScript and Cloud Technologies',
-    images: ['https://images.unsplash.com/photo-1555066931-4365d14bab8c'],
   },
 };
 

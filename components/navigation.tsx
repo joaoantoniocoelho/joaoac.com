@@ -25,13 +25,13 @@ export function Navigation() {
             </div>
 
             <div className="flex space-x-3 md:space-x-4">
-              <a href="https://github.com/joaoantoniocoelho" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/joaoantoniocoelho" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
                 <FaGithub className="w-5 h-5 md:w-6 md:h-6 hover:text-gray-300 transition" />
               </a>
-              <a href="https://www.linkedin.com/in/joaoac" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/joaoac" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
                 <FaLinkedin className="w-5 h-5 md:w-6 md:h-6 hover:text-gray-300 transition" />
               </a>
-              <a href="https://x.com/joaoac_dev" target="_blank" rel="noopener noreferrer">
+              <a href="https://x.com/joaoac_dev" target="_blank" rel="noopener noreferrer" aria-label="Twitter Profile">
                 <FaXTwitter className="w-5 h-5 md:w-6 md:h-6 hover:text-gray-300 transition" />
               </a>
             </div>

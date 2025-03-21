@@ -299,6 +299,7 @@ export function HeroScene() {
         }}
         onClick={handleScrollClick}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer"
+        aria-label="Scroll to About section"
       >
         <FaChevronDown className="w-8 h-8 md:w-12 md:h-12 text-white opacity-75 hover:opacity-100 transition-opacity" />
       </motion.button>
