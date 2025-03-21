@@ -4,8 +4,9 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
 import { FaChevronDown } from "react-icons/fa"
+import React from 'react'
 
 interface ShipProps {
   position: [number, number, number]
@@ -173,7 +174,7 @@ function BattleScene() {
 
 function Galaxy() {
   const points = useRef<THREE.Points>(null)
-  const count = 5000
+  const count = 2000
   const galaxyRadius = 10
   const branches = 3
   const spin = 1
@@ -217,7 +218,7 @@ function Galaxy() {
 
   useFrame((state, delta) => {
     if (points.current) {
-      points.current.rotation.y += delta * 0.02
+      points.current.rotation.y += delta * 0.01
     }
   })
 
@@ -248,10 +249,35 @@ function Galaxy() {
   )
 }
 
-export function HeroScene() {
+// Memoize the BattleScene component to prevent unnecessary re-renders
+const MemoizedBattleScene = React.memo(BattleScene)
+
+// Function definition (no export keyword)
+function HeroScene() {
   const handleScrollClick = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  // Add passive event listeners for scroll and touch events
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // Your wheel event handling logic if needed
+    };
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      // Your touch event handling logic if needed
+    };
+
+    // Add event listeners with passive option
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    
+    // Clean up event listeners on component unmount
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []);
 
   return (
     <div className="h-screen w-full relative overflow-hidden max-w-[100vw]">
@@ -259,11 +285,17 @@ export function HeroScene() {
       <div className="absolute inset-0 z-10" />
       
       <div className="absolute inset-0 overflow-hidden">
-          <Canvas camera={{ position: [0, 2, 8] }}>
+          <Canvas 
+            camera={{ position: [0, 2, 8] }}
+            dpr={[1, 2]}
+            performance={{ min: 0.5 }}
+          >
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} />
-            <Galaxy />
-            <BattleScene />
+            <React.Suspense fallback={null}>
+              <Galaxy />
+              <MemoizedBattleScene />
+            </React.Suspense>
             <OrbitControls 
               enableZoom={false}
               enablePan={false}
@@ -306,3 +338,6 @@ export function HeroScene() {
     </div>
   )
 }
+
+// Default export for dynamic imports
+export default HeroScene;

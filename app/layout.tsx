@@ -11,21 +11,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'João Antonio Coelho | Software Engineer',
-  description: 'Software Engineer specializing in Java, Node.js, TypeScript and Cloud Technologies',
+  title: 'João Coelho | Software Engineer',
+  description: 'Personal portfolio of João Coelho, a software engineer passionate about backend and full-stack development.',
+  metadataBase: new URL('https://joaoac.com'),
   openGraph: {
-    title: 'João Antonio Coelho | Software Engineer',
-    description: 'Software Engineer specializing in Java, Node.js, TypeScript and Cloud Technologies',
-    url: 'https://joaoac.dev',
-    siteName: 'João Antonio Coelho Portfolio',
-    locale: 'en_US',
     type: 'website',
+    locale: 'en_US',
+    url: 'https://joaoac.com',
+    title: 'João Coelho | Software Engineer',
+    description: 'Personal portfolio of João Coelho, a software engineer passionate about backend and full-stack development.',
+    siteName: 'João Coelho'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'João Antonio Coelho | Software Engineer',
-    description: 'Software Engineer specializing in Java, Node.js, TypeScript and Cloud Technologies',
-  },
+    title: 'João Coelho | Software Engineer',
+    description: 'Personal portfolio of João Coelho, a software engineer passionate about backend and full-stack development.'
+  }
 };
 
 export default function RootLayout({

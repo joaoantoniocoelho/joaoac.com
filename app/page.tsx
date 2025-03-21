@@ -1,4 +1,3 @@
-import { HeroScene } from '@/components/hero-scene'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { FaExternalLinkAlt } from "react-icons/fa"
@@ -16,8 +15,23 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import { getMediumPosts } from './utils/medium'
+import type { MediumPost } from './utils/medium'
 import { ReactElement, JSXElementConstructor, ReactNode, PromiseLikeOfReactNode, ReactPortal, Key } from 'react'
 import { experiences } from './data/experiences'
+import dynamic from 'next/dynamic'
+
+// Dynamic import of HeroScene with no SSR to reduce initial JavaScript load
+const HeroScene = dynamic(() => import('@/components/hero-scene'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-screen w-full flex items-center justify-center bg-black">
+      <div className="text-center">
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4 text-white">João Coelho</h1>
+        <p className="text-lg md:text-xl lg:text-2xl text-white font-medium">Software Engineer</p>
+      </div>
+    </div>
+  )
+})
 
 export default async function Home() {
   const blogPosts = await getMediumPosts()
@@ -30,15 +44,13 @@ export default async function Home() {
         <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">About Me</h2>
           <p className="text-base md:text-xl text-gray-300 max-w-6xl mb-4 text-justify">
-            I'm João, a software engineer passionate about backend and full-stack development. I've helped build secure payment systems, compliance solutions, and AI-powered enterprise apps — always aiming for clean code, scalable architecture, and real-world impact. I enjoy working across the stack, especially when cloud platforms and distributed systems are involved.
+            I&apos;m João, a software engineer passionate about backend and full-stack development. I&apos;ve helped build secure payment systems, compliance solutions, and AI-powered enterprise apps — always aiming for clean code, scalable architecture, and real-world impact. I enjoy working across the stack, especially when cloud platforms and distributed systems are involved.
           </p>
           <p className="text-base md:text-xl text-gray-300 max-w-6xl text-justify">
-            Outside of work, I'm usually exploring new coffee shops, battling bosses in <em>World of Warcraft</em>, or playing <em>League of Legends</em>. I share my days with Ichiro, a clever and independent Shiba Inu, and Tobby, a sweet and sleepy Shih Tzu. I also train Muay Thai — it helps me stay focused, disciplined, and balanced (especially after a tough ranked match).
+            Outside of work, I&apos;m usually exploring new coffee shops, battling bosses in <em>World of Warcraft</em>, or playing <em>League of Legends</em>. I share my days with Ichiro, a clever and independent Shiba Inu, and Tobby, a sweet and sleepy Shih Tzu. I also train Muay Thai — it helps me stay focused, disciplined, and balanced (especially after a tough ranked match).
           </p>
         </div>
       </section>
-
-
 
       <section id="experience" className="py-20 bg-black/50 w-full overflow-x-hidden">
         <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-6xl">
@@ -91,7 +103,7 @@ export default async function Home() {
             className="w-full max-w-full overflow-hidden"
           >
             <CarouselContent className="-ml-4 max-w-full">
-              {blogPosts.map((post: { thumbnail: string | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | PromiseLikeOfReactNode | null | undefined; pubDate: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined; link: string | undefined }, index: Key | null | undefined) => (
+              {blogPosts.map((post: MediumPost, index: Key | null | undefined) => (
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3 max-w-full">
                   <Card className="overflow-hidden bg-black/30 backdrop-blur h-full max-w-full">
                     <Image 
@@ -159,7 +171,7 @@ export default async function Home() {
                     rel="noopener noreferrer" 
                     className="text-gray-300 hover:text-white flex items-center gap-2 transition-colors text-sm md:text-base"
                   >
-                    Let's connect on LinkedIn
+                    Let&apos;s connect on LinkedIn
                     <FaArrowRight className="w-4 h-4" aria-hidden="true" />
                   </a>
                 </div>
