@@ -1,10 +1,10 @@
 "use client"
 
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Sphere } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
-import { useMemo, useRef, useState, useCallback } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { FaChevronDown } from "react-icons/fa"
 
 interface ShipProps {
@@ -36,7 +36,7 @@ function Spaceship({ position, rotation, color, teamId }: ShipProps) {
       if (state.clock.elapsedTime - lastShot.current > 2 + Math.random()) {
         lastShot.current = state.clock.elapsedTime
         const direction: [number, number, number] = teamId === 1 ? [1, -0.2, 0] : [-1, 0.2, 0]
-        setShots(prev => [...prev.slice(-2), { // Keep only last 2 shots
+        setShots(prev => [...prev.slice(-2), {
           position: [ship.current!.position.x, ship.current!.position.y, ship.current!.position.z],
           direction,
           color
@@ -48,28 +48,84 @@ function Spaceship({ position, rotation, color, teamId }: ShipProps) {
   return (
     <>
       <group ref={ship} position={position} rotation={rotation}>
+        {/* Main body */}
         <mesh>
-          <coneGeometry args={[0.2, 0.5, 4]} />
+          <cylinderGeometry args={[0.15, 0.3, 0.8, 8]} />
           <meshStandardMaterial 
             color={color} 
-            metalness={0.4} 
+            metalness={0.8}
             roughness={0.2}
             emissive={color}
             emissiveIntensity={0.4}
           />
         </mesh>
-        <mesh position={[0, -0.3, 0]}>
-          <boxGeometry args={[0.3, 0.1, 0.1]} />
-          <meshStandardMaterial 
-            color={color} 
-            metalness={0.4} 
-            roughness={0.2}
-            emissive={color}
-            emissiveIntensity={0.4}
+
+        {/* Cockpit */}
+        <mesh position={[0, 0.2, 0]}>
+          <sphereGeometry args={[0.15, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
+          <meshStandardMaterial
+            color="#ffffff"
+            metalness={0.9}
+            roughness={0.1}
+            opacity={0.8}
+            transparent={true}
           />
         </mesh>
-        {/* Reduced engine glow intensity */}
-        <pointLight position={[0, -0.3, 0]} distance={0.5} intensity={0.5} color={color} />
+
+        {/* Wings */}
+        <mesh position={[0.3, -0.1, 0]} rotation={[0, 0, Math.PI * 0.15]}>
+          <boxGeometry args={[0.4, 0.05, 0.2]} />
+          <meshStandardMaterial 
+            color={color} 
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </mesh>
+        <mesh position={[-0.3, -0.1, 0]} rotation={[0, 0, -Math.PI * 0.15]}>
+          <boxGeometry args={[0.4, 0.05, 0.2]} />
+          <meshStandardMaterial 
+            color={color} 
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </mesh>
+
+        {/* Engine */}
+        <mesh position={[0, -0.4, 0]}>
+          <cylinderGeometry args={[0.12, 0.12, 0.1, 8]} />
+          <meshStandardMaterial 
+            color={color}
+            emissive={color}
+            emissiveIntensity={1}
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </mesh>
+
+        {/* Engine glow */}
+        <pointLight position={[0, -0.4, 0]} distance={0.8} intensity={1} color={color} />
+        
+        {/* Side thrusters */}
+        <mesh position={[0.15, -0.3, 0]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
+          <meshStandardMaterial 
+            color={color}
+            emissive={color}
+            emissiveIntensity={0.8}
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </mesh>
+        <mesh position={[-0.15, -0.3, 0]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
+          <meshStandardMaterial 
+            color={color}
+            emissive={color}
+            emissiveIntensity={0.8}
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </mesh>
       </group>
       {shots.map((shot, index) => (
         <LaserShot key={index} {...shot} />
@@ -100,10 +156,10 @@ function LaserShot({ position, direction, color }: LaserShotProps) {
 
 function BattleScene() {
   const ships = useMemo(() => [
-    { position: [-2, 2.5, -2] as [number, number, number], rotation: [0, 0, Math.PI / 4] as [number, number, number], color: "#00ffff", teamId: 1 },
-    { position: [2, -2.5, -2] as [number, number, number], rotation: [0, 0, -Math.PI / 4] as [number, number, number], color: "#ff3333", teamId: 2 },
-    { position: [-1.5, -1.5, -3] as [number, number, number], rotation: [0, 0, Math.PI / 6] as [number, number, number], color: "#00ff66", teamId: 1 },
-    { position: [1.5, 1.5, -3] as [number, number, number], rotation: [0, 0, -Math.PI / 6] as [number, number, number], color: "#ff00ff", teamId: 2 },
+    { position: [-3, 3, -2] as [number, number, number], rotation: [0, 0, Math.PI / 4] as [number, number, number], color: "#00ffff", teamId: 1 },
+    { position: [3, -3, -2] as [number, number, number], rotation: [0, 0, -Math.PI / 4] as [number, number, number], color: "#ff3333", teamId: 2 },
+    { position: [-2.5, -2.5, -3] as [number, number, number], rotation: [0, 0, Math.PI / 6] as [number, number, number], color: "#00ff66", teamId: 1 },
+    { position: [2.5, 2.5, -3] as [number, number, number], rotation: [0, 0, -Math.PI / 6] as [number, number, number], color: "#ff00ff", teamId: 2 },
   ], [])
 
   return (
@@ -192,74 +248,45 @@ function Galaxy() {
   )
 }
 
-function AnimatedSphere({ mousePosition }: { mousePosition: React.RefObject<{x: number, y: number}> }) {
-  const sphere = useRef<THREE.Mesh>()
-
-  useFrame((state, delta) => {
-    if (sphere.current && mousePosition.current) {
-      const { x, y } = mousePosition.current
-      sphere.current.position.x = x * 0.3
-      sphere.current.position.y = -y * 0.3
-      sphere.current.rotation.x += delta * 0.2
-      sphere.current.rotation.y += delta * 0.2
-    }
-  })
-  return (
-    <Sphere ref={sphere as unknown as React.RefObject<THREE.Mesh>} args={[1, 32, 32]}>
-      <meshStandardMaterial
-        color="#000000"
-        metalness={0.7}
-        roughness={0.3}
-      />
-    </Sphere>
-  )
-}
-
 export function HeroScene() {
-  const mousePosition = useRef({ x: 0, y: 0 })
-
-  const handleMouseMove = (event: MouseEvent) => {
-    const { clientX, clientY } = event
-    const { innerWidth, innerHeight } = window
-    mousePosition.current = {
-      x: (clientX / innerWidth) * 2 - 1,
-      y: -(clientY / innerHeight) * 2 + 1
-    }
-  }
-
   const handleScrollClick = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <div 
-      className="h-screen w-full relative"
-      onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => handleMouseMove(e.nativeEvent)}
-    >
-      <Canvas camera={{ position: [0, 2, 8] }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <Galaxy />
-        <BattleScene />
-        <OrbitControls 
-          enableZoom={false} 
-          autoRotate 
-          autoRotateSpeed={0.2}
-          enableDamping
-          dampingFactor={0.05}
-          rotateSpeed={0.5}
-        />
-      </Canvas>
+    <div className="h-screen w-full relative overflow-hidden max-w-[100vw]">
+      {/* Transparent overlay for touch events */}
+      <div className="absolute inset-0 z-10" />
       
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10"
-      >
-        <h1 className="text-5xl md:text-7xl font-bold mb-4">John Doe</h1>
-        <p className="text-xl md:text-2xl text-gray-300">Full Stack Developer</p>
-      </motion.div>
+      <div className="absolute inset-0 overflow-hidden">
+          <Canvas camera={{ position: [0, 2, 8] }}>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <Galaxy />
+            <BattleScene />
+            <OrbitControls 
+              enableZoom={false}
+              enablePan={false}
+              enableRotate={false}
+              autoRotate 
+              autoRotateSpeed={0.2}
+              enableDamping
+              dampingFactor={0.05}
+            />
+          </Canvas>
+      </div>
+      
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-center px-6"
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4 text-white drop-shadow-[0_2px_10px_rgba(255,255,255,0.7)] tracking-wide">João Coelho</h1>
+          <p className="text-lg md:text-xl lg:text-2xl text-white font-medium drop-shadow-[0_2px_6px_rgba(255,255,255,0.5)] tracking-wide">Software Engineer</p>
+        </motion.div>
+      </div>
 
       <motion.button
         initial={{ opacity: 0, y: 20 }}
@@ -271,9 +298,9 @@ export function HeroScene() {
           repeatType: "reverse"
         }}
         onClick={handleScrollClick}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 cursor-pointer"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer"
       >
-        <FaChevronDown className="w-12 h-12 text-white opacity-75 hover:opacity-100 transition-opacity" />
+        <FaChevronDown className="w-8 h-8 md:w-12 md:h-12 text-white opacity-75 hover:opacity-100 transition-opacity" />
       </motion.button>
     </div>
   )

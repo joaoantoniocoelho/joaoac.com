@@ -206,7 +206,7 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        'absolute  h-8 w-8 rounded-full',
+        'absolute h-8 w-8 rounded-full',
         orientation === 'horizontal'
           ? '-left-12 top-1/2 -translate-y-1/2'
           : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
@@ -216,19 +216,8 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <button
-        className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-full border',
-          !canScrollPrev && 'opacity-50',
-          className
-        )}
-        disabled={!canScrollPrev}
-        onClick={scrollPrev}
-        {...props}
-      >
-        <FaArrowLeft className="h-4 w-4" />
-        <span className="sr-only">Previous slide</span>
-      </button>
+      <FaArrowLeft className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
     </Button>
   );
 });
@@ -256,19 +245,8 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <button
-        className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-full border',
-          !canScrollNext && 'opacity-50',
-          className
-        )}
-        disabled={!canScrollNext}
-        onClick={scrollNext}
-        {...props}
-      >
-        <FaArrowRight className="h-4 w-4" />
-        <span className="sr-only">Next slide</span>
-      </button>
+      <FaArrowRight className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
     </Button>
   );
 });

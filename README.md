@@ -1,4 +1,4 @@
-# joaoac.dev
+# joaoac.com
 
 My personal portfolio website featuring an interactive 3D space battle scene, real-time Medium blog integration, and a showcase of my professional experience. Built entirely through AI pair programming using Claude 3.5, Cursor IDE, and Bolt.new.
 
