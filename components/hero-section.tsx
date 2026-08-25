@@ -6,12 +6,12 @@ import { FiArrowRight } from 'react-icons/fi';
 export function HeroSection() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden border-b border-white/[0.06] bg-black py-28 md:py-32">
-      <div className="pointer-events-none absolute right-[-10%] top-[18%] h-[30rem] w-[30rem] rounded-full bg-sky-500/[0.07] blur-[140px]" />
+      <div className="pointer-events-none absolute right-[-10%] top-[18%] hidden h-[30rem] w-[30rem] rounded-full bg-sky-500/[0.07] blur-[140px] lg:block" />
       <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="mb-12 flex items-center justify-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-sky-300/80 md:mb-16"
@@ -21,7 +21,7 @@ export function HeroSection() {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 28 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, delay: 0.1 }}
           className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.065em] text-white"
@@ -32,7 +32,7 @@ export function HeroSection() {
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mx-auto mt-12 flex max-w-2xl flex-col items-center gap-8 border-t border-white/10 pt-8 text-center md:mt-16 md:pt-10"

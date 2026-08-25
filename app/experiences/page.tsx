@@ -10,11 +10,11 @@ export default function ExperiencesPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
-      <div className="pointer-events-none absolute right-0 top-40 h-96 w-96 translate-x-1/2 rounded-full bg-emerald-500/[0.07] blur-[120px]" />
+      <div className="pointer-events-none absolute right-0 top-40 hidden h-96 w-96 translate-x-1/2 rounded-full bg-emerald-500/[0.07] blur-[120px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-32 sm:px-8 md:pt-40 lg:px-10">
         <motion.header
-          initial={{ opacity: 0, y: 24 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="grid gap-12 border-b border-white/10 pb-16 md:pb-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] lg:items-end"
@@ -55,7 +55,7 @@ export default function ExperiencesPage() {
           {experiences.map((experience, index) => (
             <motion.article
               key={`${experience.company}-${experience.period}`}
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: Math.min(index * 0.08, 0.24) }}
               viewport={{ once: true, amount: 0.12 }}
@@ -120,7 +120,7 @@ export default function ExperiencesPage() {
         </section>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
           viewport={{ once: true, amount: 0.4 }}

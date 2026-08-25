@@ -29,7 +29,7 @@ export function Navbar() {
       <div
         className={`mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full border px-4 transition-all duration-300 sm:px-5 ${
           isScrolled || isOpen
-            ? 'border-white/10 bg-black/80 shadow-2xl shadow-black/40 backdrop-blur-xl'
+            ? 'border-white/10 bg-black/95 shadow-2xl shadow-black/40 lg:bg-black/80 lg:backdrop-blur-xl'
             : 'border-transparent bg-transparent'
         }`}
       >
@@ -76,7 +76,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-2 backdrop-blur-xl md:hidden"
+            className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-black/95 p-2 md:hidden"
           >
             {navItems.map((item, index) => (
               <Link

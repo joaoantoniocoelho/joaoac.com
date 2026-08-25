@@ -20,10 +20,10 @@ export function BlogSection({ posts }: BlogSectionProps) {
   const visiblePosts = posts.slice(0, 3);
 
   return (
-    <section id="blog" className="relative overflow-hidden bg-black py-24 [contain-intrinsic-size:auto_900px] [content-visibility:auto] md:py-36">
+    <section id="blog" className="relative overflow-hidden bg-black py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.header
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -56,7 +56,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
             {visiblePosts.map((post, index) => (
               <motion.article
                 key={post.link}
-                initial={{ opacity: 0, y: 24 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, amount: 0.2 }}

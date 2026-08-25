@@ -7,11 +7,11 @@ import { FiArrowLeft, FiArrowUpRight } from 'react-icons/fi';
 export default function NotFound() {
   return (
     <main className="relative flex min-h-screen items-center overflow-hidden bg-black px-6 pb-16 pt-28 text-white sm:px-8 lg:px-10">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/[0.05] blur-[120px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/[0.05] blur-[120px] lg:block" />
 
       <div className="relative mx-auto w-full max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="border-y border-white/10 py-10 md:py-16"
@@ -57,7 +57,7 @@ export default function NotFound() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.25 }}
           className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-700"

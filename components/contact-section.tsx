@@ -11,12 +11,12 @@ const socialLinks = [
 
 export function ContactSection() {
   return (
-    <section id="contact" className="relative overflow-hidden bg-black pb-10 pt-28 [contain-intrinsic-size:auto_700px] [content-visibility:auto] md:pt-40">
-      <div className="pointer-events-none absolute bottom-0 left-1/2 h-72 w-[70%] -translate-x-1/2 bg-indigo-500/[0.07] blur-[120px]" />
+    <section id="contact" className="relative overflow-hidden bg-black pb-10 pt-28 md:pt-40">
+      <div className="pointer-events-none absolute bottom-0 left-1/2 hidden h-72 w-[70%] -translate-x-1/2 bg-indigo-500/[0.07] blur-[120px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.25 }}

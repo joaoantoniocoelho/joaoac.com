@@ -16,13 +16,13 @@ export function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="relative overflow-hidden bg-black py-28 [contain-intrinsic-size:auto_1100px] [content-visibility:auto] md:py-36">
-      <div className="pointer-events-none absolute -left-40 top-1/2 h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[110px]" />
+    <section id="experience" className="relative overflow-hidden bg-black py-28 md:py-36">
+      <div className="pointer-events-none absolute -left-40 top-1/2 hidden h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[110px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[minmax(240px,0.65fr)_minmax(0,1.35fr)] lg:gap-24">
           <motion.header
-            initial={{ opacity: 0, y: 18 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65 }}
             viewport={{ once: true, amount: 0.4 }}
@@ -59,7 +59,7 @@ export function ExperienceSection() {
               return (
                 <motion.article
                   key={`${experience.company}-${experience.period}`}
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={false}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.12 }}
                   viewport={{ once: true, amount: 0.2 }}

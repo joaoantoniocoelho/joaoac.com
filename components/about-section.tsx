@@ -36,12 +36,12 @@ const groupAnimation = {
 
 export function AboutSection() {
   return (
-    <section id="about" className="relative overflow-hidden bg-black py-28 [contain-intrinsic-size:auto_1200px] [content-visibility:auto] md:py-36">
-      <div className="pointer-events-none absolute right-0 top-1/3 h-80 w-80 translate-x-1/2 rounded-full bg-sky-500/[0.07] blur-[110px]" />
+    <section id="about" className="relative overflow-hidden bg-black py-28 md:py-36">
+      <div className="pointer-events-none absolute right-0 top-1/3 hidden h-80 w-80 translate-x-1/2 rounded-full bg-sky-500/[0.07] blur-[110px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.15 }}
@@ -138,7 +138,7 @@ function InterestGroup({
           : 'border-white/[0.08] bg-white/[0.025] hover:border-white/15'
       }`}
       variants={groupAnimation}
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       custom={delay}
       viewport={{ once: true, amount: 0.4 }}
