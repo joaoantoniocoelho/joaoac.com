@@ -1,140 +1,71 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { FiArrowLeft } from 'react-icons/fi';
-import * as THREE from 'three';
+import { motion } from 'framer-motion';
+import { FiArrowLeft, FiArrowUpRight } from 'react-icons/fi';
 
 export default function NotFound() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const particlesRef = useRef<THREE.Points | null>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Scene setup
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    // Camera setup
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 5;
-    cameraRef.current = camera;
-
-    // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    containerRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // Particles setup
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 5000;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 10;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.005,
-      color: '#ffffff',
-      transparent: true,
-      opacity: 0.8,
-    });
-
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
-    particlesRef.current = particles;
-
-    // Animation
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      mouseX = (event.clientX - window.innerWidth / 2) / 100;
-      mouseY = (event.clientY - window.innerHeight / 2) / 100;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      if (particlesRef.current) {
-        targetX = mouseX * 0.5;
-        targetY = mouseY * 0.5;
-
-        particlesRef.current.rotation.x += (targetY - particlesRef.current.rotation.x) * 0.05;
-        particlesRef.current.rotation.y += (targetX - particlesRef.current.rotation.y) * 0.05;
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // Handle resize
-    const handleResize = () => {
-      if (!cameraRef.current || !rendererRef.current) return;
-
-      cameraRef.current.aspect = window.innerWidth / window.innerHeight;
-      cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      if (containerRef.current && rendererRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
-      }
-    };
-  }, []);
-
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden">
-      <div ref={containerRef} className="absolute inset-0" />
-      
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+    <main className="relative flex min-h-screen items-center overflow-hidden bg-black px-6 pb-16 pt-28 text-white sm:px-8 lg:px-10">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/[0.05] blur-[120px]" />
+
+      <div className="relative mx-auto w-full max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
+          transition={{ duration: 0.7 }}
+          className="border-y border-white/10 py-10 md:py-16"
         >
-          <h1 className="text-9xl font-bold text-white mb-4">404</h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
-            Oops! Page not found
-          </h2>
-          <p className="text-gray-400 mb-12 max-w-md mx-auto">
-            The page you're looking for doesn't exist or has been moved.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center text-white hover:text-gray-300 transition-colors"
-          >
-            <FiArrowLeft className="mr-2 h-5 w-5" />
-            Back to Home
-          </Link>
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] lg:items-end">
+            <div>
+              <div className="mb-10 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-rose-300/80">
+                <span className="h-px w-8 bg-rose-300/60" />
+                Error 404
+              </div>
+
+              <p className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-zinc-600">
+                Route not found
+              </p>
+              <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-tight text-white sm:text-6xl md:text-8xl">
+                This page took a wrong turn<span className="text-white">.</span>
+              </h1>
+            </div>
+
+            <div className="max-w-md lg:pb-2">
+              <p className="text-base leading-8 text-zinc-400 md:text-lg">
+                The page you&apos;re looking for doesn&apos;t exist, has moved, or is still waiting to be built.
+              </p>
+
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link
+                  href="/"
+                  className="group inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
+                >
+                  <FiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  Back home
+                </Link>
+                <Link
+                  href="/#contact"
+                  className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/30 hover:text-white"
+                >
+                  Get in touch
+                  <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-700"
+        >
+          <span>joaoac.com</span>
+          <span>404 / Nothing here</span>
         </motion.div>
       </div>
-    </div>
+    </main>
   );
-} 
+}
