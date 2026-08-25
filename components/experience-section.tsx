@@ -1,111 +1,137 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { FiArrowRight, FiChevronDown, FiChevronUp, FiExternalLink } from 'react-icons/fi';
-import experiencesData from '@/data/experiences.json';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FiArrowRight, FiChevronDown, FiExternalLink } from 'react-icons/fi';
+import experiencesData from '@/data/experiences.json';
+
+const DESCRIPTION_PREVIEW_LENGTH = 360;
 
 export function ExperienceSection() {
-  // Get only the first 2 experiences to display on the home page
   const featuredExperiences = experiencesData.experiences.slice(0, 2);
-  // State to track expanded state for each experience
-  const [expandedItems, setExpandedItems] = useState<{[key: number]: boolean}>({});
-  
+  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
+
   const toggleExpand = (index: number) => {
-    setExpandedItems(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
+    setExpandedItems((current) => ({ ...current, [index]: !current[index] }));
   };
-  
+
   return (
-    <section id="experience" className="py-16 bg-black/50">
-      <div className="max-w-7xl mx-auto px-8 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-0">Experience</h2>
-            <a 
-              href="/experiences" 
-              className="inline-flex items-center text-white hover:text-gray-300 transition-colors"
+    <section id="experience" className="relative overflow-hidden bg-black py-28 md:py-36">
+      <div className="pointer-events-none absolute -left-40 top-1/2 h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[110px]" />
+
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        <div className="grid gap-16 lg:grid-cols-[minmax(240px,0.65fr)_minmax(0,1.35fr)] lg:gap-24">
+          <motion.header
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
+            viewport={{ once: true, amount: 0.4 }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <div className="mb-7 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
+              <span className="h-px w-8 bg-emerald-300/60" />
+              Experience
+            </div>
+            <h2 className="text-4xl font-bold tracking-tight text-white md:text-6xl">
+              Where I&apos;ve worked<span className="text-emerald-300">.</span>
+            </h2>
+            <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">
+              A few of the teams, products, and problems that shaped how I build software today.
+            </p>
+            <a
+              href="/experiences"
+              className="group mt-9 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
             >
-              View All Experiences
-              <FiArrowRight className="ml-2 h-4 w-4" />
+              View all experiences
+              <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {featuredExperiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="bg-white/5 p-5 rounded-lg w-full"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div className="text-left">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-xl font-semibold text-white">{exp.title}</h3>
-                      <span className="text-gray-500 text-sm">•</span>
-                      <a
-                        href={exp.companyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-white transition-colors inline-flex items-center"
-                      >
-                        {exp.company} <FiExternalLink className="ml-1 h-4 w-4" />
-                      </a>
+          </motion.header>
+
+          <div className="border-t border-white/10">
+            {featuredExperiences.map((experience, index) => {
+              const isExpanded = expandedItems[index];
+              const shouldTruncate = experience.description.length > DESCRIPTION_PREVIEW_LENGTH;
+              const description =
+                isExpanded || !shouldTruncate
+                  ? experience.description
+                  : `${experience.description.slice(0, DESCRIPTION_PREVIEW_LENGTH).trimEnd()}…`;
+
+              return (
+                <motion.article
+                  key={`${experience.company}-${experience.period}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.12 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  className="group relative border-b border-white/10 py-10 md:py-12"
+                >
+                  <div className="grid gap-6 sm:grid-cols-[110px_minmax(0,1fr)] sm:gap-8">
+                    <div className="flex items-start justify-between sm:block">
+                      <span className="font-mono text-xs tracking-wider text-zinc-600">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-xs leading-5 text-zinc-500 sm:mt-5 sm:block">
+                        {experience.period}
+                      </span>
                     </div>
-                    <span className="text-gray-500 text-sm">{exp.period}</span>
-                  </div>
-                </div>
-                {exp.companyInfo && (
-                  <p className="text-gray-400 mb-3 text-xs italic border-l-2 border-gray-700 pl-3 text-left">
-                    {exp.companyInfo}
-                  </p>
-                )}
-                <div className="mb-3 text-left">
-                  <p className="text-gray-300 text-sm">
-                    {expandedItems[index] 
-                      ? exp.description 
-                      : `${exp.description.substring(0, 200)}${exp.description.length > 200 ? '...' : ''}`}
-                  </p>
-                  {exp.description.length > 200 && (
-                    <button 
-                      onClick={() => toggleExpand(index)}
-                      className="mt-1 flex items-center text-gray-400 hover:text-white transition-colors text-xs font-medium"
-                    >
-                      {expandedItems[index] ? (
-                        <>
-                          Show Less <FiChevronUp className="ml-1 h-3 w-3" />
-                        </>
-                      ) : (
-                        <>
-                          Show More <FiChevronDown className="ml-1 h-3 w-3" />
-                        </>
+
+                    <div>
+                      <div className="mb-5">
+                        <h3 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                          {experience.title}
+                        </h3>
+                        {experience.companyUrl ? (
+                          <a
+                            href={experience.companyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-colors hover:text-white"
+                          >
+                            {experience.company}
+                            <FiExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        ) : (
+                          <p className="mt-2 text-sm text-zinc-400">{experience.company}</p>
+                        )}
+                      </div>
+
+                      <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
+                        {description}
+                      </p>
+
+                      {shouldTruncate && (
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(index)}
+                          aria-expanded={isExpanded}
+                          className="group/button mt-4 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-zinc-500 transition-colors hover:text-white"
+                        >
+                          {isExpanded ? 'Show less' : 'Keep reading'}
+                          <FiChevronDown
+                            className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                              isExpanded ? 'rotate-180' : 'group-hover/button:translate-y-0.5'
+                            }`}
+                          />
+                        </button>
                       )}
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {exp.technologies.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="px-2 py-1 bg-white/10 rounded-full text-xs text-gray-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+
+                      <div className="mt-7 flex flex-wrap gap-2">
+                        {experience.technologies.map((technology) => (
+                          <span
+                            key={technology}
+                            className="rounded-full border border-white/[0.08] bg-white/[0.025] px-3 py-1.5 text-xs text-zinc-400 transition-colors duration-300 hover:border-white/20 hover:text-zinc-200"
+                          >
+                            {technology}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
