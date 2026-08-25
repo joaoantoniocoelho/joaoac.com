@@ -16,7 +16,7 @@ export function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="relative overflow-hidden bg-black py-28 md:py-36">
+    <section id="experience" className="relative overflow-hidden bg-black py-28 [contain-intrinsic-size:auto_1100px] [content-visibility:auto] md:py-36">
       <div className="pointer-events-none absolute -left-40 top-1/2 h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[110px]" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">

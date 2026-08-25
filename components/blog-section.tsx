@@ -20,7 +20,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
   const visiblePosts = posts.slice(0, 3);
 
   return (
-    <section id="blog" className="relative overflow-hidden bg-black py-24 md:py-36">
+    <section id="blog" className="relative overflow-hidden bg-black py-24 [contain-intrinsic-size:auto_900px] [content-visibility:auto] md:py-36">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
@@ -82,6 +82,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
                         fill
                         className="object-cover grayscale transition-all duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                         sizes={index === 0 ? '(max-width: 1024px) 100vw, 50vw' : '25vw'}
+                        quality={70}
                       />
                       <div className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-transparent" />
                     </div>

@@ -36,7 +36,7 @@ const groupAnimation = {
 
 export function AboutSection() {
   return (
-    <section id="about" className="relative overflow-hidden bg-black py-28 md:py-36">
+    <section id="about" className="relative overflow-hidden bg-black py-28 [contain-intrinsic-size:auto_1200px] [content-visibility:auto] md:py-36">
       <div className="pointer-events-none absolute right-0 top-1/3 h-80 w-80 translate-x-1/2 rounded-full bg-sky-500/[0.07] blur-[110px]" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
