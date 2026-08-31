@@ -566,15 +566,23 @@ export function ByteGuide() {
             </header>
 
             <div ref={transcriptRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-5" aria-live="polite">
-              {messages.map((message) => (
+              {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
                   initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${message.role === 'visitor' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex items-end gap-2 ${message.role === 'visitor' ? 'justify-end' : 'justify-start'}`}
                 >
+                  {message.role !== 'visitor' &&
+                    // Only the first bubble of a run is badged; the rest keep
+                    // the indent so the column stays straight.
+                    (messages[index - 1]?.role === 'visitor' || index === 0 ? (
+                      <ByteAvatar />
+                    ) : (
+                      <span aria-hidden="true" className="h-7 w-7 shrink-0" />
+                    ))}
                   <div
-                    className={`max-w-[88%] rounded-2xl px-3.5 py-3 text-sm leading-6 ${
+                    className={`max-w-[85%] rounded-2xl px-3.5 py-3 text-sm leading-6 ${
                       message.role === 'visitor'
                         ? 'rounded-br-md bg-white text-black'
                         : 'rounded-bl-md border border-white/10 bg-white/[0.045] text-zinc-300'
@@ -626,9 +634,10 @@ export function ByteGuide() {
                 <motion.div
                   initial={prefersReducedMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex justify-start"
+                  className="flex items-end justify-start gap-2"
                   aria-label={pt ? 'Byte está digitando' : 'Byte is typing'}
                 >
+                  <ByteAvatar />
                   <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.045] px-4 py-3.5">
                     {[0, 1, 2].map((dot) => (
                       <motion.span
@@ -699,5 +708,16 @@ export function ByteGuide() {
       </div>
       </div>
     </>
+  );
+}
+
+function ByteAvatar() {
+  return (
+    <span
+      aria-hidden="true"
+      className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full border border-sky-300/20 bg-sky-300/[0.07]"
+    >
+      <Image src="/byte/byte-idle.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+    </span>
   );
 }
