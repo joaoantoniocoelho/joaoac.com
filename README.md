@@ -4,8 +4,6 @@ Personal website for João Coelho, a software engineer focused on backend system
 
 [Visit the website](https://joaoac.com)
 
-![joaoac.com preview](./public/og.png)
-
 ## Overview
 
 The site brings together professional experience, selected writing, technical interests, and contact information in a focused, interactive portfolio.
