@@ -20,6 +20,7 @@ type PromptId =
   | 'experience'
   | 'contact'
   | 'site-secret'
+  | 'why-rabbit'
   | 'byte-secret';
 
 type GuideLink = {
@@ -120,6 +121,12 @@ const prompts: Record<PromptId, Prompt> = {
       'Press / or Cmd + K. João left a quick navigation panel there for people who test keyboard shortcuts before reading instructions.',
     next: ['not-on-site', 'random-fact', 'tech-opinion', 'contact'],
   },
+  'why-rabbit': {
+    question: 'Why are you a rabbit?',
+    answer:
+      "Because João's last name, Coelho, means rabbit in Portuguese. I am part guide, part surname joke, and apparently the only one here allowed to have ears this dramatic.",
+    next: ['random-fact', 'not-on-site', 'site-secret', 'byte-secret'],
+  },
   'byte-secret': {
     question: "What shouldn't Byte tell me?",
     answer:
@@ -129,10 +136,10 @@ const prompts: Record<PromptId, Prompt> = {
 };
 
 const initialSuggestions: PromptId[] = [
+  'why-rabbit',
   'not-on-site',
   'work-style',
   'favorite-problems',
-  'random-fact',
 ];
 
 const discoveryOrder: PromptId[] = [
@@ -149,7 +156,7 @@ const discoveryOrder: PromptId[] = [
 const initialMessage: ChatMessage = {
   id: 0,
   role: 'byte',
-  text: "Hey, I'm Byte. I know a few things about João that did not fit on the page. Pick a question.",
+  text: "Hey, I'm Byte. The rabbit shape isn't random. I know a few things about João that did not fit on the page. Pick a question.",
 };
 
 function getNextSuggestions(currentId: PromptId, askedIds: PromptId[]) {
@@ -502,7 +509,7 @@ export function ByteGuide() {
             className="focus-ring rounded-2xl border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2.5 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
             <span className="block text-xs font-medium text-zinc-200">Hey, I&apos;m Byte.</span>
-            <span className="mt-0.5 block text-[10px] text-zinc-600">Want to know something about João?</span>
+            <span className="mt-0.5 block text-[10px] text-zinc-600">The rabbit isn&apos;t random.</span>
           </motion.button>
         )}
       </AnimatePresence>
