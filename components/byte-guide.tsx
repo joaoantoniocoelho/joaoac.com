@@ -373,9 +373,8 @@ export function ByteGuide() {
             </div>
 
             <div className="border-t border-white/10 bg-black/25 px-3 py-3">
-              <div className="mb-2 flex items-center justify-between px-1 text-[9px] uppercase tracking-[0.16em] text-zinc-700">
+              <div className="mb-2 px-1 text-[9px] uppercase tracking-[0.16em] text-zinc-700">
                 <span>Suggested questions</span>
-                <span>No AI involved</span>
               </div>
               <div className="space-y-1.5">
                 {suggestions.map((id) => (
