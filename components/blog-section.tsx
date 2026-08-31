@@ -22,6 +22,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
 
   return (
     <section id="blog" data-ambient="amber" className="relative overflow-hidden bg-black/75 py-24 md:py-36">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/20 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.header
           initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -31,23 +32,32 @@ export function BlogSection({ posts }: BlogSectionProps) {
           className="mb-10 grid min-w-0 gap-8 border-b border-white/10 pb-8 sm:mb-14 sm:pb-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
         >
           <div>
-            <div className="mb-7 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-amber-300/80">
-              <span className="h-px w-8 bg-amber-300/60" />
-              Writing
+            <div className="mb-7 flex items-center justify-between">
+              <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-amber-300/80">
+                <span className="h-px w-8 bg-amber-300/60" />
+                Writing
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700 lg:hidden">03</span>
             </div>
-            <h2 className="max-w-4xl break-words text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-6xl">
+            <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
               Things I&apos;ve been writing about<span className="text-amber-300">.</span>
             </h2>
           </div>
-          <a
-            href="https://medium.com/@joaoac"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pressable focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-400 transition-colors hover:text-white"
-          >
-            All posts on Medium
-            <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
+          <div className="lg:text-right">
+            <div className="mb-5 hidden items-center justify-end gap-3 lg:flex">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">03 · Field notes</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-300/70" />
+            </div>
+            <a
+              href="https://medium.com/@joaoac"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pressable focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+            >
+              All posts on Medium
+              <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
         </motion.header>
 
         {visiblePosts.length === 0 ? (
@@ -67,10 +77,13 @@ export function BlogSection({ posts }: BlogSectionProps) {
                   href={post.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`pressable focus-ring group relative flex h-full w-full min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-white/20 ${
+                  className={`pressable focus-ring group relative flex h-full w-full min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-amber-300/25 ${
                     index === 0 ? 'min-h-[420px] flex-col sm:min-h-[480px]' : 'min-h-[210px] sm:min-h-[230px]'
                   }`}
                 >
+                  <span className="absolute right-4 top-4 z-20 grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-black/60 font-mono text-[10px] text-zinc-500 backdrop-blur-md">
+                    0{index + 1}
+                  </span>
                   {post.thumbnail && (
                     <div
                       className={`relative overflow-hidden bg-zinc-950 ${
@@ -93,7 +106,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
                     <div>
                       <div className="mb-5 flex items-center justify-between gap-4">
                         <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-600">
-                          {post.date}
+                          Signal · {post.date}
                         </span>
                         <FiArrowUpRight className="h-4 w-4 shrink-0 text-zinc-600 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                       </div>

@@ -9,6 +9,7 @@ const DESCRIPTION_PREVIEW_LENGTH = 360;
 
 export function ExperienceSection() {
   const featuredExperiences = experiencesData.experiences.slice(0, 2);
+  const totalExperienceCount = experiencesData.experiences.length;
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const timelineRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -35,16 +36,34 @@ export function ExperienceSection() {
             viewport={{ once: true, amount: 0.4 }}
             className="lg:sticky lg:top-28 lg:self-start"
           >
-            <div className="mb-7 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
-              <span className="h-px w-8 bg-emerald-300/60" />
-              Experience
+            <div className="mb-7 flex items-center justify-between border-b border-white/[0.08] pb-5">
+              <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
+                <span className="h-px w-8 bg-emerald-300/60" />
+                Experience
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">02</span>
             </div>
-            <h2 className="text-4xl font-bold tracking-tight text-white md:text-6xl">
+            <h2 className="text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-white md:text-6xl">
               Where I&apos;ve worked<span className="text-emerald-300">.</span>
             </h2>
             <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">
               A few of the teams, products, and problems that shaped how I build software today.
             </p>
+            <div className="micro-grid mt-9 overflow-hidden rounded-2xl border border-white/[0.09]">
+              <div className="grid grid-cols-2 gap-px bg-white/[0.08]">
+                <div className="bg-black/80 p-4">
+                  <span className="block font-mono text-2xl text-white">{totalExperienceCount}</span>
+                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">Roles mapped</span>
+                </div>
+                <div className="bg-black/80 p-4">
+                  <span className="block font-mono text-2xl text-white">2018</span>
+                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">Started</span>
+                </div>
+              </div>
+              <div className="border-t border-white/[0.08] bg-black/65 px-4 py-3 text-[10px] uppercase tracking-[0.15em] text-zinc-600">
+                Backend · Cloud · Product · Architecture
+              </div>
+            </div>
             <a
               href="/experiences"
               className="pressable focus-ring group mt-9 inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-300 transition-colors hover:text-white"
@@ -77,7 +96,7 @@ export function ExperienceSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.12 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  className="group relative border-b border-white/10 py-10 md:py-12"
+                  className="group relative -mr-3 border-b border-white/10 py-10 pr-3 transition-colors hover:bg-white/[0.018] md:-mr-6 md:py-12 md:pr-6"
                 >
                   <motion.span
                     initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.4 }}
@@ -102,6 +121,12 @@ export function ExperienceSection() {
 
                     <div>
                       <div className="mb-5">
+                        <div className="mb-3 flex items-center gap-3">
+                          <span className="h-px w-0 bg-emerald-300/60 transition-all duration-500 group-hover:w-8" />
+                          <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-700 transition-colors group-hover:text-emerald-300/70">
+                            Selected chapter
+                          </span>
+                        </div>
                         <h3 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
                           {experience.title}
                         </h3>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { FiCode, FiCompass, FiCpu } from 'react-icons/fi';
+import { FiActivity, FiCode, FiCoffee, FiCompass, FiCpu, FiHeart, FiMonitor } from 'react-icons/fi';
 
 const toolkit = ['Java', 'Spring Boot', 'Node.js', 'TypeScript', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker'];
 
@@ -25,6 +25,13 @@ const exploring = [
   'Developer Tooling',
 ];
 
+const offDuty = [
+  { icon: FiActivity, label: 'Running' },
+  { icon: FiMonitor, label: 'Videogames' },
+  { icon: FiHeart, label: 'Dogs' },
+  { icon: FiCoffee, label: 'Coffee' },
+];
+
 const groupAnimation = {
   hidden: { opacity: 0, y: 16 },
   visible: (delay: number) => ({
@@ -40,6 +47,7 @@ export function AboutSection() {
   return (
     <section id="about" data-ambient="sky" className="relative overflow-hidden bg-black/75 py-28 md:py-36">
       <div className="pointer-events-none absolute right-0 top-1/3 hidden h-80 w-80 translate-x-1/2 rounded-full bg-sky-500/[0.07] blur-[110px] lg:block" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/20 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
@@ -48,15 +56,18 @@ export function AboutSection() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.15 }}
         >
-          <div className="mb-14 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-sky-300/80">
-            <span className="h-px w-8 bg-sky-300/60" />
-            About
+          <div className="mb-14 flex items-center justify-between border-b border-white/[0.08] pb-6">
+            <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-sky-300/80">
+              <span className="h-px w-8 bg-sky-300/60" />
+              About
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">01 · Profile</span>
           </div>
 
           <div className="grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:gap-24">
             <div className="max-w-3xl">
-              <h2 className="mb-10 text-4xl font-bold tracking-tight text-white md:text-6xl">
-                A bit about me<span className="text-sky-300">.</span>
+              <h2 className="mb-10 text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-white md:text-6xl lg:text-7xl">
+                Built around curiosity<span className="text-sky-300">.</span>
               </h2>
 
               <div className="space-y-6 text-base leading-8 text-zinc-300 md:text-lg md:leading-9">
@@ -85,19 +96,50 @@ export function AboutSection() {
                 </p>
               </div>
 
+              <div className="mt-12 grid grid-cols-2 border-y border-white/[0.09] sm:grid-cols-4">
+                {offDuty.map(({ icon: Icon, label }, index) => (
+                  <div
+                    key={label}
+                    className={`group flex items-center gap-3 py-4 ${
+                      index % 2 === 0 ? 'border-r border-white/[0.09]' : ''
+                    } ${index > 1 ? 'border-t border-white/[0.09] sm:border-t-0' : ''} sm:border-r sm:last:border-r-0 sm:px-4 sm:first:pl-0`}
+                  >
+                    <span className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.035] text-zinc-600 transition-colors group-hover:border-sky-300/20 group-hover:text-sky-200">
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="text-xs text-zinc-500 transition-colors group-hover:text-zinc-300">{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <aside className="lg:pt-20" aria-label="Current technical interests">
-              <div className="mb-8 border-b border-white/10 pb-5">
-                <div>
-                  <p className="mb-2 text-xs uppercase tracking-[0.2em] text-zinc-500">Current snapshot</p>
-                  <h3 className="text-2xl font-semibold text-white">What I&apos;m into</h3>
+              <div className="micro-grid relative mb-5 overflow-hidden rounded-2xl border border-white/[0.09] p-6">
+                <div className="relative flex items-start justify-between">
+                  <div>
+                    <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-zinc-600">Current snapshot</p>
+                    <h3 className="text-2xl font-semibold tracking-tight text-white">What I&apos;m into</h3>
+                  </div>
+                  <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-emerald-300/70">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300" /> Live
+                  </span>
+                </div>
+                <div className="relative mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.08]">
+                  <div className="bg-black/80 p-3">
+                    <span className="block font-mono text-lg text-white">2018</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-600">Building since</span>
+                  </div>
+                  <div className="bg-black/80 p-3">
+                    <span className="block font-mono text-lg text-white">BRT</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-600">Timezone</span>
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-5">
-                <InterestGroup icon={<FiCode />} label="I work with" items={toolkit} delay={0.1} reducedMotion={Boolean(prefersReducedMotion)} />
+                <InterestGroup index="01" icon={<FiCode />} label="I work with" items={toolkit} delay={0.1} reducedMotion={Boolean(prefersReducedMotion)} />
                 <InterestGroup
+                  index="02"
                   icon={<FiCpu />}
                   label="Things I care about"
                   items={engineeringInterests}
@@ -105,6 +147,7 @@ export function AboutSection() {
                   reducedMotion={Boolean(prefersReducedMotion)}
                 />
                 <InterestGroup
+                  index="03"
                   icon={<FiCompass />}
                   label="Exploring lately"
                   items={exploring}
@@ -123,6 +166,7 @@ export function AboutSection() {
 
 function InterestGroup({
   icon,
+  index,
   label,
   items,
   delay,
@@ -130,6 +174,7 @@ function InterestGroup({
   reducedMotion = false,
 }: {
   icon: React.ReactNode;
+  index: string;
   label: string;
   items: string[];
   delay: number;
@@ -156,8 +201,9 @@ function InterestGroup({
         <h4 className={`text-sm font-medium ${accent ? 'text-white' : 'text-zinc-300'}`}>
           {label}
         </h4>
+        <span className="ml-auto font-mono text-[9px] text-zinc-700">{index}</span>
         {accent && (
-          <span className="ml-auto rounded-full border border-sky-300/20 bg-sky-300/[0.08] px-2 py-0.5 text-[10px] uppercase tracking-wider text-sky-200">
+          <span className="rounded-full border border-sky-300/20 bg-sky-300/[0.08] px-2 py-0.5 text-[10px] uppercase tracking-wider text-sky-200">
             Learning
           </span>
         )}

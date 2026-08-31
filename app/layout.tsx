@@ -9,8 +9,9 @@ import { DeveloperCommandMenu } from '@/components/developer-command-menu';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'João Coelho | Software Engineer',
-  description: 'Experienced Full Stack Developer with a strong focus on Node.js, React, TypeScript, AWS, and scalable enterprise applications. Proven success on delivering high-performance, cloud-native solutions.',
+  metadataBase: new URL('https://joaoac.com'),
+  title: 'João Coelho — Software Engineer & Digital Experiences',
+  description: 'Software engineer building backend systems, cloud products, AI experiments, and refined landing pages.',
   keywords: [
     'Senior Software Engineer',
     'Full Stack Developer',
@@ -30,15 +31,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://joaoac.com',
-    title: 'João Coelho | Software Engineer',
-    description: 'Full Stack Developer with expertise in Node.js, React, TypeScript, and AWS.',
+    title: 'João Coelho — Software Engineer & Digital Experiences',
+    description: 'Backend systems, cloud products, AI experiments, and refined landing pages.',
     siteName: 'João Coelho Portfolio',
+    images: [
+      {
+        url: '/og.png',
+        width: 1672,
+        height: 941,
+        alt: 'João Coelho — Software Engineer · Digital Experiences',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'João Coelho | Software Engineer',
-    description: 'Building modern, scalable applications using Node.js, React, TypeScript, and AWS.',
+    title: 'João Coelho — Software Engineer & Digital Experiences',
+    description: 'Backend systems, cloud products, AI experiments, and refined landing pages.',
     creator: '@joaoac',
+    images: ['/og.png'],
   },
 };
 

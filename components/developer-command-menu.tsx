@@ -11,6 +11,7 @@ import {
   FiCommand,
   FiCopy,
   FiGithub,
+  FiLayout,
   FiMail,
   FiUser,
   FiX,
@@ -20,6 +21,7 @@ import { copyToClipboard } from '@/lib/copy-to-clipboard';
 const email = 'joaoantonioscoelho@gmail.com';
 
 const navigationActions = [
+  { label: 'Landing pages', description: 'Design and build for your next launch', href: '/#contact', icon: FiLayout },
   { label: 'About me', description: 'A quick introduction', href: '/#about', icon: FiUser },
   { label: 'Experience', description: 'Teams, products, and problems', href: '/#experience', icon: FiBriefcase },
   { label: 'Writing', description: 'Recent notes and articles', href: '/#blog', icon: FiCode },
