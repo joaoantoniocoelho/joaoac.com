@@ -28,7 +28,13 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
   const blinkEndTimerRef = useRef<number>();
 
   useEffect(() => {
-    ['/byte/byte-blink.png', '/byte/byte-thinking.png', '/byte/byte-greeting.png'].forEach((source) => {
+    [
+      '/byte/byte-blink.png',
+      '/byte/byte-thinking.png',
+      '/byte/byte-greeting.png',
+      '/byte/byte-peeking.png',
+      '/byte/byte-talking.png',
+    ].forEach((source) => {
       const image = new window.Image();
       image.src = source;
     });
@@ -64,8 +70,13 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
     };
   }, [mood, prefersReducedMotion]);
 
-  const imageSource =
-    mood === 'sleeping' || isBlinking ? '/byte/byte-blink.png' : assetByMood[mood];
+  const imageSource = compact
+    ? '/byte/byte-peeking.png'
+    : isOpen
+      ? '/byte/byte-talking.png'
+      : mood === 'sleeping' || isBlinking
+        ? '/byte/byte-blink.png'
+        : assetByMood[mood];
 
   const motionProps = prefersReducedMotion
     ? { animate: { opacity: 1, y: 0, rotate: 0, scale: 1 }, transition: { duration: 0 } }
@@ -93,13 +104,17 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
     <motion.div
       animate={
         prefersReducedMotion
-          ? { opacity: 1, x: compact ? 28 : 0, y: compact ? 30 : 0, scale: compact ? 0.76 : 1 }
+          ? { opacity: 1, x: 0, y: 0, scale: 1 }
           : compact
-            ? { opacity: 0.88, x: 38, y: 42, scale: 0.72 }
+            ? { opacity: 0.94, x: 0, y: 0, scale: 1 }
             : { opacity: 1, x: 0, y: 0, scale: 1 }
       }
       transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative h-28 w-28 origin-bottom-right sm:h-36 sm:w-36"
+      className={
+        compact
+          ? 'fixed right-0 top-1/2 -mt-14 h-28 w-28 origin-right sm:-mt-16 sm:h-32 sm:w-32'
+          : 'relative h-28 w-28 origin-bottom-right sm:h-36 sm:w-36'
+      }
     >
       <motion.button
         ref={buttonRef}
@@ -108,22 +123,24 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
         onPointerEnter={onWake}
         aria-label={isOpen ? 'Close Byte' : 'Talk to Byte'}
         aria-expanded={isOpen}
-        whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.025 }}
+        whileHover={prefersReducedMotion ? undefined : compact ? { x: -4, scale: 1.025 } : { y: -3, scale: 1.025 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
         className="focus-ring group relative h-full w-full cursor-pointer rounded-[2rem]"
       >
-        <motion.span
-          aria-hidden="true"
-          animate={
-            prefersReducedMotion
-              ? undefined
-              : mood === 'greeting'
-                ? { opacity: [0.2, 0.45, 0.2], scaleX: [1, 0.82, 1] }
-                : { opacity: 0.25, scaleX: 1 }
-          }
-          transition={{ duration: 0.72 }}
-          className="absolute bottom-1 left-1/2 h-2.5 w-16 -translate-x-1/2 rounded-full bg-black blur-sm"
-        />
+        {!compact && (
+          <motion.span
+            aria-hidden="true"
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : mood === 'greeting'
+                  ? { opacity: [0.2, 0.45, 0.2], scaleX: [1, 0.82, 1] }
+                  : { opacity: 0.25, scaleX: 1 }
+            }
+            transition={{ duration: 0.72 }}
+            className="absolute bottom-1 left-1/2 h-2.5 w-16 -translate-x-1/2 rounded-full bg-black blur-sm"
+          />
+        )}
 
         <motion.span {...motionProps} className="absolute inset-0 block origin-bottom drop-shadow-[0_12px_18px_rgba(0,0,0,0.7)]">
           <AnimatePresence initial={false} mode="sync">
@@ -157,10 +174,10 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
               initial={prefersReducedMotion ? false : { opacity: 0, x: 5 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 5 }}
-              className="absolute bottom-3 -left-9 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-zinc-950/90 px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.13em] text-zinc-400 shadow-lg shadow-black/40 backdrop-blur-md transition-colors group-hover:text-white"
+              className="absolute bottom-3 right-[82%] inline-flex whitespace-nowrap items-center gap-1.5 rounded-full border border-white/10 bg-zinc-950/90 px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.13em] text-zinc-400 shadow-lg shadow-black/40 backdrop-blur-md transition-colors group-hover:text-white"
             >
               <FiMessageCircle className="h-3 w-3 text-sky-300" />
-              Talk
+              Talk with Byte
             </motion.span>
           )}
         </AnimatePresence>
