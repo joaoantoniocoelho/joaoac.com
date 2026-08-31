@@ -88,12 +88,6 @@ export function ContactSection() {
           </div>
         </motion.div>
 
-        <div className="relative mt-12 overflow-hidden border-y border-white/[0.08] py-5" aria-hidden="true">
-          <div className="text-outline whitespace-nowrap text-center text-[clamp(4rem,12vw,10rem)] font-bold leading-none tracking-[-0.07em]">
-            JOÃO COELHO · JOÃO COELHO
-          </div>
-        </div>
-
         <footer className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} João Coelho</span>
           <button

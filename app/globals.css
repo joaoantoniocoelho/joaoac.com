@@ -96,11 +96,6 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
   }
 
-  .text-outline {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.055);
-  }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
