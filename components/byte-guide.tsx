@@ -260,6 +260,27 @@ export function ByteGuide() {
   }, [close, isOpen]);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    const body = document.body;
+    const root = document.documentElement;
+    const previousBodyOverflow = body.style.overflow;
+    const previousRootOverflow = root.style.overflow;
+    const previousPaddingRight = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - root.clientWidth;
+
+    body.style.overflow = 'hidden';
+    root.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
+
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      root.style.overflow = previousRootOverflow;
+      body.style.paddingRight = previousPaddingRight;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     transcriptRef.current?.scrollTo({
       top: transcriptRef.current.scrollHeight,
       behavior: prefersReducedMotion ? 'auto' : 'smooth',
@@ -324,7 +345,22 @@ export function ByteGuide() {
   };
 
   return (
-    <div className="fixed bottom-2 right-2 z-[90] flex flex-col items-end gap-2 sm:bottom-4 sm:right-5">
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            aria-hidden="true"
+            initial={prefersReducedMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.22 }}
+            onClick={close}
+            className="fixed inset-0 z-[80] bg-black/65 backdrop-blur-[6px]"
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="fixed bottom-2 right-2 z-[90] flex flex-col items-end gap-2 sm:bottom-4 sm:right-5">
       <AnimatePresence>
         {isOpen && (
           <motion.section
@@ -396,6 +432,7 @@ export function ByteGuide() {
                             href={link.href}
                             target={link.external ? '_blank' : undefined}
                             rel={link.external ? 'noopener noreferrer' : undefined}
+                            onClick={close}
                             className="focus-ring group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition-colors hover:border-sky-300/30 hover:text-sky-200"
                           >
                             {link.label}
@@ -480,6 +517,7 @@ export function ByteGuide() {
         }}
         onClick={() => (isOpen ? close() : open())}
       />
-    </div>
+      </div>
+    </>
   );
 }
