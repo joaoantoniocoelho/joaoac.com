@@ -4,8 +4,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { FiArrowUpRight, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
+import { FiArrowUpRight, FiCheck, FiCopy, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
 import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
+
+const CONTACT_EMAIL = 'joaoantonioscoelho@gmail.com';
 
 type PromptId =
   | 'not-on-site'
@@ -25,8 +27,9 @@ type PromptId =
 
 type GuideLink = {
   label: string;
-  href: string;
+  href?: string;
   external?: boolean;
+  action?: 'reveal-email' | 'copy-email';
 };
 
 type Prompt = {
@@ -110,7 +113,7 @@ const prompts: Record<PromptId, Prompt> = {
     answer:
       'Email is the most direct route. LinkedIn also works if you prefer a little professional context first.',
     links: [
-      { label: 'Send an email', href: 'mailto:joaoantonioscoelho@gmail.com' },
+      { label: 'Send an email', action: 'reveal-email' },
       { label: 'Open LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
     ],
     next: ['work-style', 'ideal-project', 'experience', 'site-secret'],
@@ -174,6 +177,7 @@ export function ByteGuide() {
   const [askedIds, setAskedIds] = useState<PromptId[]>([]);
   const [suggestions, setSuggestions] = useState<PromptId[]>(initialSuggestions);
   const [isTyping, setIsTyping] = useState(false);
+  const [isEmailCopied, setIsEmailCopied] = useState(false);
   const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
   const pathname = usePathname();
   const [isHeroVisible, setIsHeroVisible] = useState(pathname === '/');
@@ -186,6 +190,7 @@ export function ByteGuide() {
   const teaserHideTimerRef = useRef<number>();
   const mascotTimerRef = useRef<number>();
   const sleepTimerRef = useRef<number>();
+  const copyTimerRef = useRef<number>();
   const messageIdRef = useRef(1);
 
   const cueMascot = useCallback((nextMood: ByteMood, duration?: number) => {
@@ -301,6 +306,7 @@ export function ByteGuide() {
       window.clearTimeout(teaserHideTimerRef.current);
       window.clearTimeout(mascotTimerRef.current);
       window.clearTimeout(sleepTimerRef.current);
+      window.clearTimeout(copyTimerRef.current);
     },
     [],
   );
@@ -348,7 +354,38 @@ export function ByteGuide() {
     setAskedIds([]);
     setSuggestions(initialSuggestions);
     setIsTyping(false);
+    setIsEmailCopied(false);
     cueMascot('greeting', 900);
+  };
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+      setIsEmailCopied(true);
+      window.clearTimeout(copyTimerRef.current);
+      copyTimerRef.current = window.setTimeout(() => setIsEmailCopied(false), 2200);
+    } catch {
+      setIsEmailCopied(false);
+    }
+  };
+
+  const handleGuideAction = (action: NonNullable<GuideLink['action']>) => {
+    if (action === 'copy-email') {
+      void copyEmail();
+      return;
+    }
+
+    setIsEmailCopied(false);
+    setMessages((current) => [
+      ...current,
+      {
+        id: messageIdRef.current++,
+        role: 'byte',
+        text: `Of course. You can email João directly at ${CONTACT_EMAIL}.`,
+        links: [{ label: 'Copy email', action: 'copy-email' }],
+      },
+    ]);
+    cueMascot('greeting', 700);
   };
 
   return (
@@ -439,19 +476,39 @@ export function ByteGuide() {
                     <p>{message.text}</p>
                     {message.links && (
                       <div className="mt-3 flex flex-wrap gap-2 border-t border-white/10 pt-3">
-                        {message.links.map((link) => (
-                          <a
-                            key={link.href}
-                            href={link.href}
-                            target={link.external ? '_blank' : undefined}
-                            rel={link.external ? 'noopener noreferrer' : undefined}
-                            onClick={close}
-                            className="focus-ring group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition-colors hover:border-sky-300/30 hover:text-sky-200"
-                          >
-                            {link.label}
-                            <FiArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                          </a>
-                        ))}
+                        {message.links.map((link) =>
+                          link.action ? (
+                            <button
+                              key={`${link.label}-${link.action}`}
+                              type="button"
+                              onClick={() => handleGuideAction(link.action!)}
+                              className="focus-ring group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition-colors hover:border-sky-300/30 hover:text-sky-200"
+                            >
+                              {link.action === 'copy-email' && isEmailCopied ? 'Copied' : link.label}
+                              {link.action === 'copy-email' ? (
+                                isEmailCopied ? (
+                                  <FiCheck className="h-3 w-3 text-emerald-300" />
+                                ) : (
+                                  <FiCopy className="h-3 w-3 transition-transform group-hover:scale-110" />
+                                )
+                              ) : (
+                                <FiMessageCircle className="h-3 w-3 text-sky-300" />
+                              )}
+                            </button>
+                          ) : (
+                            <a
+                              key={link.href}
+                              href={link.href}
+                              target={link.external ? '_blank' : undefined}
+                              rel={link.external ? 'noopener noreferrer' : undefined}
+                              onClick={close}
+                              className="focus-ring group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition-colors hover:border-sky-300/30 hover:text-sky-200"
+                            >
+                              {link.label}
+                              <FiArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                            </a>
+                          ),
+                        )}
                       </div>
                     )}
                   </div>
