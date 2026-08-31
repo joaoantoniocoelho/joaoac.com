@@ -370,7 +370,7 @@ export function ByteGuide() {
       <div
         className={`fixed z-[90] flex ${
           isOpen
-            ? 'inset-0 flex-row items-end gap-3 sm:inset-auto sm:bottom-4 sm:right-5'
+            ? 'inset-0 flex-row items-end gap-3 sm:inset-auto sm:bottom-4 sm:right-5 sm:flex-row-reverse'
             : 'bottom-2 right-2 flex-col items-end gap-2 sm:bottom-4 sm:right-5'
         }`}
       >
