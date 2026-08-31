@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { FiArrowUpRight, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
 import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
 
@@ -167,12 +168,15 @@ export function ByteGuide() {
   const [suggestions, setSuggestions] = useState<PromptId[]>(initialSuggestions);
   const [isTyping, setIsTyping] = useState(false);
   const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
+  const pathname = usePathname();
+  const [isHeroVisible, setIsHeroVisible] = useState(pathname === '/');
   const prefersReducedMotion = useReducedMotion();
   const launcherRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
   const responseTimerRef = useRef<number>();
   const teaserTimerRef = useRef<number>();
+  const teaserHideTimerRef = useRef<number>();
   const mascotTimerRef = useRef<number>();
   const sleepTimerRef = useRef<number>();
   const messageIdRef = useRef(1);
@@ -194,34 +198,46 @@ export function ByteGuide() {
 
   const open = () => {
     window.clearTimeout(teaserTimerRef.current);
+    window.clearTimeout(teaserHideTimerRef.current);
     setShowTeaser(false);
     setIsOpen(true);
     cueMascot('greeting', 900);
-
-    try {
-      window.sessionStorage.setItem('byte-teaser-seen', 'true');
-    } catch {
-      // The guide still works when browser storage is unavailable.
-    }
   };
 
   useEffect(() => {
-    try {
-      if (window.sessionStorage.getItem('byte-teaser-seen')) return;
-      teaserTimerRef.current = window.setTimeout(() => {
-        setShowTeaser(true);
-        window.sessionStorage.setItem('byte-teaser-seen', 'true');
-        cueMascot('greeting', 900);
-      }, 3200);
-    } catch {
-      teaserTimerRef.current = window.setTimeout(() => {
-        setShowTeaser(true);
-        cueMascot('greeting', 900);
-      }, 3200);
+    if (pathname !== '/') return;
+
+    teaserTimerRef.current = window.setTimeout(() => {
+      setShowTeaser(true);
+      cueMascot('greeting', 900);
+      teaserHideTimerRef.current = window.setTimeout(() => setShowTeaser(false), 7200);
+    }, 650);
+
+    return () => {
+      window.clearTimeout(teaserTimerRef.current);
+      window.clearTimeout(teaserHideTimerRef.current);
+    };
+  }, [cueMascot, pathname]);
+
+  useEffect(() => {
+    const hero = document.getElementById('home');
+    if (!hero) {
+      setIsHeroVisible(false);
+      return;
     }
 
-    return () => window.clearTimeout(teaserTimerRef.current);
-  }, [cueMascot]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting && entry.intersectionRatio > 0.18;
+        setIsHeroVisible(visible);
+        if (!visible) setShowTeaser(false);
+      },
+      { threshold: [0, 0.18, 0.4] },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     window.clearTimeout(sleepTimerRef.current);
@@ -254,6 +270,7 @@ export function ByteGuide() {
     () => () => {
       window.clearTimeout(responseTimerRef.current);
       window.clearTimeout(teaserTimerRef.current);
+      window.clearTimeout(teaserHideTimerRef.current);
       window.clearTimeout(mascotTimerRef.current);
       window.clearTimeout(sleepTimerRef.current);
     },
@@ -326,7 +343,15 @@ export function ByteGuide() {
               </span>
               <div className="min-w-0 flex-1">
                 <h2 className="text-sm font-semibold text-white">Byte</h2>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-600">Scripted guide · Online</p>
+                <p className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-300/80">
+                  <motion.span
+                    aria-hidden="true"
+                    animate={prefersReducedMotion ? undefined : { opacity: [0.55, 1, 0.55], scale: [1, 1.2, 1] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                    className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.7)]"
+                  />
+                  Online
+                </p>
               </div>
               <button
                 type="button"
@@ -439,8 +464,8 @@ export function ByteGuide() {
             exit={{ opacity: 0, y: 4 }}
             className="focus-ring rounded-2xl border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2.5 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
-            <span className="block text-xs font-medium text-zinc-200">Curious about João?</span>
-            <span className="mt-0.5 block text-[10px] text-zinc-600">Byte knows a few things.</span>
+            <span className="block text-xs font-medium text-zinc-200">Hey, I&apos;m Byte.</span>
+            <span className="mt-0.5 block text-[10px] text-zinc-600">Want to know something about João?</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -449,6 +474,7 @@ export function ByteGuide() {
         buttonRef={launcherRef}
         mood={mascotMood}
         isOpen={isOpen}
+        compact={!isOpen && !isHeroVisible}
         onWake={() => {
           if (mascotMood === 'sleeping') cueMascot('idle');
         }}

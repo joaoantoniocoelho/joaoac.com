@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { FiMessageCircle } from 'react-icons/fi';
 
 export type ByteMood = 'idle' | 'thinking' | 'greeting' | 'sleeping';
 
@@ -14,12 +15,13 @@ const assetByMood: Record<Exclude<ByteMood, 'sleeping'>, string> = {
 type ByteMascotProps = {
   mood: ByteMood;
   isOpen: boolean;
+  compact: boolean;
   onClick: () => void;
   onWake: () => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
 };
 
-export function ByteMascot({ mood, isOpen, onClick, onWake, buttonRef }: ByteMascotProps) {
+export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }: ByteMascotProps) {
   const [isBlinking, setIsBlinking] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const blinkTimerRef = useRef<number>();
@@ -88,49 +90,81 @@ export function ByteMascot({ mood, isOpen, onClick, onWake, buttonRef }: ByteMas
             };
 
   return (
-    <motion.button
-      ref={buttonRef}
-      type="button"
-      onClick={onClick}
-      onPointerEnter={onWake}
-      aria-label={isOpen ? 'Close Byte' : 'Talk to Byte'}
-      aria-expanded={isOpen}
-      whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.025 }}
-      whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
-      className="focus-ring group relative h-24 w-24 rounded-[2rem] sm:h-28 sm:w-28"
+    <motion.div
+      animate={
+        prefersReducedMotion
+          ? { opacity: 1, x: compact ? 28 : 0, y: compact ? 30 : 0, scale: compact ? 0.76 : 1 }
+          : compact
+            ? { opacity: 0.88, x: 38, y: 42, scale: 0.72 }
+            : { opacity: 1, x: 0, y: 0, scale: 1 }
+      }
+      transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative h-28 w-28 origin-bottom-right sm:h-36 sm:w-36"
     >
-      <motion.span
-        aria-hidden="true"
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : mood === 'greeting'
-              ? { opacity: [0.2, 0.45, 0.2], scaleX: [1, 0.82, 1] }
-              : { opacity: 0.25, scaleX: 1 }
-        }
-        transition={{ duration: 0.72 }}
-        className="absolute bottom-1 left-1/2 h-2.5 w-14 -translate-x-1/2 rounded-full bg-black blur-sm"
-      />
+      <motion.button
+        ref={buttonRef}
+        type="button"
+        onClick={onClick}
+        onPointerEnter={onWake}
+        aria-label={isOpen ? 'Close Byte' : 'Talk to Byte'}
+        aria-expanded={isOpen}
+        whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.025 }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+        className="focus-ring group relative h-full w-full cursor-pointer rounded-[2rem]"
+      >
+        <motion.span
+          aria-hidden="true"
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : mood === 'greeting'
+                ? { opacity: [0.2, 0.45, 0.2], scaleX: [1, 0.82, 1] }
+                : { opacity: 0.25, scaleX: 1 }
+          }
+          transition={{ duration: 0.72 }}
+          className="absolute bottom-1 left-1/2 h-2.5 w-16 -translate-x-1/2 rounded-full bg-black blur-sm"
+        />
 
-      <motion.span {...motionProps} className="absolute inset-0 block origin-bottom drop-shadow-[0_12px_18px_rgba(0,0,0,0.7)]">
-        <AnimatePresence initial={false} mode="sync">
-          <motion.img
-            key={imageSource}
-            src={imageSource}
-            alt=""
-            draggable={false}
-            initial={prefersReducedMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.11 }}
-            className="absolute inset-0 h-full w-full select-none object-contain"
+        <motion.span {...motionProps} className="absolute inset-0 block origin-bottom drop-shadow-[0_12px_18px_rgba(0,0,0,0.7)]">
+          <AnimatePresence initial={false} mode="sync">
+            <motion.img
+              key={imageSource}
+              src={imageSource}
+              alt=""
+              draggable={false}
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.11 }}
+              className="absolute inset-0 h-full w-full select-none object-contain"
+            />
+          </AnimatePresence>
+        </motion.span>
+
+        {!isOpen && (
+          <motion.span
+            aria-hidden="true"
+            animate={prefersReducedMotion ? undefined : { opacity: [0.65, 1, 0.65], scale: [1, 1.18, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute right-1 top-5 h-2.5 w-2.5 rounded-full border-2 border-black bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.6)]"
           />
-        </AnimatePresence>
-      </motion.span>
+        )}
 
-      {!isOpen && (
-        <span className="absolute right-1 top-4 h-2.5 w-2.5 rounded-full border-2 border-black bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.6)]" />
-      )}
-    </motion.button>
+        <AnimatePresence>
+          {!isOpen && !compact && (
+            <motion.span
+              aria-hidden="true"
+              initial={prefersReducedMotion ? false : { opacity: 0, x: 5 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 5 }}
+              className="absolute bottom-3 -left-9 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-zinc-950/90 px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.13em] text-zinc-400 shadow-lg shadow-black/40 backdrop-blur-md transition-colors group-hover:text-white"
+            >
+              <FiMessageCircle className="h-3 w-3 text-sky-300" />
+              Talk
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.button>
+    </motion.div>
   );
 }
