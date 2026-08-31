@@ -367,7 +367,13 @@ export function ByteGuide() {
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-2 right-2 z-[90] flex flex-col items-end gap-2 sm:bottom-4 sm:right-5">
+      <div
+        className={`fixed z-[90] flex ${
+          isOpen
+            ? 'inset-0 flex-row items-end gap-3 sm:inset-auto sm:bottom-4 sm:right-5'
+            : 'bottom-2 right-2 flex-col items-end gap-2 sm:bottom-4 sm:right-5'
+        }`}
+      >
       <AnimatePresence>
         {isOpen && (
           <motion.section
@@ -377,7 +383,7 @@ export function ByteGuide() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="flex h-[min(36rem,calc(100dvh-9.5rem))] w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-3xl border border-white/15 bg-zinc-950/95 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-[23rem]"
+            className="flex h-dvh w-screen flex-col overflow-hidden bg-zinc-950/95 shadow-2xl shadow-black/70 backdrop-blur-xl sm:h-[min(40rem,calc(100dvh-2rem))] sm:w-[23rem] sm:rounded-3xl sm:border sm:border-white/15"
           >
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
               <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-sky-300/20 bg-sky-300/[0.07]">
@@ -514,16 +520,18 @@ export function ByteGuide() {
         )}
       </AnimatePresence>
 
-      <ByteMascot
-        buttonRef={launcherRef}
-        mood={mascotMood}
-        isOpen={isOpen}
-        compact={!isOpen && !isHeroVisible}
-        onWake={() => {
-          if (mascotMood === 'sleeping') cueMascot('idle');
-        }}
-        onClick={() => (isOpen ? close() : open())}
-      />
+      <div className={isOpen ? 'hidden sm:block' : 'block'}>
+        <ByteMascot
+          buttonRef={launcherRef}
+          mood={mascotMood}
+          isOpen={isOpen}
+          compact={!isOpen && !isHeroVisible}
+          onWake={() => {
+            if (mascotMood === 'sleeping') cueMascot('idle');
+          }}
+          onClick={() => (isOpen ? close() : open())}
+        />
+      </div>
       </div>
     </>
   );
