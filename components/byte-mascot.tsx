@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { FiMessageCircle } from 'react-icons/fi';
 
 export type ByteMood = 'idle' | 'thinking' | 'greeting' | 'sleeping';
 
@@ -167,20 +166,6 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
           />
         )}
 
-        <AnimatePresence>
-          {!isOpen && !compact && (
-            <motion.span
-              aria-hidden="true"
-              initial={prefersReducedMotion ? false : { opacity: 0, x: 5 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 5 }}
-              className="absolute bottom-3 right-[82%] inline-flex whitespace-nowrap items-center gap-1.5 rounded-full border border-white/10 bg-zinc-950/90 px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.13em] text-zinc-400 shadow-lg shadow-black/40 backdrop-blur-md transition-colors group-hover:text-white"
-            >
-              <FiMessageCircle className="h-3 w-3 text-sky-300" />
-              Talk with Byte
-            </motion.span>
-          )}
-        </AnimatePresence>
       </motion.button>
     </motion.div>
   );

@@ -512,10 +512,9 @@ export function ByteGuide() {
             initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
-            className="focus-ring rounded-2xl border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2.5 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
+            className="focus-ring absolute bottom-3 right-[82%] whitespace-nowrap rounded-full border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
             <span className="block text-xs font-medium text-zinc-200">Hey, I&apos;m Byte.</span>
-            <span className="mt-0.5 block text-[10px] text-zinc-600">The rabbit isn&apos;t random.</span>
           </motion.button>
         )}
       </AnimatePresence>
