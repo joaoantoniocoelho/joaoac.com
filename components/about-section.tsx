@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { FiActivity, FiCode, FiCoffee, FiCompass, FiCpu, FiHeart, FiMonitor } from 'react-icons/fi';
+import { FiCode, FiCompass, FiCpu } from 'react-icons/fi';
 
 const toolkit = ['Java', 'Spring Boot', 'Node.js', 'TypeScript', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker'];
 
@@ -23,13 +23,6 @@ const exploring = [
   'Generative AI',
   'Cybersecurity',
   'Developer Tooling',
-];
-
-const offDuty = [
-  { icon: FiActivity, label: 'Running' },
-  { icon: FiMonitor, label: 'Videogames' },
-  { icon: FiHeart, label: 'Dogs' },
-  { icon: FiCoffee, label: 'Coffee' },
 ];
 
 const groupAnimation = {
@@ -94,22 +87,6 @@ export function AboutSection() {
                 <p>
                   Outside of work, I&apos;m usually running, playing videogames, or hanging out with my dogs.
                 </p>
-              </div>
-
-              <div className="mt-12 grid grid-cols-2 border-y border-white/[0.09] sm:grid-cols-4">
-                {offDuty.map(({ icon: Icon, label }, index) => (
-                  <div
-                    key={label}
-                    className={`group flex items-center gap-3 py-4 ${
-                      index % 2 === 0 ? 'border-r border-white/[0.09]' : ''
-                    } ${index > 1 ? 'border-t border-white/[0.09] sm:border-t-0' : ''} sm:border-r sm:last:border-r-0 sm:px-4 sm:first:pl-0`}
-                  >
-                    <span className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.035] text-zinc-600 transition-colors group-hover:border-sky-300/20 group-hover:text-sky-200">
-                      <Icon className="h-3.5 w-3.5" />
-                    </span>
-                    <span className="text-xs text-zinc-500 transition-colors group-hover:text-zinc-300">{label}</span>
-                  </div>
-                ))}
               </div>
             </div>
 
