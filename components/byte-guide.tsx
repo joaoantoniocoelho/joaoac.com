@@ -281,6 +281,8 @@ export function ByteGuide() {
   const sleepTimerRef = useRef<number>();
   const copyTimerRef = useRef<number>();
   const messageIdRef = useRef(1);
+  const hasTeasedRef = useRef(false);
+  const previousLocaleRef = useRef(locale);
 
   const cueMascot = useCallback((nextMood: ByteMood, duration?: number) => {
     window.clearTimeout(mascotTimerRef.current);
@@ -306,9 +308,13 @@ export function ByteGuide() {
   };
 
   useEffect(() => {
-    if (!isHomePath(pathname)) return;
+    // The mascot only sits next to the teaser while the hero is on screen; past
+    // that it detaches and peeks from the right edge, so the bubble would point
+    // at nothing. Greet once per visit, and only from the docked position.
+    if (hasTeasedRef.current || isOpen || !isHomePath(pathname) || !isHeroVisible) return;
 
     teaserTimerRef.current = window.setTimeout(() => {
+      hasTeasedRef.current = true;
       setShowTeaser(true);
       cueMascot('greeting', 900);
       teaserHideTimerRef.current = window.setTimeout(() => setShowTeaser(false), 7200);
@@ -318,7 +324,7 @@ export function ByteGuide() {
       window.clearTimeout(teaserTimerRef.current);
       window.clearTimeout(teaserHideTimerRef.current);
     };
-  }, [cueMascot, pathname]);
+  }, [cueMascot, isHeroVisible, isOpen, pathname]);
 
   useEffect(() => {
     const hero = document.getElementById('home');
@@ -399,6 +405,18 @@ export function ByteGuide() {
     },
     [],
   );
+
+  useEffect(() => {
+    if (previousLocaleRef.current === locale) return;
+
+    previousLocaleRef.current = locale;
+    window.clearTimeout(responseTimerRef.current);
+    messageIdRef.current = 1;
+    setMessages([localizedInitialMessage]);
+    setAskedIds([]);
+    setSuggestions(initialSuggestions);
+    setIsTyping(false);
+  }, [locale, localizedInitialMessage]);
 
   const ask = (id: PromptId) => {
     if (isTyping) return;
@@ -658,7 +676,7 @@ export function ByteGuide() {
             initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
-            className="focus-ring absolute bottom-3 right-[82%] whitespace-nowrap rounded-full border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
+            className="focus-ring absolute bottom-3 right-[7.25rem] whitespace-nowrap rounded-full sm:right-[9.25rem] border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
             <span className="block text-xs font-medium text-zinc-200">{pt ? 'Oi, sou o Byte.' : <>Hey, I&apos;m Byte.</>}</span>
           </motion.button>
