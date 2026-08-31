@@ -114,7 +114,7 @@ export function AboutSection() {
             </div>
 
             <aside className="lg:pt-20" aria-label="Current technical interests">
-              <div className="micro-grid relative mb-5 overflow-hidden rounded-2xl border border-white/[0.09] p-6">
+              <div className="relative mb-5 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018] p-6">
                 <div className="relative flex items-start justify-between">
                   <div>
                     <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-zinc-600">Current snapshot</p>

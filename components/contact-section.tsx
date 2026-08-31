@@ -38,7 +38,7 @@ export function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.25 }}
-          className="micro-grid relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.075] via-black/70 to-black/85 p-7 sm:p-10 md:p-14 lg:p-16"
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.075] via-black/70 to-black/85 p-7 sm:p-10 md:p-14 lg:p-16"
         >
           <div className="absolute right-7 top-7 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700 sm:right-10 sm:top-10">
             04 · Contact

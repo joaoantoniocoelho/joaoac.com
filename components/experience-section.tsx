@@ -49,7 +49,7 @@ export function ExperienceSection() {
             <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">
               A few of the teams, products, and problems that shaped how I build software today.
             </p>
-            <div className="micro-grid mt-9 overflow-hidden rounded-2xl border border-white/[0.09]">
+            <div className="mt-9 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018]">
               <div className="grid grid-cols-2 gap-px bg-white/[0.08]">
                 <div className="bg-black/80 p-4">
                   <span className="block font-mono text-2xl text-white">{totalExperienceCount}</span>

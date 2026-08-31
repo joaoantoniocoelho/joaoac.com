@@ -96,13 +96,6 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
   }
 
-  .micro-grid {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-
   .text-outline {
     color: transparent;
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.055);
