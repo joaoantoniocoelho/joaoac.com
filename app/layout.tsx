@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://joaoac.com'),
-  title: 'João Coelho — Software Engineer & Digital Experiences',
+  title: 'João Coelho | Software Engineer & Digital Experiences',
   description: 'Software engineer building backend systems, cloud products, AI experiments, and refined landing pages.',
   keywords: [
     'Senior Software Engineer',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://joaoac.com',
-    title: 'João Coelho — Software Engineer & Digital Experiences',
+    title: 'João Coelho | Software Engineer & Digital Experiences',
     description: 'Backend systems, cloud products, AI experiments, and refined landing pages.',
     siteName: 'João Coelho Portfolio',
     images: [
@@ -39,13 +39,13 @@ export const metadata: Metadata = {
         url: '/og.png',
         width: 1672,
         height: 941,
-        alt: 'João Coelho — Software Engineer · Digital Experiences',
+        alt: 'João Coelho | Software Engineer · Digital Experiences',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'João Coelho — Software Engineer & Digital Experiences',
+    title: 'João Coelho | Software Engineer & Digital Experiences',
     description: 'Backend systems, cloud products, AI experiments, and refined landing pages.',
     creator: '@joaoac',
     images: ['/og.png'],

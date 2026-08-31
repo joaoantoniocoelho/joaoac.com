@@ -70,7 +70,7 @@ export function AboutSection() {
                 </p>
                 <p>
                   I&apos;m mostly a backend guy, but I like being involved wherever the problem is.
-                  Architecture, APIs, cloud, databases, AI, weird bugs, systems that need to scale —
+                  Architecture, APIs, cloud, databases, AI, weird bugs, systems that need to scale:
                   that&apos;s usually the kind of stuff that gets my attention.
                 </p>
                 <p>

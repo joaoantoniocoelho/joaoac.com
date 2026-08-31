@@ -71,7 +71,7 @@ export function Navbar() {
             : 'border-transparent bg-transparent'
         }`}
       >
-        <Link href="/" className="focus-ring group flex items-center gap-3 rounded-full" aria-label="João Coelho — home">
+        <Link href="/" className="focus-ring group flex items-center gap-3 rounded-full" aria-label="João Coelho, home">
           <span className="grid h-8 w-8 place-items-center rounded-full border border-white/15 bg-white/[0.06] text-xs font-semibold text-white transition-colors group-hover:bg-white group-hover:text-black">
             JC
           </span>

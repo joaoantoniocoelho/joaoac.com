@@ -52,7 +52,7 @@ export default function ExperiencesPage() {
             <div className="mt-8 flex items-center gap-4 text-xs uppercase tracking-[0.16em] text-zinc-600">
               <span>{experiences.length} roles</span>
               <span className="h-1 w-1 rounded-full bg-zinc-700" />
-              <span>2018 — Now</span>
+              <span>2018 to now</span>
             </div>
           </div>
         </motion.header>

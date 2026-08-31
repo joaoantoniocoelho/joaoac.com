@@ -47,7 +47,7 @@ export function ContactSection() {
                 Let&apos;s make it worth remembering<span className="text-indigo-300">.</span>
               </h2>
               <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-400 md:text-lg">
-                Software, a difficult technical problem, or a landing page that needs a stronger point of view — feel free to reach out.
+                Software, a difficult technical problem, or a landing page that needs a stronger point of view. Feel free to reach out.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a
