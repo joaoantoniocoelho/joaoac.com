@@ -80,9 +80,34 @@
     @apply border-border;
   }
   body {
-    @apply bg-black text-foreground antialiased;
+    @apply overflow-x-hidden bg-black text-foreground antialiased;
   }
   ::selection {
     @apply bg-white text-black;
+  }
+}
+
+@layer components {
+  .pressable {
+    @apply transition-transform duration-300 motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98];
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

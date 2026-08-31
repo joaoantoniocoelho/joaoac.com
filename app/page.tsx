@@ -11,7 +11,7 @@ export default async function Home() {
   const blogPosts = await getMediumPosts();
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="relative z-10 min-h-screen bg-transparent text-white">
       <HeroSection />
       <AboutSection />
       <ExperienceSection />

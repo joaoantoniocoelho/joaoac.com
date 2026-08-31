@@ -1,7 +1,9 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { FiArrowUpRight, FiMail } from 'react-icons/fi';
+import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { FiArrowUpRight, FiCheck, FiCopy, FiMail } from 'react-icons/fi';
+import { copyToClipboard } from '@/lib/copy-to-clipboard';
 
 const socialLinks = [
   { label: 'LinkedIn', href: 'https://linkedin.com/in/joaoac' },
@@ -10,13 +12,22 @@ const socialLinks = [
 ];
 
 export function ContactSection() {
+  const [copied, setCopied] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const copyEmail = async () => {
+    await copyToClipboard('joaoantonioscoelho@gmail.com');
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+
   return (
-    <section id="contact" className="relative overflow-hidden bg-black pb-10 pt-28 md:pt-40">
+    <section id="contact" data-ambient="indigo" className="relative overflow-hidden bg-black/75 pb-10 pt-28 md:pt-40">
       <div className="pointer-events-none absolute bottom-0 left-1/2 hidden h-72 w-[70%] -translate-x-1/2 bg-indigo-500/[0.07] blur-[120px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          initial={false}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.25 }}
@@ -34,14 +45,25 @@ export function ContactSection() {
               <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-400 md:text-lg">
                 An idea, a difficult problem, or just a good conversation about software — feel free to reach out.
               </p>
-              <a
-                href="mailto:joaoantonioscoelho@gmail.com"
-                className="group mt-9 inline-flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
-              >
-                <FiMail className="h-4 w-4" />
-                Send me an email
-                <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <a
+                  href="mailto:joaoantonioscoelho@gmail.com"
+                  className="pressable focus-ring group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black"
+                >
+                  <FiMail className="h-4 w-4" />
+                  Send me an email
+                  <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="pressable focus-ring inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/30 hover:text-white"
+                  aria-live="polite"
+                >
+                  {copied ? <FiCheck className="h-4 w-4 text-emerald-300" /> : <FiCopy className="h-4 w-4" />}
+                  {copied ? 'Email copied' : 'Copy email'}
+                </button>
+              </div>
             </div>
 
             <div className="border-t border-white/10 lg:border-l lg:border-t-0 lg:pl-10">
@@ -52,7 +74,7 @@ export function ContactSection() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between border-t border-white/10 py-4 text-sm text-zinc-400 transition-colors hover:text-white"
+                  className="pressable focus-ring group flex items-center justify-between border-t border-white/10 py-4 text-sm text-zinc-400 transition-colors hover:text-white"
                 >
                   {link.label}
                   <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -64,7 +86,17 @@ export function ContactSection() {
 
         <footer className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} João Coelho</span>
-          <span>Built with curiosity and a lot of debugging.</span>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event('open-command-menu'))}
+            className="focus-ring group inline-flex w-fit items-center gap-2 rounded-full text-left transition-colors hover:text-zinc-300"
+            aria-label="Open quick navigation"
+          >
+            Built with curiosity and a lot of debugging.
+            <kbd className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[9px] text-zinc-700 transition-colors group-hover:border-white/20 group-hover:text-zinc-400">
+              /
+            </kbd>
+          </button>
         </footer>
       </div>
     </section>

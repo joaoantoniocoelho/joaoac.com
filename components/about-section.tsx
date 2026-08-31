@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { FiCode, FiCompass, FiCpu } from 'react-icons/fi';
 
 const toolkit = ['Java', 'Spring Boot', 'Node.js', 'TypeScript', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker'];
@@ -35,13 +35,15 @@ const groupAnimation = {
 };
 
 export function AboutSection() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <section id="about" className="relative overflow-hidden bg-black py-28 md:py-36">
+    <section id="about" data-ambient="sky" className="relative overflow-hidden bg-black/75 py-28 md:py-36">
       <div className="pointer-events-none absolute right-0 top-1/3 hidden h-80 w-80 translate-x-1/2 rounded-full bg-sky-500/[0.07] blur-[110px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          initial={false}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.15 }}
@@ -94,12 +96,13 @@ export function AboutSection() {
               </div>
 
               <div className="space-y-5">
-                <InterestGroup icon={<FiCode />} label="I work with" items={toolkit} delay={0.1} />
+                <InterestGroup icon={<FiCode />} label="I work with" items={toolkit} delay={0.1} reducedMotion={Boolean(prefersReducedMotion)} />
                 <InterestGroup
                   icon={<FiCpu />}
                   label="Things I care about"
                   items={engineeringInterests}
                   delay={0.2}
+                  reducedMotion={Boolean(prefersReducedMotion)}
                 />
                 <InterestGroup
                   icon={<FiCompass />}
@@ -107,6 +110,7 @@ export function AboutSection() {
                   items={exploring}
                   delay={0.3}
                   accent
+                  reducedMotion={Boolean(prefersReducedMotion)}
                 />
               </div>
             </aside>
@@ -123,12 +127,14 @@ function InterestGroup({
   items,
   delay,
   accent = false,
+  reducedMotion = false,
 }: {
   icon: React.ReactNode;
   label: string;
   items: string[];
   delay: number;
   accent?: boolean;
+  reducedMotion?: boolean;
 }) {
   return (
     <motion.div
@@ -138,7 +144,7 @@ function InterestGroup({
           : 'border-white/[0.08] bg-white/[0.025] hover:border-white/15'
       }`}
       variants={groupAnimation}
-      initial={false}
+      initial={reducedMotion ? false : "hidden"}
       whileInView="visible"
       custom={delay}
       viewport={{ once: true, amount: 0.4 }}

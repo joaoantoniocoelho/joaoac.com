@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
+import { AmbientBackground } from '@/components/ambient-background';
+import { DeveloperCommandMenu } from '@/components/developer-command-menu';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -54,8 +56,10 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
+          <AmbientBackground />
           <Navbar />
           {children}
+          <DeveloperCommandMenu />
         </ThemeProvider>
       </body>
     </html>

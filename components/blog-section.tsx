@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
 
 interface BlogPost {
@@ -18,12 +18,13 @@ interface BlogSectionProps {
 
 export function BlogSection({ posts }: BlogSectionProps) {
   const visiblePosts = posts.slice(0, 3);
+  const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section id="blog" className="relative overflow-hidden bg-black py-24 md:py-36">
+    <section id="blog" data-ambient="amber" className="relative overflow-hidden bg-black/75 py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.header
-          initial={false}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -42,7 +43,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
             href="https://medium.com/@joaoac"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+            className="pressable focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-400 transition-colors hover:text-white"
           >
             All posts on Medium
             <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -56,7 +57,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
             {visiblePosts.map((post, index) => (
               <motion.article
                 key={post.link}
-                initial={false}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -66,7 +67,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
                   href={post.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative flex h-full w-full min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-white/20 ${
+                  className={`pressable focus-ring group relative flex h-full w-full min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-white/20 ${
                     index === 0 ? 'min-h-[420px] flex-col sm:min-h-[480px]' : 'min-h-[210px] sm:min-h-[230px]'
                   }`}
                 >

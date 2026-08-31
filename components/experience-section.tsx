@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { FiArrowRight, FiChevronDown, FiExternalLink } from 'react-icons/fi';
 import experiencesData from '@/data/experiences.json';
 
@@ -10,19 +10,26 @@ const DESCRIPTION_PREVIEW_LENGTH = 360;
 export function ExperienceSection() {
   const featuredExperiences = experiencesData.experiences.slice(0, 2);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 72%', 'end 58%'],
+  });
+  const timelineProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 28, mass: 0.35 });
 
   const toggleExpand = (index: number) => {
     setExpandedItems((current) => ({ ...current, [index]: !current[index] }));
   };
 
   return (
-    <section id="experience" className="relative overflow-hidden bg-black py-28 md:py-36">
+    <section id="experience" data-ambient="emerald" className="relative overflow-hidden bg-black/75 py-28 md:py-36">
       <div className="pointer-events-none absolute -left-40 top-1/2 hidden h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[110px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[minmax(240px,0.65fr)_minmax(0,1.35fr)] lg:gap-24">
           <motion.header
-            initial={false}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65 }}
             viewport={{ once: true, amount: 0.4 }}
@@ -40,14 +47,21 @@ export function ExperienceSection() {
             </p>
             <a
               href="/experiences"
-              className="group mt-9 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+              className="pressable focus-ring group mt-9 inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-300 transition-colors hover:text-white"
             >
               View all experiences
               <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </motion.header>
 
-          <div className="border-t border-white/10">
+          <div ref={timelineRef} className="relative border-t border-white/10 pl-8 md:pl-12">
+            <div className="absolute bottom-0 left-[7px] top-0 w-px bg-white/[0.08]" aria-hidden="true" />
+            <motion.div
+              style={{ scaleY: prefersReducedMotion ? 1 : timelineProgress }}
+              className="absolute bottom-0 left-[7px] top-0 w-px origin-top bg-gradient-to-b from-emerald-300/80 via-emerald-300/35 to-transparent"
+              aria-hidden="true"
+            />
+
             {featuredExperiences.map((experience, index) => {
               const isExpanded = expandedItems[index];
               const shouldTruncate = experience.description.length > DESCRIPTION_PREVIEW_LENGTH;
@@ -59,12 +73,23 @@ export function ExperienceSection() {
               return (
                 <motion.article
                   key={`${experience.company}-${experience.period}`}
-                  initial={false}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.12 }}
                   viewport={{ once: true, amount: 0.2 }}
                   className="group relative border-b border-white/10 py-10 md:py-12"
                 >
+                  <motion.span
+                    initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.4 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.4, delay: index * 0.1 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    className="absolute -left-[1.875rem] top-12 z-10 grid h-3 w-3 place-items-center rounded-full border border-emerald-300/50 bg-black md:-left-[2.875rem] md:top-14"
+                    aria-hidden="true"
+                  >
+                    <span className="h-1 w-1 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" />
+                  </motion.span>
+
                   <div className="grid gap-6 sm:grid-cols-[110px_minmax(0,1fr)] sm:gap-8">
                     <div className="flex items-start justify-between sm:block">
                       <span className="font-mono text-xs tracking-wider text-zinc-600">
@@ -95,16 +120,18 @@ export function ExperienceSection() {
                         )}
                       </div>
 
-                      <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
-                        {description}
-                      </p>
+                      <motion.div layout transition={{ duration: prefersReducedMotion ? 0 : 0.35 }}>
+                        <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
+                          {description}
+                        </p>
+                      </motion.div>
 
                       {shouldTruncate && (
                         <button
                           type="button"
                           onClick={() => toggleExpand(index)}
                           aria-expanded={isExpanded}
-                          className="group/button mt-4 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-zinc-500 transition-colors hover:text-white"
+                          className="pressable focus-ring group/button mt-4 inline-flex items-center gap-2 rounded-full text-xs font-medium uppercase tracking-[0.14em] text-zinc-500 transition-colors hover:text-white"
                         >
                           {isExpanded ? 'Show less' : 'Keep reading'}
                           <FiChevronDown

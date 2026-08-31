@@ -1,20 +1,28 @@
 "use client";
 
+import { useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { FiArrowLeft, FiArrowUpRight, FiExternalLink } from 'react-icons/fi';
 import experiencesData from '@/data/experiences.json';
 
 export default function ExperiencesPage() {
   const { experiences } = experiencesData;
+  const timelineRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 72%', 'end 65%'],
+  });
+  const timelineProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 28, mass: 0.35 });
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main data-ambient="emerald" className="relative z-10 min-h-screen overflow-hidden bg-black/75 text-white">
       <div className="pointer-events-none absolute right-0 top-40 hidden h-96 w-96 translate-x-1/2 rounded-full bg-emerald-500/[0.07] blur-[120px] lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-32 sm:px-8 md:pt-40 lg:px-10">
         <motion.header
-          initial={false}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="grid gap-12 border-b border-white/10 pb-16 md:pb-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] lg:items-end"
@@ -22,7 +30,7 @@ export default function ExperiencesPage() {
           <div>
             <Link
               href="/#experience"
-              className="group mb-12 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white"
+              className="pressable focus-ring group mb-12 inline-flex items-center gap-2 rounded-full text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white"
             >
               <FiArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
               Back to home
@@ -49,21 +57,32 @@ export default function ExperiencesPage() {
           </div>
         </motion.header>
 
-        <section aria-label="Professional experience timeline" className="relative">
-          <div className="absolute bottom-0 left-[19px] top-0 hidden w-px bg-gradient-to-b from-white/25 via-white/10 to-transparent md:block" />
+        <section ref={timelineRef} aria-label="Professional experience timeline" className="relative">
+          <div className="absolute bottom-0 left-[19px] top-0 hidden w-px bg-white/[0.08] md:block" />
+          <motion.div
+            style={{ scaleY: prefersReducedMotion ? 1 : timelineProgress }}
+            className="absolute bottom-0 left-[19px] top-0 hidden w-px origin-top bg-gradient-to-b from-emerald-300/80 via-emerald-300/30 to-transparent md:block"
+            aria-hidden="true"
+          />
 
           {experiences.map((experience, index) => (
             <motion.article
               key={`${experience.company}-${experience.period}`}
-              initial={false}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: Math.min(index * 0.08, 0.24) }}
               viewport={{ once: true, amount: 0.12 }}
               className="relative border-b border-white/10 py-14 md:py-20"
             >
-              <div className="absolute left-3 top-[5.4rem] z-10 hidden h-4 w-4 rounded-full border border-white/25 bg-black md:block">
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.4 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.4, delay: Math.min(index * 0.08, 0.24) }}
+                viewport={{ once: true, amount: 0.4 }}
+                className="absolute left-3 top-[5.4rem] z-10 hidden h-4 w-4 rounded-full border border-white/25 bg-black md:block"
+              >
                 <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_7px_rgba(110,231,183,0.7)]" />
-              </div>
+              </motion.div>
 
               <div className="grid gap-8 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[80px_minmax(0,1.25fr)_minmax(220px,0.55fr)] lg:gap-12">
                 <span className="font-mono text-xs tracking-widest text-zinc-600">
@@ -83,7 +102,7 @@ export default function ExperiencesPage() {
                       href={experience.companyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group mt-3 inline-flex items-center gap-2 text-base text-zinc-300 transition-colors hover:text-white"
+                      className="pressable focus-ring group mt-3 inline-flex items-center gap-2 rounded-full text-base text-zinc-300 transition-colors hover:text-white"
                     >
                       {experience.company}
                       <FiExternalLink className="h-3.5 w-3.5 text-zinc-600 transition-colors group-hover:text-white" />
@@ -120,7 +139,7 @@ export default function ExperiencesPage() {
         </section>
 
         <motion.div
-          initial={false}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -134,7 +153,7 @@ export default function ExperiencesPage() {
           </div>
           <Link
             href="/#contact"
-            className="group inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
+            className="pressable focus-ring group inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
           >
             Get in touch
             <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
