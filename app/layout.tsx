@@ -6,6 +6,7 @@ import { Navbar } from '@/components/navbar';
 import { AmbientBackground } from '@/components/ambient-background';
 import { DeveloperCommandMenu } from '@/components/developer-command-menu';
 import { ByteGuide } from '@/components/byte-guide';
+import { DocumentLocale } from '@/components/document-locale';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,10 @@ export const metadata: Metadata = {
     'Software Engineer Brazil'
   ],
   authors: [{ name: 'João Antonio Stoll Coelho' }],
+  alternates: {
+    canonical: '/',
+    languages: { 'en-US': '/', 'pt-BR': '/pt-BR' },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -68,6 +73,7 @@ export default function RootLayout({
           enableSystem={false}
         >
           <AmbientBackground />
+          <DocumentLocale />
           <Navbar />
           {children}
           <DeveloperCommandMenu />

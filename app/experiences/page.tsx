@@ -5,9 +5,14 @@ import Link from 'next/link';
 import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { FiArrowLeft, FiArrowUpRight, FiExternalLink } from 'react-icons/fi';
 import experiencesData from '@/data/experiences.json';
+import experiencesPtBrData from '@/data/experiences.pt-BR.json';
+import { localizedPath, useLocale } from '@/lib/i18n';
 
 export default function ExperiencesPage() {
-  const { experiences } = experiencesData;
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
+  const { experiences } = pt ? experiencesPtBrData : experiencesData;
+  const homePath = localizedPath('/', locale);
   const timelineRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -29,35 +34,37 @@ export default function ExperiencesPage() {
         >
           <div>
             <Link
-              href="/#experience"
+              href={`${homePath}#experience`}
               className="pressable focus-ring group mb-12 inline-flex items-center gap-2 rounded-full text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white"
             >
               <FiArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
-              Back to home
+              {pt ? 'Voltar ao início' : 'Back to home'}
             </Link>
 
             <div className="mb-7 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
               <span className="h-px w-8 bg-emerald-300/60" />
-              Full timeline
+              {pt ? 'Linha do tempo completa' : 'Full timeline'}
             </div>
             <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-tight text-white sm:text-6xl md:text-8xl">
-              The work behind the work<span className="text-emerald-300">.</span>
+              {pt ? 'O trabalho por trás do trabalho' : 'The work behind the work'}<span className="text-emerald-300">.</span>
             </h1>
           </div>
 
           <div className="max-w-md lg:pb-2">
             <p className="text-base leading-8 text-zinc-400 md:text-lg">
-              The teams, products, technical decisions, and lessons that have shaped the way I think about software.
+              {pt
+                ? 'As equipes, os produtos, as decisões técnicas e as lições que moldaram minha forma de pensar sobre software.'
+                : 'The teams, products, technical decisions, and lessons that have shaped the way I think about software.'}
             </p>
             <div className="mt-8 flex items-center gap-4 text-xs uppercase tracking-[0.16em] text-zinc-600">
-              <span>{experiences.length} roles</span>
+              <span>{experiences.length} {pt ? 'cargos' : 'roles'}</span>
               <span className="h-1 w-1 rounded-full bg-zinc-700" />
-              <span>2018 to now</span>
+              <span>{pt ? '2018 até hoje' : '2018 to now'}</span>
             </div>
           </div>
         </motion.header>
 
-        <section ref={timelineRef} aria-label="Professional experience timeline" className="relative">
+        <section ref={timelineRef} aria-label={pt ? 'Linha do tempo da experiência profissional' : 'Professional experience timeline'} className="relative">
           <div className="absolute bottom-0 left-[19px] top-0 hidden w-px bg-white/[0.08] md:block" />
           <motion.div
             style={{ scaleY: prefersReducedMotion ? 1 : timelineProgress }}
@@ -129,7 +136,7 @@ export default function ExperiencesPage() {
 
                 <aside className="border-t border-white/10 pt-5 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0">
                   <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600">
-                    About the company
+                    {pt ? 'Sobre a empresa' : 'About the company'}
                   </p>
                   <p className="text-xs leading-6 text-zinc-500">{experience.companyInfo}</p>
                 </aside>
@@ -146,16 +153,16 @@ export default function ExperiencesPage() {
           className="mt-20 flex flex-col gap-8 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-8 sm:p-10 md:flex-row md:items-center md:justify-between"
         >
           <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-zinc-500">What&apos;s next?</p>
+            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-zinc-500">{pt ? 'O que vem agora?' : <>What&apos;s next?</>}</p>
             <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
-              Still building, still learning.
+              {pt ? 'Ainda construindo, ainda aprendendo.' : 'Still building, still learning.'}
             </h2>
           </div>
           <Link
-            href="/#contact"
+            href={`${homePath}#contact`}
             className="pressable focus-ring group inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
           >
-            Get in touch
+            {pt ? 'Entre em contato' : 'Get in touch'}
             <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         </motion.div>

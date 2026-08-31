@@ -96,9 +96,64 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
   }
 
+  /*
+   * A highlight sweeps across the word once it scrolls into view.
+   * The gradient band sits at 40%-60% of a 250%-wide background, so it lands
+   * exactly off the left edge at 100% and off the right edge at 0% — the whole
+   * animation is the visible crossing, nothing is spent travelling off-screen.
+   */
+  .sheen-text {
+    background-image: linear-gradient(
+      100deg,
+      #fff 0%,
+      #fff 40%,
+      #c7d2fe 46%,
+      #a5b4fc 50%,
+      #c7d2fe 54%,
+      #fff 60%,
+      #fff 100%
+    );
+    background-size: 250% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /*
+   * One pass at constant speed. Timing is shared with the period that lands as
+   * the beam leaves the last letter — keep it in sync with SHEEN in
+   * components/contact-section.tsx.
+   */
+  .sheen-text[data-sheen='on'] {
+    animation: sheen-pass 1.5s linear 0.3s both;
+  }
+
+  .group\/sheen:hover .sheen-text {
+    animation: sheen-pass 1.2s linear;
+  }
+}
+
+@keyframes sheen-pass {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sheen-text,
+  .sheen-text[data-sheen='on'],
+  .group\/sheen:hover .sheen-text {
+    animation: none;
+    background-image: none;
+    color: inherit;
+    -webkit-text-fill-color: currentColor;
+  }
+
   html {
     scroll-behavior: auto;
   }

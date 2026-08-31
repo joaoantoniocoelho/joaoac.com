@@ -18,9 +18,11 @@ type ByteMascotProps = {
   onClick: () => void;
   onWake: () => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  openLabel?: string;
+  closeLabel?: string;
 };
 
-export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }: ByteMascotProps) {
+export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, openLabel = 'Talk to Byte', closeLabel = 'Close Byte' }: ByteMascotProps) {
   const [isBlinking, setIsBlinking] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const blinkTimerRef = useRef<number>();
@@ -120,7 +122,7 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
         type="button"
         onClick={onClick}
         onPointerEnter={onWake}
-        aria-label={isOpen ? 'Close Byte' : 'Talk to Byte'}
+        aria-label={isOpen ? closeLabel : openLabel}
         aria-expanded={isOpen}
         whileHover={prefersReducedMotion ? undefined : compact ? { x: -4, scale: 1.025 } : { y: -3, scale: 1.025 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}

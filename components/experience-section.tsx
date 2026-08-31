@@ -4,12 +4,17 @@ import { useRef, useState } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { FiArrowRight, FiChevronDown, FiExternalLink } from 'react-icons/fi';
 import experiencesData from '@/data/experiences.json';
+import experiencesPtBrData from '@/data/experiences.pt-BR.json';
+import { localizedPath, useLocale } from '@/lib/i18n';
 
 const DESCRIPTION_PREVIEW_LENGTH = 360;
 
 export function ExperienceSection() {
-  const featuredExperiences = experiencesData.experiences.slice(0, 2);
-  const totalExperienceCount = experiencesData.experiences.length;
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
+  const data = pt ? experiencesPtBrData : experiencesData;
+  const featuredExperiences = data.experiences.slice(0, 2);
+  const totalExperienceCount = data.experiences.length;
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const timelineRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -39,36 +44,38 @@ export function ExperienceSection() {
             <div className="mb-7 flex items-center justify-between border-b border-white/[0.08] pb-5">
               <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-emerald-300/80">
                 <span className="h-px w-8 bg-emerald-300/60" />
-                Experience
+                {pt ? 'Experiência' : 'Experience'}
               </div>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">02</span>
             </div>
             <h2 className="text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-white md:text-6xl">
-              Where I&apos;ve worked<span className="text-emerald-300">.</span>
+              {pt ? 'Onde trabalhei' : <>Where I&apos;ve worked</>}<span className="text-emerald-300">.</span>
             </h2>
             <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">
-              A few of the teams, products, and problems that shaped how I build software today.
+              {pt
+                ? 'Algumas das equipes, produtos e problemas que moldaram a forma como desenvolvo software hoje.'
+                : 'A few of the teams, products, and problems that shaped how I build software today.'}
             </p>
             <div className="mt-9 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018]">
               <div className="grid grid-cols-2 gap-px bg-white/[0.08]">
                 <div className="bg-black/80 p-4">
                   <span className="block font-mono text-2xl text-white">{totalExperienceCount}</span>
-                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">Roles mapped</span>
+                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">{pt ? 'Cargos mapeados' : 'Roles mapped'}</span>
                 </div>
                 <div className="bg-black/80 p-4">
                   <span className="block font-mono text-2xl text-white">2018</span>
-                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">Started</span>
+                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">{pt ? 'Início' : 'Started'}</span>
                 </div>
               </div>
               <div className="border-t border-white/[0.08] bg-black/65 px-4 py-3 text-[10px] uppercase tracking-[0.15em] text-zinc-600">
-                Backend · Cloud · Product · Architecture
+                Backend · {pt ? 'Nuvem · Produto · Arquitetura' : 'Cloud · Product · Architecture'}
               </div>
             </div>
             <a
-              href="/experiences"
+              href={localizedPath('/experiences', locale)}
               className="pressable focus-ring group mt-9 inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-300 transition-colors hover:text-white"
             >
-              View all experiences
+              {pt ? 'Ver todas as experiências' : 'View all experiences'}
               <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </motion.header>
@@ -124,7 +131,7 @@ export function ExperienceSection() {
                         <div className="mb-3 flex items-center gap-3">
                           <span className="h-px w-0 bg-emerald-300/60 transition-all duration-500 group-hover:w-8" />
                           <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-700 transition-colors group-hover:text-emerald-300/70">
-                            Selected chapter
+                            {pt ? 'Capítulo selecionado' : 'Selected chapter'}
                           </span>
                         </div>
                         <h3 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
@@ -145,11 +152,9 @@ export function ExperienceSection() {
                         )}
                       </div>
 
-                      <motion.div layout transition={{ duration: prefersReducedMotion ? 0 : 0.35 }}>
-                        <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
-                          {description}
-                        </p>
-                      </motion.div>
+                      <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
+                        {description}
+                      </p>
 
                       {shouldTruncate && (
                         <button
@@ -158,7 +163,7 @@ export function ExperienceSection() {
                           aria-expanded={isExpanded}
                           className="pressable focus-ring group/button mt-4 inline-flex items-center gap-2 rounded-full text-xs font-medium uppercase tracking-[0.14em] text-zinc-500 transition-colors hover:text-white"
                         >
-                          {isExpanded ? 'Show less' : 'Keep reading'}
+                          {isExpanded ? (pt ? 'Mostrar menos' : 'Show less') : (pt ? 'Continuar lendo' : 'Keep reading')}
                           <FiChevronDown
                             className={`h-3.5 w-3.5 transition-transform duration-300 ${
                               isExpanded ? 'rotate-180' : 'group-hover/button:translate-y-0.5'

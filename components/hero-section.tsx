@@ -8,8 +8,11 @@ import {
   useSpring,
 } from 'framer-motion';
 import { FiArrowRight } from 'react-icons/fi';
+import { useLocale } from '@/lib/i18n';
 
 export function HeroSection() {
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const pointerX = useMotionValue(0);
@@ -60,38 +63,21 @@ export function HeroSection() {
             transition={{ ...revealTransition, delay: 0.15 }}
             className="h-px w-8 origin-left bg-sky-300/60"
           />
-          Software Engineer · Brazil
+          {pt ? 'Engenheiro de Software · Brasil' : 'Software Engineer · Brazil'}
         </motion.div>
 
         <h1 className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.065em] text-white">
-          <span className="block overflow-hidden pb-[0.08em]">
+          <FocusInWord word="João" delay={0.12} reducedMotion={Boolean(prefersReducedMotion)} />
+          <FocusInWord word="Coelho" delay={0.32} reducedMotion={Boolean(prefersReducedMotion)}>
             <motion.span
-              initial={prefersReducedMotion ? false : { opacity: 0, y: '110%' }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...revealTransition, delay: 0.12 }}
-              className="block"
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.4 }}
+              animate={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: [1, 1.3, 1] }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.55, delay: 1.05 }}
+              className="inline-block origin-bottom text-sky-300"
             >
-              João
+              .
             </motion.span>
-          </span>
-          <span className="block overflow-hidden pb-[0.08em]">
-            <motion.span
-              initial={prefersReducedMotion ? false : { opacity: 0, y: '110%' }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...revealTransition, delay: 0.22 }}
-              className="block"
-            >
-              Coelho
-              <motion.span
-                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.4 }}
-                animate={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: [1, 1.3, 1] }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.55, delay: 0.92 }}
-                className="inline-block origin-bottom text-sky-300"
-              >
-                .
-              </motion.span>
-            </motion.span>
-          </span>
+          </FocusInWord>
         </h1>
 
         <motion.div
@@ -105,24 +91,66 @@ export function HeroSection() {
               href="#experience"
               className="pressable focus-ring group inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
             >
-              View my work
+              {pt ? 'Veja meu trabalho' : 'View my work'}
               <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
               href="#about"
               className="pressable focus-ring inline-flex items-center rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/30 hover:text-white"
             >
-              More about me
+              {pt ? 'Mais sobre mim' : 'More about me'}
             </a>
           </div>
 
           <div className="flex items-end justify-center gap-8">
             <p className="max-w-md text-sm leading-7 text-zinc-500">
-              Building thoughtful software across backend systems, cloud, AI, and everything in between.
+              {pt
+                ? 'Construindo software com cuidado, de sistemas backend e nuvem a IA e tudo que existe entre eles.'
+                : 'Building thoughtful software across backend systems, cloud, AI, and everything in between.'}
             </p>
           </div>
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function FocusInWord({
+  word,
+  delay,
+  reducedMotion,
+  children,
+}: {
+  word: string;
+  delay: number;
+  reducedMotion: boolean;
+  children?: React.ReactNode;
+}) {
+  return (
+    <motion.span
+      initial={reducedMotion ? false : 'hidden'}
+      animate="visible"
+      variants={{
+        visible: { transition: { delayChildren: delay, staggerChildren: reducedMotion ? 0 : 0.045 } },
+      }}
+      aria-label={word}
+      className="block pb-[0.08em]"
+    >
+      {word.split('').map((letter, index) => (
+        <motion.span
+          key={`${letter}-${index}`}
+          aria-hidden="true"
+          variants={{
+            hidden: { opacity: 0, filter: 'blur(16px)', scale: 1.06 },
+            visible: { opacity: 1, filter: 'blur(0px)', scale: 1 },
+          }}
+          transition={{ duration: reducedMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="inline-block will-change-[filter,opacity,transform]"
+        >
+          {letter}
+        </motion.span>
+      ))}
+      {children}
+    </motion.span>
   );
 }
