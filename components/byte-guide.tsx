@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 import { FiArrowUpRight, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
-import { PiRabbit } from 'react-icons/pi';
+import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
 
 type PromptId =
   | 'not-on-site'
@@ -165,23 +166,37 @@ export function ByteGuide() {
   const [askedIds, setAskedIds] = useState<PromptId[]>([]);
   const [suggestions, setSuggestions] = useState<PromptId[]>(initialSuggestions);
   const [isTyping, setIsTyping] = useState(false);
+  const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
   const prefersReducedMotion = useReducedMotion();
   const launcherRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
   const responseTimerRef = useRef<number>();
   const teaserTimerRef = useRef<number>();
+  const mascotTimerRef = useRef<number>();
+  const sleepTimerRef = useRef<number>();
   const messageIdRef = useRef(1);
+
+  const cueMascot = useCallback((nextMood: ByteMood, duration?: number) => {
+    window.clearTimeout(mascotTimerRef.current);
+    setMascotMood(nextMood);
+
+    if (duration) {
+      mascotTimerRef.current = window.setTimeout(() => setMascotMood('idle'), duration);
+    }
+  }, []);
 
   const close = useCallback(() => {
     setIsOpen(false);
+    cueMascot('idle');
     window.requestAnimationFrame(() => launcherRef.current?.focus());
-  }, []);
+  }, [cueMascot]);
 
   const open = () => {
     window.clearTimeout(teaserTimerRef.current);
     setShowTeaser(false);
     setIsOpen(true);
+    cueMascot('greeting', 900);
 
     try {
       window.sessionStorage.setItem('byte-teaser-seen', 'true');
@@ -196,13 +211,25 @@ export function ByteGuide() {
       teaserTimerRef.current = window.setTimeout(() => {
         setShowTeaser(true);
         window.sessionStorage.setItem('byte-teaser-seen', 'true');
+        cueMascot('greeting', 900);
       }, 3200);
     } catch {
-      teaserTimerRef.current = window.setTimeout(() => setShowTeaser(true), 3200);
+      teaserTimerRef.current = window.setTimeout(() => {
+        setShowTeaser(true);
+        cueMascot('greeting', 900);
+      }, 3200);
     }
 
     return () => window.clearTimeout(teaserTimerRef.current);
-  }, []);
+  }, [cueMascot]);
+
+  useEffect(() => {
+    window.clearTimeout(sleepTimerRef.current);
+    if (isOpen || mascotMood !== 'idle') return;
+
+    sleepTimerRef.current = window.setTimeout(() => setMascotMood('sleeping'), 18_000);
+    return () => window.clearTimeout(sleepTimerRef.current);
+  }, [isOpen, mascotMood]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -227,6 +254,8 @@ export function ByteGuide() {
     () => () => {
       window.clearTimeout(responseTimerRef.current);
       window.clearTimeout(teaserTimerRef.current);
+      window.clearTimeout(mascotTimerRef.current);
+      window.clearTimeout(sleepTimerRef.current);
     },
     [],
   );
@@ -246,6 +275,7 @@ export function ByteGuide() {
     setAskedIds(nextAskedIds);
     setSuggestions([]);
     setIsTyping(true);
+    cueMascot('thinking');
 
     responseTimerRef.current = window.setTimeout(
       () => {
@@ -260,6 +290,7 @@ export function ByteGuide() {
         ]);
         setSuggestions(getNextSuggestions(id, nextAskedIds));
         setIsTyping(false);
+        cueMascot('greeting', 900);
       },
       prefersReducedMotion ? 0 : 520,
     );
@@ -272,10 +303,11 @@ export function ByteGuide() {
     setAskedIds([]);
     setSuggestions(initialSuggestions);
     setIsTyping(false);
+    cueMascot('greeting', 900);
   };
 
   return (
-    <div className="fixed bottom-5 right-4 z-[90] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+    <div className="fixed bottom-2 right-2 z-[90] flex flex-col items-end gap-2 sm:bottom-4 sm:right-5">
       <AnimatePresence>
         {isOpen && (
           <motion.section
@@ -285,12 +317,12 @@ export function ByteGuide() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="flex h-[min(38rem,calc(100dvh-7rem))] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border border-white/15 bg-zinc-950/95 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-[23rem]"
+            className="flex h-[min(36rem,calc(100dvh-9.5rem))] w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-3xl border border-white/15 bg-zinc-950/95 shadow-2xl shadow-black/70 backdrop-blur-xl sm:w-[23rem]"
           >
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
-              <span className="relative grid h-10 w-10 place-items-center rounded-2xl border border-sky-300/20 bg-sky-300/[0.07] text-sky-200">
-                <PiRabbit className="h-5 w-5" aria-hidden="true" />
-                <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-950 bg-emerald-300" />
+              <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-sky-300/20 bg-sky-300/[0.07]">
+                <Image src="/byte/byte-idle.png" alt="" width={40} height={40} className="h-10 w-10 object-contain" />
+                <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-950 bg-emerald-300" />
               </span>
               <div className="min-w-0 flex-1">
                 <h2 className="text-sm font-semibold text-white">Byte</h2>
@@ -413,17 +445,15 @@ export function ByteGuide() {
         )}
       </AnimatePresence>
 
-      <button
-        ref={launcherRef}
-        type="button"
+      <ByteMascot
+        buttonRef={launcherRef}
+        mood={mascotMood}
+        isOpen={isOpen}
+        onWake={() => {
+          if (mascotMood === 'sleeping') cueMascot('idle');
+        }}
         onClick={() => (isOpen ? close() : open())}
-        aria-label={isOpen ? 'Close Byte' : 'Talk to Byte'}
-        aria-expanded={isOpen}
-        className="pressable focus-ring group relative grid h-14 w-14 place-items-center rounded-2xl border border-white/15 bg-zinc-950/95 text-zinc-200 shadow-xl shadow-black/50 backdrop-blur-xl transition-colors hover:border-sky-300/30 hover:text-sky-200"
-      >
-        <PiRabbit className="h-6 w-6 transition-transform duration-300 group-hover:-translate-y-0.5" aria-hidden="true" />
-        <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full border-2 border-zinc-950 bg-emerald-300" />
-      </button>
+      />
     </div>
   );
 }
