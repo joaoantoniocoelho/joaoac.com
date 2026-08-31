@@ -71,7 +71,7 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef }
 
   const imageSource = compact
     ? '/byte/byte-peeking.png'
-    : isOpen
+    : isOpen && mood !== 'thinking'
       ? '/byte/byte-talking.png'
       : mood === 'sleeping' || isBlinking
         ? '/byte/byte-blink.png'
