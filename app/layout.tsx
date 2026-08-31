@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { AmbientBackground } from '@/components/ambient-background';
 import { DeveloperCommandMenu } from '@/components/developer-command-menu';
+import { ByteGuide } from '@/components/byte-guide';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -70,6 +71,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <DeveloperCommandMenu />
+          <ByteGuide />
         </ThemeProvider>
       </body>
     </html>
