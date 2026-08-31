@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
+import { useLocale } from '@/lib/i18n';
 
 interface BlogPost {
   title: string;
@@ -17,6 +18,8 @@ interface BlogSectionProps {
 }
 
 export function BlogSection({ posts }: BlogSectionProps) {
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
   const visiblePosts = posts.slice(0, 3);
   const prefersReducedMotion = useReducedMotion();
 
@@ -35,17 +38,17 @@ export function BlogSection({ posts }: BlogSectionProps) {
             <div className="mb-7 flex items-center justify-between">
               <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.24em] text-amber-300/80">
                 <span className="h-px w-8 bg-amber-300/60" />
-                Writing
+                {pt ? 'Artigos' : 'Writing'}
               </div>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700 lg:hidden">03</span>
             </div>
             <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
-              Things I&apos;ve been writing about<span className="text-amber-300">.</span>
+              {pt ? 'Assuntos sobre os quais tenho escrito' : <>Things I&apos;ve been writing about</>}<span className="text-amber-300">.</span>
             </h2>
           </div>
           <div className="lg:text-right">
             <div className="mb-5 hidden items-center justify-end gap-3 lg:flex">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">03 · Field notes</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">03 · {pt ? 'Notas de campo' : 'Field notes'}</span>
               <span className="h-1.5 w-1.5 rounded-full bg-amber-300/70" />
             </div>
             <a
@@ -54,14 +57,14 @@ export function BlogSection({ posts }: BlogSectionProps) {
               rel="noopener noreferrer"
               className="pressable focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-400 transition-colors hover:text-white"
             >
-              All posts on Medium
+              {pt ? 'Todos os artigos no Medium' : 'All posts on Medium'}
               <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>
         </motion.header>
 
         {visiblePosts.length === 0 ? (
-          <p className="py-16 text-sm text-zinc-500">No posts available at the moment.</p>
+          <p className="py-16 text-sm text-zinc-500">{pt ? 'Nenhum artigo disponível no momento.' : 'No posts available at the moment.'}</p>
         ) : (
           <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-2 lg:grid-rows-2">
             {visiblePosts.map((post, index) => (
@@ -106,7 +109,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
                     <div>
                       <div className="mb-5 flex items-center justify-between gap-4">
                         <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-600">
-                          Signal · {post.date}
+                          {pt ? 'Sinal' : 'Signal'} · {post.date}
                         </span>
                         <FiArrowUpRight className="h-4 w-4 shrink-0 text-zinc-600 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                       </div>

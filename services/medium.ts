@@ -18,7 +18,7 @@ interface Rss2JsonResponse {
   items?: Rss2JsonItem[];
 }
 
-export async function getMediumPosts(): Promise<MediumPost[]> {
+export async function getMediumPosts(locale: 'en' | 'pt-BR' = 'en'): Promise<MediumPost[]> {
   try {
     const response = await fetch(
       'https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@joaoac',
@@ -41,7 +41,7 @@ export async function getMediumPosts(): Promise<MediumPost[]> {
 
       return {
         title: item.title,
-        date: new Date(item.pubDate).toLocaleDateString('en-US', {
+        date: new Date(item.pubDate).toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',

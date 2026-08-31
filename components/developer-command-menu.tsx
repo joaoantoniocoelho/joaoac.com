@@ -11,23 +11,24 @@ import {
   FiCommand,
   FiCopy,
   FiGithub,
-  FiLayout,
   FiMail,
   FiUser,
   FiX,
 } from 'react-icons/fi';
 import { copyToClipboard } from '@/lib/copy-to-clipboard';
+import { localizedPath, useLocale } from '@/lib/i18n';
 
 const email = 'joaoantonioscoelho@gmail.com';
 
-const navigationActions = [
-  { label: 'Landing pages', description: 'Design and build for your next launch', href: '/#contact', icon: FiLayout },
-  { label: 'About me', description: 'A quick introduction', href: '/#about', icon: FiUser },
-  { label: 'Experience', description: 'Teams, products, and problems', href: '/#experience', icon: FiBriefcase },
-  { label: 'Writing', description: 'Recent notes and articles', href: '/#blog', icon: FiCode },
-];
-
 export function DeveloperCommandMenu() {
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
+  const homePath = localizedPath('/', locale);
+  const navigationActions = [
+    { label: pt ? 'Sobre mim' : 'About me', description: pt ? 'Uma apresentação rápida' : 'A quick introduction', href: `${homePath}#about`, icon: FiUser },
+    { label: pt ? 'Experiência' : 'Experience', description: pt ? 'Equipes, produtos e problemas' : 'Teams, products, and problems', href: `${homePath}#experience`, icon: FiBriefcase },
+    { label: pt ? 'Artigos' : 'Writing', description: pt ? 'Notas e artigos recentes' : 'Recent notes and articles', href: `${homePath}#blog`, icon: FiCode },
+  ];
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -133,16 +134,16 @@ export function DeveloperCommandMenu() {
               <FiCommand className="h-4 w-4 text-sky-300" aria-hidden="true" />
               <div className="min-w-0 flex-1">
                 <h2 id="command-menu-title" className="text-sm font-medium text-white">
-                  Quick navigation
+                  {pt ? 'Navegação rápida' : 'Quick navigation'}
                 </h2>
-                <p className="text-xs text-zinc-600">Where do you want to go?</p>
+                <p className="text-xs text-zinc-600">{pt ? 'Aonde você quer ir?' : 'Where do you want to go?'}</p>
               </div>
               <button
                 type="button"
                 data-command-item
                 onClick={close}
                 className="pressable grid h-8 w-8 place-items-center rounded-full text-zinc-500 hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60"
-                aria-label="Close quick navigation"
+                aria-label={pt ? 'Fechar navegação rápida' : 'Close quick navigation'}
               >
                 <FiX className="h-4 w-4" />
               </button>
@@ -184,7 +185,7 @@ export function DeveloperCommandMenu() {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-sm font-medium text-zinc-200">
-                    {copied ? 'Email copied' : 'Copy email'}
+                    {copied ? (pt ? 'E-mail copiado' : 'Email copied') : (pt ? 'Copiar e-mail' : 'Copy email')}
                   </span>
                   <span className="block truncate text-xs text-zinc-600">{email}</span>
                 </span>
@@ -203,8 +204,8 @@ export function DeveloperCommandMenu() {
                   <FiGithub className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium text-zinc-200">Open GitHub</span>
-                  <span className="block text-xs text-zinc-600">Projects and experiments</span>
+                  <span className="block text-sm font-medium text-zinc-200">{pt ? 'Abrir GitHub' : 'Open GitHub'}</span>
+                  <span className="block text-xs text-zinc-600">{pt ? 'Projetos e experimentos' : 'Projects and experiments'}</span>
                 </span>
                 <FiArrowUpRight className="h-4 w-4 text-zinc-700 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
               </a>
@@ -212,9 +213,9 @@ export function DeveloperCommandMenu() {
 
             <div className="flex items-center justify-between border-t border-white/10 px-5 py-3 text-[10px] uppercase tracking-[0.14em] text-zinc-700">
               <span className="flex items-center gap-2">
-                <FiArrowDown className="h-3 w-3" /> Navigate
+                <FiArrowDown className="h-3 w-3" /> {pt ? 'Navegar' : 'Navigate'}
               </span>
-              <span>Esc to close</span>
+              <span>{pt ? 'Esc para fechar' : 'Esc to close'}</span>
             </div>
           </motion.div>
         </motion.div>

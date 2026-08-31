@@ -5,19 +5,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion, useScroll } from 'framer-motion';
 import { FiCommand, FiMenu, FiX } from 'react-icons/fi';
-
-const navItems = [
-  { href: '/#about', label: 'About' },
-  { href: '/#experience', label: 'Experience' },
-  { href: '/#blog', label: 'Writing' },
-  { href: '/#contact', label: 'Contact' },
-];
+import { isHomePath, localizedPath, useLocale } from '@/lib/i18n';
+import { LanguageSwitch } from '@/components/language-switch';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
+  const homePath = localizedPath('/', locale);
+  const navItems = [
+    { href: `${homePath}#about`, label: pt ? 'Sobre' : 'About' },
+    { href: `${homePath}#experience`, label: pt ? 'Experiência' : 'Experience' },
+    { href: `${homePath}#blog`, label: pt ? 'Artigos' : 'Writing' },
+    { href: `${homePath}#contact`, label: pt ? 'Contato' : 'Contact' },
+  ];
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
@@ -30,10 +34,9 @@ export function Navbar() {
       frameId = window.requestAnimationFrame(() => {
         setIsScrolled(window.scrollY > 24);
 
-        if (pathname === '/') {
+        if (isHomePath(pathname)) {
           const marker = window.scrollY + window.innerHeight * 0.38;
-          const current = navItems
-            .map((item) => item.href.split('#')[1])
+          const current = ['about', 'experience', 'blog', 'contact']
             .map((id) => document.getElementById(id))
             .filter((section): section is HTMLElement => Boolean(section))
             .find((section) => marker >= section.offsetTop && marker < section.offsetTop + section.offsetHeight);
@@ -63,22 +66,22 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6" aria-label="Main navigation">
+    <nav className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6" aria-label={pt ? 'Navegação principal' : 'Main navigation'}>
       <div
-        className={`mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full border px-4 transition-all duration-300 sm:px-5 ${
+        className={`relative mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full border px-4 transition-all duration-300 sm:px-5 ${
           isScrolled || isOpen
             ? 'border-white/10 bg-black/95 shadow-2xl shadow-black/40 lg:bg-black/80 lg:backdrop-blur-xl'
             : 'border-transparent bg-transparent'
         }`}
       >
-        <Link href="/" className="focus-ring group flex items-center gap-3 rounded-full" aria-label="João Coelho, home">
+        <Link href={homePath} className="focus-ring group flex items-center gap-3 rounded-full" aria-label={`João Coelho, ${pt ? 'início' : 'home'}`}>
           <span className="grid h-8 w-8 place-items-center rounded-full border border-white/15 bg-white/[0.06] text-xs font-semibold text-white transition-colors group-hover:bg-white group-hover:text-black">
             JC
           </span>
           <span className="hidden text-xl font-semibold tracking-tight text-white sm:block">João Coelho</span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -101,29 +104,29 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <div className="flex items-center gap-2 text-xs text-zinc-500">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_9px_rgba(52,211,153,0.8)]" />
-            Available to talk
-          </div>
+          <LanguageSwitch />
           <button
             type="button"
             onClick={openCommandMenu}
             className="pressable focus-ring inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.035] px-2 py-1 text-[10px] font-medium text-zinc-500 hover:border-white/20 hover:text-white"
-            aria-label="Open quick navigation"
+            aria-label={pt ? 'Abrir navegação rápida' : 'Open quick navigation'}
           >
             <FiCommand className="h-3 w-3" />K
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsOpen((open) => !open)}
-          className="pressable focus-ring grid h-9 w-9 place-items-center rounded-full border border-white/10 text-zinc-300 transition-colors hover:border-white/20 hover:text-white md:hidden"
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isOpen}
-        >
-          {isOpen ? <FiX className="h-4 w-4" /> : <FiMenu className="h-4 w-4" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguageSwitch />
+          <button
+            type="button"
+            onClick={() => setIsOpen((open) => !open)}
+            className="pressable focus-ring grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 text-zinc-300 transition-colors hover:border-white/20 hover:text-white"
+            aria-label={isOpen ? (pt ? 'Fechar menu' : 'Close menu') : (pt ? 'Abrir menu' : 'Open menu')}
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <FiX className="h-4 w-4" /> : <FiMenu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

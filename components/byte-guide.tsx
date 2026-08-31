@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FiArrowUpRight, FiCheck, FiCopy, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
 import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
+import { useLocale, isHomePath } from '@/lib/i18n';
 
 const CONTACT_EMAIL = 'joaoantonioscoelho@gmail.com';
 
@@ -138,6 +139,84 @@ const prompts: Record<PromptId, Prompt> = {
   },
 };
 
+const promptsPtBr: Record<PromptId, Prompt> = {
+  'not-on-site': {
+    question: 'Conte algo que não está no site.',
+    answer: 'João mantém uma fila mental de coisas que quer entender. Ela cresce bem mais rápido do que é resolvida. Curiosidade é menos uma característica e mais uma questão de manutenção.',
+    next: ['random-fact', 'work-style', 'tech-opinion', 'site-secret'],
+  },
+  'work-style': {
+    question: 'Como é trabalhar com o João?',
+    answer: 'Ele pergunta “por quê?” até o problema ficar claro e então procura a solução mais simples que ainda fará sentido daqui a seis meses. Ele se preocupa em corrigir a causa, não apenas silenciar o sintoma.',
+    next: ['favorite-problems', 'when-stuck', 'ideal-project', 'experience'],
+  },
+  'favorite-problems': {
+    question: 'De que tipo de problema ele gosta?',
+    answer: 'Dos ambíguos. Sistemas com limites pouco claros, decisões com prós e contras e espaço suficiente para melhorar tanto a arquitetura quanto o produto costumam prender sua atenção.',
+    next: ['work-style', 'ideal-project', 'learning-now', 'experience'],
+  },
+  'random-fact': {
+    question: 'Conte uma curiosidade aleatória sobre o João.',
+    answer: 'A definição dele de experimento rápido é otimista. Muitas vezes vira um protótipo funcional antes que ele perceba que o escopo mudou.',
+    next: ['not-on-site', 'away-from-keyboard', 'when-stuck', 'tech-opinion'],
+  },
+  'when-stuck': {
+    question: 'O que ele faz quando fica travado?',
+    answer: 'Reduz o problema até que apenas uma hipótese possa estar errada, adiciona visibilidade, lê os detalhes internos e testa novamente. Se não funcionar, faz uma pausa curta e volta com menos opiniões.',
+    next: ['work-style', 'tech-opinion', 'favorite-problems', 'learning-now'],
+  },
+  'tech-opinion': {
+    question: 'Ele tem alguma opinião sobre tecnologia?',
+    answer: 'Uma abstração inteligente raramente vale a pena se a próxima pessoa precisar de um mapa para entendê-la. O claro e sem graça costuma envelhecer melhor do que o impressionante e misterioso.',
+    next: ['when-stuck', 'ideal-project', 'learning-now', 'site-secret'],
+  },
+  'learning-now': {
+    question: 'O que ele está aprendendo agora?',
+    answer: 'Engenharia de IA, agentes, LLMs, RAG, ferramentas para desenvolvedores e cibersegurança estão consumindo a maior parte do orçamento de curiosidade no momento.',
+    next: ['favorite-problems', 'tech-opinion', 'ideal-project', 'experience'],
+  },
+  'away-from-keyboard': {
+    question: 'O que acontece longe do teclado?',
+    answer: 'Normalmente corrida, videogames ou tempo com seus cachorros. O processo de debugging às vezes continua em segundo plano mesmo assim.',
+    next: ['random-fact', 'not-on-site', 'site-secret', 'contact'],
+  },
+  'ideal-project': {
+    question: 'Qual é o projeto ideal para ele?',
+    answer: 'Algo útil, com um desafio técnico real, espaço para moldar o produto e pessoas que se importam com qualidade sem transformar toda decisão em cerimônia.',
+    next: ['favorite-problems', 'work-style', 'experience', 'contact'],
+  },
+  experience: {
+    question: 'Onde ele já trabalhou?',
+    answer: 'A trajetória dele vai de produtos full stack a sistemas backend, arquitetura em nuvem, mobile e ferramentas de IA. A linha do tempo completa tem os detalhes.',
+    links: [{ label: 'Ver experiência', href: '/pt-BR/experiences' }],
+    next: ['work-style', 'favorite-problems', 'ideal-project', 'contact'],
+  },
+  contact: {
+    question: 'Como posso falar com ele?',
+    answer: 'E-mail é o caminho mais direto. O LinkedIn também funciona, se você preferir um pouco de contexto profissional antes.',
+    links: [
+      { label: 'Enviar um e-mail', action: 'reveal-email' },
+      { label: 'Abrir LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
+    ],
+    next: ['work-style', 'ideal-project', 'experience', 'site-secret'],
+  },
+  'site-secret': {
+    question: 'Existe algo escondido neste site?',
+    answer: 'Pressione / ou Cmd + K. João deixou ali um painel de navegação rápida para quem testa atalhos de teclado antes de ler as instruções.',
+    next: ['not-on-site', 'random-fact', 'tech-opinion', 'contact'],
+  },
+  'why-rabbit': {
+    question: 'Por que você é um coelho?',
+    answer: 'Porque o sobrenome do João é Coelho. Sou parte guia, parte piada com o sobrenome e, aparentemente, o único aqui autorizado a ter orelhas tão dramáticas.',
+    next: ['random-fact', 'not-on-site', 'site-secret', 'byte-secret'],
+  },
+  'byte-secret': {
+    question: 'O que o Byte não deveria me contar?',
+    answer: 'Um repositório descrito como “só um teste” nunca ficou apenas como um teste por muito tempo. Isso é tudo que meu nível de acesso permite revelar.',
+    next: ['random-fact', 'site-secret', 'ideal-project', 'contact'],
+  },
+};
+
 const initialSuggestions: PromptId[] = [
   'why-rabbit',
   'not-on-site',
@@ -162,25 +241,35 @@ const initialMessage: ChatMessage = {
   text: "Hey, I'm Byte. The rabbit shape isn't random. I know a few things about João that did not fit on the page. Pick a question.",
 };
 
-function getNextSuggestions(currentId: PromptId, askedIds: PromptId[]) {
+const initialMessagePtBr: ChatMessage = {
+  id: 0,
+  role: 'byte',
+  text: 'Oi, sou o Byte. O formato de coelho não é por acaso. Sei algumas coisas sobre o João que não couberam na página. Escolha uma pergunta.',
+};
+
+function getNextSuggestions(currentId: PromptId, askedIds: PromptId[], promptSet: Record<PromptId, Prompt>) {
   const asked = new Set(askedIds);
   const unlocked: PromptId[] = askedIds.length >= 3 ? ['byte-secret'] : [];
-  const candidates = [...prompts[currentId].next, ...unlocked, ...discoveryOrder];
+  const candidates = [...promptSet[currentId].next, ...unlocked, ...discoveryOrder];
 
   return Array.from(new Set(candidates)).filter((id) => !asked.has(id)).slice(0, 4);
 }
 
 export function ByteGuide() {
+  const locale = useLocale();
+  const pt = locale === 'pt-BR';
+  const promptSet = pt ? promptsPtBr : prompts;
+  const localizedInitialMessage = pt ? initialMessagePtBr : initialMessage;
   const [isOpen, setIsOpen] = useState(false);
   const [showTeaser, setShowTeaser] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
+  const [messages, setMessages] = useState<ChatMessage[]>([localizedInitialMessage]);
   const [askedIds, setAskedIds] = useState<PromptId[]>([]);
   const [suggestions, setSuggestions] = useState<PromptId[]>(initialSuggestions);
   const [isTyping, setIsTyping] = useState(false);
   const [isEmailCopied, setIsEmailCopied] = useState(false);
   const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
   const pathname = usePathname();
-  const [isHeroVisible, setIsHeroVisible] = useState(pathname === '/');
+  const [isHeroVisible, setIsHeroVisible] = useState(isHomePath(pathname));
   const prefersReducedMotion = useReducedMotion();
   const launcherRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -217,7 +306,7 @@ export function ByteGuide() {
   };
 
   useEffect(() => {
-    if (pathname !== '/') return;
+    if (!isHomePath(pathname)) return;
 
     teaserTimerRef.current = window.setTimeout(() => {
       setShowTeaser(true);
@@ -314,7 +403,7 @@ export function ByteGuide() {
   const ask = (id: PromptId) => {
     if (isTyping) return;
 
-    const prompt = prompts[id];
+    const prompt = promptSet[id];
     const nextAskedIds = [...askedIds, id];
     const visitorMessage: ChatMessage = {
       id: messageIdRef.current++,
@@ -339,7 +428,7 @@ export function ByteGuide() {
             links: prompt.links,
           },
         ]);
-        setSuggestions(getNextSuggestions(id, nextAskedIds));
+        setSuggestions(getNextSuggestions(id, nextAskedIds, promptSet));
         setIsTyping(false);
         cueMascot('greeting', 900);
       },
@@ -350,7 +439,7 @@ export function ByteGuide() {
   const reset = () => {
     window.clearTimeout(responseTimerRef.current);
     messageIdRef.current = 1;
-    setMessages([initialMessage]);
+    setMessages([localizedInitialMessage]);
     setAskedIds([]);
     setSuggestions(initialSuggestions);
     setIsTyping(false);
@@ -381,8 +470,8 @@ export function ByteGuide() {
       {
         id: messageIdRef.current++,
         role: 'byte',
-        text: `Of course. You can email João directly at ${CONTACT_EMAIL}.`,
-        links: [{ label: 'Copy email', action: 'copy-email' }],
+        text: pt ? `Claro. Você pode enviar um e-mail diretamente para o João em ${CONTACT_EMAIL}.` : `Of course. You can email João directly at ${CONTACT_EMAIL}.`,
+        links: [{ label: pt ? 'Copiar e-mail' : 'Copy email', action: 'copy-email' }],
       },
     ]);
     cueMascot('greeting', 700);
@@ -415,7 +504,7 @@ export function ByteGuide() {
         {isOpen && (
           <motion.section
             role="dialog"
-            aria-label="Byte, a scripted guide to João"
+            aria-label={pt ? 'Byte, um guia sobre o João' : 'Byte, a scripted guide to João'}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
@@ -436,14 +525,14 @@ export function ByteGuide() {
                     transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
                     className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.7)]"
                   />
-                  Online
+                  {pt ? 'Online' : 'Online'}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={reset}
                 className="pressable focus-ring grid h-8 w-8 place-items-center rounded-full text-zinc-600 transition-colors hover:bg-white/[0.06] hover:text-white"
-                aria-label="Start the conversation over"
+                aria-label={pt ? 'Reiniciar a conversa' : 'Start the conversation over'}
               >
                 <FiRefreshCw className="h-3.5 w-3.5" />
               </button>
@@ -452,7 +541,7 @@ export function ByteGuide() {
                 type="button"
                 onClick={close}
                 className="pressable focus-ring grid h-8 w-8 place-items-center rounded-full text-zinc-600 transition-colors hover:bg-white/[0.06] hover:text-white"
-                aria-label="Close Byte"
+                aria-label={pt ? 'Fechar o Byte' : 'Close Byte'}
               >
                 <FiX className="h-4 w-4" />
               </button>
@@ -484,7 +573,7 @@ export function ByteGuide() {
                               onClick={() => handleGuideAction(link.action!)}
                               className="focus-ring group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition-colors hover:border-sky-300/30 hover:text-sky-200"
                             >
-                              {link.action === 'copy-email' && isEmailCopied ? 'Copied' : link.label}
+                              {link.action === 'copy-email' && isEmailCopied ? (pt ? 'Copiado' : 'Copied') : link.label}
                               {link.action === 'copy-email' ? (
                                 isEmailCopied ? (
                                   <FiCheck className="h-3 w-3 text-emerald-300" />
@@ -520,7 +609,7 @@ export function ByteGuide() {
                   initial={prefersReducedMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
-                  aria-label="Byte is typing"
+                  aria-label={pt ? 'Byte está digitando' : 'Byte is typing'}
                 >
                   <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.045] px-4 py-3.5">
                     {[0, 1, 2].map((dot) => (
@@ -538,7 +627,7 @@ export function ByteGuide() {
 
             <div className="border-t border-white/10 bg-black/25 px-3 py-3">
               <div className="mb-2 px-1 text-[9px] uppercase tracking-[0.16em] text-zinc-700">
-                <span>Suggested questions</span>
+                <span>{pt ? 'Perguntas sugeridas' : 'Suggested questions'}</span>
               </div>
               <div className="space-y-1.5">
                 {suggestions.map((id) => (
@@ -548,12 +637,12 @@ export function ByteGuide() {
                     onClick={() => ask(id)}
                     className="focus-ring group flex w-full items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.025] px-3 py-2.5 text-left text-xs text-zinc-400 transition-colors hover:border-white/15 hover:bg-white/[0.05] hover:text-white"
                   >
-                    <span>{prompts[id].question}</span>
+                    <span>{promptSet[id].question}</span>
                     <FiMessageCircle className="h-3.5 w-3.5 shrink-0 text-zinc-700 transition-colors group-hover:text-sky-300" />
                   </button>
                 ))}
                 {!isTyping && suggestions.length === 0 && (
-                  <p className="py-3 text-center text-xs text-zinc-600">You found everything. Start over?</p>
+                  <p className="py-3 text-center text-xs text-zinc-600">{pt ? 'Você encontrou tudo. Recomeçar?' : 'You found everything. Start over?'}</p>
                 )}
               </div>
             </div>
@@ -571,7 +660,7 @@ export function ByteGuide() {
             exit={{ opacity: 0, y: 4 }}
             className="focus-ring absolute bottom-3 right-[82%] whitespace-nowrap rounded-full border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
-            <span className="block text-xs font-medium text-zinc-200">Hey, I&apos;m Byte.</span>
+            <span className="block text-xs font-medium text-zinc-200">{pt ? 'Oi, sou o Byte.' : <>Hey, I&apos;m Byte.</>}</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -586,6 +675,8 @@ export function ByteGuide() {
             if (mascotMood === 'sleeping') cueMascot('idle');
           }}
           onClick={() => (isOpen ? close() : open())}
+          openLabel={pt ? 'Conversar com o Byte' : 'Talk to Byte'}
+          closeLabel={pt ? 'Fechar o Byte' : 'Close Byte'}
         />
       </div>
       </div>
