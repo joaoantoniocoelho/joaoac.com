@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
+  animate,
   motion,
   useMotionValue,
   useReducedMotion,
@@ -15,20 +16,51 @@ export function HeroSection() {
   const pt = locale === 'pt-BR';
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const glowX = useSpring(pointerX, { stiffness: 90, damping: 24, mass: 0.4 });
-  const glowY = useSpring(pointerY, { stiffness: 90, damping: 24, mass: 0.4 });
+  const glowTargetX = useMotionValue(0);
+  const glowTargetY = useMotionValue(0);
+  const glowX = useSpring(glowTargetX, { stiffness: 45, damping: 20, mass: 0.7 });
+  const glowY = useSpring(glowTargetY, { stiffness: 45, damping: 20, mass: 0.7 });
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (prefersReducedMotion || event.pointerType === 'touch') return;
+  useEffect(() => {
+    if (prefersReducedMotion) return;
 
     const bounds = sectionRef.current?.getBoundingClientRect();
     if (!bounds) return;
 
-    pointerX.set(event.clientX - bounds.left - 260);
-    pointerY.set(event.clientY - bounds.top - 260);
-  };
+    const glowSize = 512;
+    const initialX = Math.max(0, (bounds.width - glowSize) / 2);
+    const initialY = Math.max(0, (bounds.height - glowSize) / 2);
+    glowTargetX.set(initialX);
+    glowTargetY.set(initialY);
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let xAnimation: ReturnType<typeof animate> | undefined;
+    let yAnimation: ReturnType<typeof animate> | undefined;
+
+    const moveGlow = () => {
+      const currentBounds = sectionRef.current?.getBoundingClientRect();
+      if (!currentBounds) return;
+
+      const maxX = Math.max(0, currentBounds.width - glowSize);
+      const maxY = Math.max(0, currentBounds.height - glowSize);
+      const duration = 5 + Math.random() * 3;
+      const targetX = maxX * (0.12 + Math.random() * 0.76);
+      const targetY = maxY * (0.18 + Math.random() * 0.56);
+      const transition = { duration, ease: [0.45, 0, 0.55, 1] as [number, number, number, number] };
+
+      xAnimation = animate(glowTargetX, targetX, transition);
+      yAnimation = animate(glowTargetY, targetY, transition);
+      timeoutId = setTimeout(moveGlow, duration * 1000);
+    };
+
+    moveGlow();
+
+    return () => {
+      clearTimeout(timeoutId);
+      xAnimation?.stop();
+      yAnimation?.stop();
+    };
+  }, [glowTargetX, glowTargetY, prefersReducedMotion]);
 
   const revealTransition = {
     duration: prefersReducedMotion ? 0 : 0.85,
@@ -40,7 +72,6 @@ export function HeroSection() {
       ref={sectionRef}
       id="home"
       data-ambient="sky"
-      onPointerMove={handlePointerMove}
       className="relative flex min-h-screen items-center overflow-hidden border-b border-white/[0.06] bg-black/75 py-28 md:py-32"
     >
       <motion.div

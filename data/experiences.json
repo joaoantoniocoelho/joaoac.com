@@ -5,7 +5,7 @@
       "company": "ADP",
       "companyUrl": "https://www.linkedin.com/company/adp/",
       "period": "May 2025 - Present",
-      "description": "I work on MyTax, a product that started around helping freelancers manage and pay their taxes and has since grown into a broader financial experience, including cash flow features and a new mobile app. I was one of the main engineers behind the mobile application, working across architecture, backend services, cloud infrastructure, and Flutter while helping shape technical decisions as the product evolved. More recently, that work also brought me much closer to AI engineering, building features around LLMs, vector search, agents, and the tooling needed to make them useful inside a real product. I've recently moved to a new team focused on internal AI tooling, where we're building systems that use different models and agents to help plan, execute, and review engineering tasks while keeping quality and cost in mind. Across both teams, my role goes well beyond implementation: I spend a lot of time on architecture, code reviews, production issues, technical trade-offs, and helping the team turn ambiguous problems into maintainable solutions.",
+      "description": "I currently work on an AI Factory designed to accelerate the software engineering lifecycle at ADP. The platform combines agent harnesses, engineering loops, and multi-agent orchestration to plan, execute, validate, and review changes using different models. In practice, work that previously took several weeks has already been completed in one, while keeping quality and cost under control. I contribute to the platform's architecture, define how agents collaborate, and turn ambiguous engineering problems into tools that developers can use in real workflows. Before joining this team, I was one of the main engineers behind the MyTax mobile app, working across Flutter, backend services, cloud infrastructure, and architecture decisions.",
       "technologies": [
         "Node.js",
         "TypeScript",
@@ -23,7 +23,7 @@
       "company": "SAP",
       "companyUrl": "https://www.linkedin.com/company/sap/",
       "period": "February 2024 - May 2025",
-      "description": "At SAP, I worked on SAP Ariba Category Management, building enterprise software with a strong focus on backend architecture and integrations. A big part of the job was understanding complex business requirements and turning them into systems that were easier to evolve and maintain. I worked mostly with Java, Spring Boot, Node.js, and SAP's cloud stack, and also spent time integrating AI-powered capabilities into the product. It was also where I became much more involved in architecture discussions, technical decisions, code reviews, and helping other developers work through complex problems.",
+      "description": "At SAP, I worked on Ariba Category Management, an enterprise platform for strategic procurement. In a global environment shaped by complex business rules and integrations across multiple systems, I developed backend solutions using Java, Spring Boot, Node.js, and SAP BTP. My role extended beyond implementation: I contributed to architecture decisions, code reviews, and the evolution of solutions that needed to remain clear and maintainable within a large platform. I also integrated AI capabilities into the product and supported other developers through complex technical problems. The experience helped consolidate my work in software architecture and engineering at SAP's scale.",
       "technologies": [
         "Java",
         "Spring Boot",
@@ -41,7 +41,7 @@
       "company": "Bazk",
       "companyUrl": "https://www.linkedin.com/company/bazk/",
       "period": "December 2021 - January 2024",
-      "description": "I joined Bazk early in my career and grew from a trainee into a full-stack engineering role, which made this one of the places where I learned the most. I worked on payment systems processing more than 400 transactions per minute, so reliability, observability, security, and correctness were part of the job from the beginning. Over time, I became involved in everything from backend services and payment flows to compliance rules, internal tools, automated testing, cloud infrastructure, and production monitoring. It was also my first real exposure to distributed systems and to the kind of engineering decisions that only become obvious once software is handling real money and real traffic.",
+      "description": "I joined Bazk as a trainee and grew into a full-stack engineering role. I worked on payment systems processing more than 400 transactions per minute, where reliability, security, and observability had a direct impact. My work covered backend services, payment flows, compliance rules, internal tools, testing, infrastructure, and production monitoring. It was where I learned, in practice, how distributed systems behave and what it means to build software that moves real money.",
       "technologies": [
         "Java",
         "Spring Boot",
@@ -62,7 +62,7 @@
       "title": "Full Stack Developer",
       "company": "Pling Brasil",
       "period": "September 2018 - March 2019",
-      "description": "This was my first professional experience with software development. I joined as a trainee and worked on Universos, a news aggregation product that collected content from different sources using web scraping. I got to work across the whole stack, building Node.js services, APIs, MongoDB integrations, and React interfaces. More than any specific technology, this was where I learned what it actually meant to work on a software product with other people, ship code, fix things that broke, and turn ideas into something users could interact with.",
+      "description": "My first professional software role was at Pling Brasil, where I joined as a trainee and worked on Universos, a news aggregator built around web scraping. I worked across the stack, building Node.js services and APIs, MongoDB integrations, and React interfaces. It was where I learned how to build a product with a team, ship code, fix real problems, and turn ideas into something people could use.",
       "technologies": [
         "TypeScript",
         "Node.js",

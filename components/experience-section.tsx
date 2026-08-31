@@ -14,7 +14,6 @@ export function ExperienceSection() {
   const pt = locale === 'pt-BR';
   const data = pt ? experiencesPtBrData : experiencesData;
   const featuredExperiences = data.experiences.slice(0, 2);
-  const totalExperienceCount = data.experiences.length;
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const timelineRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -56,21 +55,6 @@ export function ExperienceSection() {
                 ? 'Algumas das equipes, produtos e problemas que moldaram a forma como desenvolvo software hoje.'
                 : 'A few of the teams, products, and problems that shaped how I build software today.'}
             </p>
-            <div className="mt-9 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018]">
-              <div className="grid grid-cols-2 gap-px bg-white/[0.08]">
-                <div className="bg-black/80 p-4">
-                  <span className="block font-mono text-2xl text-white">{totalExperienceCount}</span>
-                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">{pt ? 'Cargos mapeados' : 'Roles mapped'}</span>
-                </div>
-                <div className="bg-black/80 p-4">
-                  <span className="block font-mono text-2xl text-white">2018</span>
-                  <span className="text-[9px] uppercase tracking-[0.16em] text-zinc-600">{pt ? 'Início' : 'Started'}</span>
-                </div>
-              </div>
-              <div className="border-t border-white/[0.08] bg-black/65 px-4 py-3 text-[10px] uppercase tracking-[0.15em] text-zinc-600">
-                Backend · {pt ? 'Nuvem · Produto · Arquitetura' : 'Cloud · Product · Architecture'}
-              </div>
-            </div>
             <a
               href={localizedPath('/experiences', locale)}
               className="pressable focus-ring group mt-9 inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-300 transition-colors hover:text-white"

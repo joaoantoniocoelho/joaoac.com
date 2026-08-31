@@ -116,28 +116,6 @@ export function AboutSection() {
             </div>
 
             <aside className="lg:pt-20" aria-label={pt ? 'Interesses técnicos atuais' : 'Current technical interests'}>
-              <div className="relative mb-5 overflow-hidden rounded-2xl border border-white/[0.09] bg-white/[0.018] p-6">
-                <div className="relative flex items-start justify-between">
-                  <div>
-                    <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-zinc-600">{pt ? 'Momento atual' : 'Current snapshot'}</p>
-                    <h3 className="text-2xl font-semibold tracking-tight text-white">{pt ? 'O que me interessa' : <>What I&apos;m into</>}</h3>
-                  </div>
-                  <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-emerald-300/70">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300" /> {pt ? 'Agora' : 'Live'}
-                  </span>
-                </div>
-                <div className="relative mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.08]">
-                  <div className="bg-black/80 p-3">
-                    <span className="block font-mono text-lg text-white">2018</span>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-600">{pt ? 'Construindo desde' : 'Building since'}</span>
-                  </div>
-                  <div className="bg-black/80 p-3">
-                    <span className="block font-mono text-lg text-white">BRT</span>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-600">{pt ? 'Fuso horário' : 'Timezone'}</span>
-                  </div>
-                </div>
-              </div>
-
               <div className="space-y-5">
                 <InterestGroup index="01" icon={<FiCode />} label={pt ? 'Trabalho com' : 'I work with'} items={toolkit} delay={0.1} reducedMotion={Boolean(prefersReducedMotion)} />
                 <InterestGroup
