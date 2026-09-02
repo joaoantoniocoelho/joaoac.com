@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
+import { ProjectStatusHeader } from '@/components/project-status';
 import { projects } from '@/content/projects';
 import { localizedPath, useLocale } from '@/lib/i18n';
 
@@ -48,40 +49,39 @@ export function ProjectsSection() {
           </Link>
         </motion.header>
 
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-2">
           {projects.map((project, index) => (
             <motion.article
               key={project.slug}
+              className="min-w-0"
               initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true, amount: 0.2 }}
-              className="flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 transition-colors duration-300 hover:border-violet-300/25 md:p-8"
             >
-              <div className="mb-5">
-                <h3 className="text-2xl font-semibold tracking-tight text-white">{project.name}</h3>
-                <span className="mt-3 inline-flex w-fit max-w-full whitespace-nowrap rounded-full border border-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-                  {project.status[locale]}
-                </span>
-              </div>
-              <p className="text-sm leading-7 text-zinc-400">{project.oneLiner[locale]}</p>
-              <ul className="mt-6 space-y-2.5 text-sm leading-6 text-zinc-500">
-                {project.whatItDoes[locale].slice(0, 2).map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-violet-300/70" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 font-mono text-[11px] leading-5 text-zinc-600">{project.stack}</p>
               <a
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="pressable focus-ring group mt-auto inline-flex items-center gap-2 pt-6 text-sm text-zinc-300 transition-colors hover:text-white"
+                className="pressable focus-ring group flex h-full min-w-0 cursor-pointer flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 transition-colors duration-300 hover:border-violet-300/25 hover:bg-white/[0.05] md:p-8"
               >
-                {project.urlLabel}
-                <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <div className="mb-5">
+                  <ProjectStatusHeader name={project.name} />
+                </div>
+                <p className="text-sm leading-7 text-zinc-400">{project.oneLiner[locale]}</p>
+                <ul className="mt-6 space-y-2.5 text-sm leading-6 text-zinc-500">
+                  {project.whatItDoes[locale].slice(0, 2).map((item) => (
+                    <li key={item} className="flex min-w-0 gap-3">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-violet-300/70" />
+                      <span className="min-w-0 break-words">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6 break-words font-mono text-[11px] leading-5 text-zinc-600">{project.stack}</p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm text-zinc-300 transition-colors group-hover:text-white">
+                  {project.urlLabel}
+                  <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </span>
               </a>
             </motion.article>
           ))}

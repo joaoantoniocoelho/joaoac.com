@@ -12,7 +12,6 @@ export type Project = {
   whatItDoes: Localized<string[]>;
   decisions: Localized<string[]>;
   stack: string;
-  status: Localized<string>;
 };
 
 export const projects: Project[] = [
@@ -48,10 +47,6 @@ export const projects: Project[] = [
       ],
     },
     stack: 'Next.js on Vercel · Node.js · MongoDB · Gemini · Redis · BullMQ',
-    status: {
-      en: 'In production · Portuguese · early stage',
-      'pt-BR': 'Em produção · Português · fase inicial',
-    },
   },
   {
     slug: 'ao-redor',
@@ -85,9 +80,5 @@ export const projects: Project[] = [
       ],
     },
     stack: 'Next.js on Vercel · Node.js · PostgreSQL · OpenStreetMap',
-    status: {
-      en: 'In production · Portuguese · early stage',
-      'pt-BR': 'Em produção · Português · fase inicial',
-    },
   },
 ];
