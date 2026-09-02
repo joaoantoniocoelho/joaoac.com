@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FiArrowUpRight, FiCheck, FiCopy, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
 import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
+import { byteAssets } from '@/lib/byte-assets';
 import { useLocale, isHomePath } from '@/lib/i18n';
 import {
   discoveryOrder,
@@ -322,7 +323,7 @@ export function ByteGuide() {
           >
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
               <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-sky-300/20 bg-sky-300/[0.07]">
-                <Image src="/byte/byte-idle.png" alt="" aria-hidden="true" width={40} height={40} className="h-10 w-10 object-contain" />
+                <Image src={byteAssets.idle} alt="" aria-hidden="true" width={40} height={40} className="h-10 w-10 object-contain" />
                 <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-950 bg-emerald-300" />
               </span>
               <div className="min-w-0 flex-1">
@@ -508,7 +509,7 @@ function ByteAvatar() {
       aria-hidden="true"
       className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full border border-sky-300/20 bg-sky-300/[0.07]"
     >
-      <Image src="/byte/byte-idle.png" alt="" aria-hidden="true" width={28} height={28} className="h-7 w-7 object-contain" />
+      <Image src={byteAssets.idle} alt="" aria-hidden="true" width={28} height={28} className="h-7 w-7 object-contain" />
     </span>
   );
 }

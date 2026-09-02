@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { BYTE_IMAGE_HEIGHT, BYTE_IMAGE_WIDTH, byteAssets } from '@/lib/byte-assets';
 
 export type ByteMood = 'idle' | 'thinking' | 'greeting' | 'sleeping';
 
 const assetByMood: Record<Exclude<ByteMood, 'sleeping'>, string> = {
-  idle: '/byte/byte-idle.png',
-  thinking: '/byte/byte-thinking.png',
-  greeting: '/byte/byte-greeting.png',
+  idle: byteAssets.idle,
+  thinking: byteAssets.thinking,
+  greeting: byteAssets.greeting,
 };
 
 type ByteMascotProps = {
@@ -30,11 +31,11 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
 
   useEffect(() => {
     [
-      '/byte/byte-blink.png',
-      '/byte/byte-thinking.png',
-      '/byte/byte-greeting.png',
-      '/byte/byte-peeking.png',
-      '/byte/byte-talking.png',
+      byteAssets.blink,
+      byteAssets.thinking,
+      byteAssets.greeting,
+      byteAssets.peeking,
+      byteAssets.talking,
     ].forEach((source) => {
       const image = new window.Image();
       image.src = source;
@@ -72,12 +73,14 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
   }, [mood, prefersReducedMotion]);
 
   const imageSource = compact
-    ? '/byte/byte-peeking.png'
+    ? byteAssets.peeking
     : isOpen && mood !== 'thinking'
-      ? '/byte/byte-talking.png'
+      ? byteAssets.talking
       : mood === 'sleeping' || isBlinking
-        ? '/byte/byte-blink.png'
+        ? byteAssets.blink
         : assetByMood[mood];
+
+  const isPriorityImage = imageSource === byteAssets.idle || imageSource === byteAssets.greeting;
 
   const motionProps = prefersReducedMotion
     ? { animate: { opacity: 1, y: 0, rotate: 0, scale: 1 }, transition: { duration: 0 } }
@@ -151,6 +154,11 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
               alt=""
               aria-hidden="true"
               draggable={false}
+              width={BYTE_IMAGE_WIDTH}
+              height={BYTE_IMAGE_HEIGHT}
+              sizes="(max-width: 640px) 112px, 144px"
+              fetchPriority={isPriorityImage ? 'high' : 'auto'}
+              decoding="async"
               initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
