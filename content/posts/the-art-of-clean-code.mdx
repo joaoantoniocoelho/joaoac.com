@@ -1,0 +1,257 @@
+---
+title: "The Art of Clean Code: Principles That You Should Follow"
+description: "Five clean code principles, with examples, to make code easier to read, change and review."
+date: "2024-01-24"
+tags:
+  - engineering
+---
+
+Five Clean Code principles to improve the quality of your code.
+
+This week I had the opportunity to be a speaker at a tech event called Tech Circle, organized by the company I work for and designed to engage our tech team in discussions about software development.
+
+My talk focused on Clean Code and five key principles that can help developers.
+
+## What is Clean Code?
+
+Clean Code is elegant, simple, readable and purpose-driven. It never leaves the developer feeling confused about its purpose. There are two definitions I particularly appreciate. The first is from Bjarne Stroustrup, the creator of C++:
+
+> "I like my code to be elegant and efficient. The logic should be straightforward to make it hard for bugs to hide, the dependencies minimal to ease maintenance, error handling complete according to an articulated strategy, and performance close to optimal so as not to tempt people to make the code messy with unprincipled optimizations. Clean code does one thing well." - Bjarne Stroustrup
+
+The second is from Grady Booch, the author of *Object Oriented Analysis and Design with Applications*:
+
+> "Clean code is simple and direct. Clean code reads like well-written prose. Clean code never obscures the designer's intent but rather is full of crisp abstractions and straightforward lines of control." - Grady Booch
+
+## Key principles of Clean Code
+
+There are many principles that assist developers in writing Clean Code. Here are five that are easy to understand and have made a significant difference in code quality:
+
+1. Meaningful names
+2. Functions: small and with a single responsibility
+3. Use of logs
+4. Unit testing and TDD
+5. Error handling
+
+## 1. Meaningful names
+
+Naming things is harder than it appears, but good names lead to good code. Meaningful names are essential for making code readable.
+
+Some good practices:
+
+1. Names must reveal the purpose of your methods, variables and classes. They should be intention-revealing.
+2. Names should be pronounceable and searchable.
+3. The project must have a standard for nomenclature.
+4. Avoid abbreviations. They might make sense to the person who wrote the code, but can be confusing for other developers.
+
+Example of bad names:
+
+```java
+public class DataManager {
+  public void calculate() {
+    // Calculate what?
+  }
+
+  public void genRpt() {
+    // What is 'Gen'? And 'Rpt'?
+  }
+
+  public void handleError1() {
+    // What type of error is 'Error1'?
+  }
+
+  public void fetchData() {
+    // Which data? Where does it come from?
+  }
+}
+```
+
+Example of good names:
+
+```java
+public class DataManager {
+  public void calculateMonthlyRevenue() {
+    // Now we know this method calculates monthly revenue
+  }
+
+  public void generateReport() {
+    // Without abbreviations, we know this generates a report
+  }
+
+  public void handleNetworkError() {
+    // Now we know it handles network errors
+  }
+
+  public void fetchUserDataFromDataBase() {
+    // Now we know it fetches user data from the database
+  }
+}
+```
+
+## 2. Functions: small and with a single responsibility
+
+A function should clearly and concisely express its purpose, performing a single and specific task.
+
+Small functions with a clear purpose are easy to read and understand. They also make tests easier to write and increase maintainability.
+
+A function should have only one responsibility. A well-designed function does one thing and does it well. That makes it easier to reuse, adapt, and refactor.
+
+Example of a function doing too much:
+
+```java
+public class UserService {
+  public void deleteUserRelatedItems(Long userId) {
+    User user = userRepository.findUserById(userId);
+    List<UserRelatedItem> userRelatedItems = userItemsRepository.findUserRelatedItems(user);
+
+    for (UserRelatedItem item : userRelatedItems) {
+      item.setStatus(ItemStatus.EXCLUDED);
+      item.setDeletedAt(LocalDateTime.now());
+      item.setDeletedBy("system");
+    }
+  }
+}
+```
+
+Example with smaller functions:
+
+```java
+public class UserService {
+  public void deleteUserRelatedItems(Long userId) {
+    User user = getUserFromDataBase(userId);
+    List<UserRelatedItem> userRelatedItems = findUserRelatedItems(user);
+    markUserRelatedItemsAsDeleted(userRelatedItems);
+  }
+
+  private User getUserFromDataBase(Long userId) {
+    // Implementation
+  }
+
+  private List<UserRelatedItem> findUserRelatedItems(User user) {
+    // Implementation
+  }
+
+  private void markUserRelatedItemsAsDeleted(List<UserRelatedItem> userRelatedItems) {
+    // Implementation
+  }
+}
+```
+
+The example above is simple, but imagine if the logic were more complex. The main function would become large and hard to follow. Smaller functions with a single responsibility keep the code readable, testable, and reusable.
+
+## 3. Use of logs
+
+Logs are essential for maintenance and quality. They help you understand software behavior, track errors, identify problems, or simply follow the code flow.
+
+Some libraries:
+
+1. Log4j / Logback for Java
+2. Serilog for C#
+3. Winston for Node.js
+
+Log messages should give context. Common levels:
+
+1. **INFO** - general information about operation and routine status
+2. **WARN** - a potential issue that isn't currently causing an error
+3. **ERROR** - a serious issue that disrupts a process or the application flow
+4. **DEBUG** - detailed information for diagnosing problems, usually in development
+5. **TRACE** - the most detailed record of application behavior
+
+Example with Log4j (`@Slf4j` on the class):
+
+```java
+@Slf4j
+public class OrderService {
+  public void processOrder(int orderId) {
+    log.info("Starting order processing for order with id {}", orderId);
+
+    try {
+      // Algorithm to process order
+      log.info("Order {} processed successfully", orderId);
+    } catch (DataBaseException e) {
+      log.error("Error accessing database for order {}, reason: {}", orderId, e);
+    } catch (OrderException e) {
+      log.warn("Problem processing order {}, reason: {}", orderId, e);
+    } catch (Exception e) {
+      log.error("Unexpected error processing order {}: {}", orderId, e);
+    }
+  }
+}
+```
+
+## 4. Unit testing
+
+Unit tests verify the smallest testable part of an application.
+
+Test code is just as important as production code. Poor tests become a problem for development and refactoring - if the tests degrade, so will the code.
+
+What makes a test clean? Readability, clarity and simplicity. A good test should evaluate only one concept.
+
+Three reasons to apply unit tests:
+
+1. **Early error detection**
+2. **Code documentation** - tests illustrate how the code is intended to be used
+3. **Less coupled, more modular code** - writing tests often pushes the design in that direction
+
+### TDD (Test-Driven Development)
+
+TDD is a software development approach where tests are written before the actual code.
+
+The cycle:
+
+1. Write the test
+2. Write the minimum code necessary to pass the test
+3. Refactor the code
+
+TDD offers several benefits:
+
+1. Encouraging more modular code focused on functionalities
+2. Reducing the number of bugs
+3. Making the code easier to refactor - with a solid testing foundation, developers become more confident to make changes
+4. Forcing developers to think about requirements before implementation
+5. Facilitating continuous improvement
+
+In *Clean Code*, the author says that clean tests follow FIRST:
+
+1. **Fast** - tests must execute quickly
+2. **Independent** - tests must not depend on others
+3. **Repeatable** - in any environment
+4. **Self-validating** - a boolean result: pass or fail
+5. **Timely** - written just before the production code they test
+
+## 5. Error handling
+
+Things will go wrong. When they do, the code still has to behave as intended. Handle errors in the simplest and most readable way.
+
+Good practices:
+
+1. Separate error handling from the main logic so the happy path stays readable.
+2. Error messages should give context. Create informative messages and pass them with the exception.
+3. Use exceptions rather than error codes.
+4. Test how the code behaves in error situations.
+
+```java
+public class OrderService {
+  public void processOrder(int orderId) {
+    try {
+      validateOrder(orderId);
+      confirmStock(orderId);
+      processPayment(orderId);
+    } catch (DataBaseException e) {
+      throw new DataBaseException("Failed to access the DB for order " + orderId, e);
+    } catch (PaymentException e) {
+      throw new PaymentException("Failed to process payment for order " + orderId, e);
+    }
+  }
+}
+```
+
+In this example, error handling is separated from the main logic, which keeps the code readable.
+
+## Conclusion
+
+Adopting these practices not only enhances code quality and maintainability, but also strengthens the ability to adapt to future changes. If you apply them, you will not regret it.
+
+## References
+
+1. Martin, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship.*
+2. M104 image (the original cover reference): [Hubble - Sombrero Galaxy](https://hubblesite.org/contents/media/images/2003/28/1415-Image.html)

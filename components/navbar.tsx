@@ -19,7 +19,8 @@ export function Navbar() {
   const navItems = [
     { href: `${homePath}#about`, label: pt ? 'Sobre' : 'About' },
     { href: `${homePath}#experience`, label: pt ? 'Experiência' : 'Experience' },
-    { href: `${homePath}#blog`, label: pt ? 'Artigos' : 'Writing' },
+    { href: `${homePath}#projects`, label: pt ? 'Projetos' : 'Projects' },
+    { href: `${homePath}#blog`, label: 'Blog' },
     { href: `${homePath}#contact`, label: pt ? 'Contato' : 'Contact' },
   ];
   const prefersReducedMotion = useReducedMotion();
@@ -36,7 +37,7 @@ export function Navbar() {
 
         if (isHomePath(pathname)) {
           const marker = window.scrollY + window.innerHeight * 0.38;
-          const current = ['about', 'experience', 'blog', 'contact']
+          const current = ['about', 'experience', 'projects', 'blog', 'contact']
             .map((id) => document.getElementById(id))
             .filter((section): section is HTMLElement => Boolean(section))
             .find((section) => marker >= section.offsetTop && marker < section.offsetTop + section.offsetHeight);
@@ -81,7 +82,7 @@ export function Navbar() {
           <span className="hidden text-xl font-semibold tracking-tight text-white sm:block">João Coelho</span>
         </Link>
 
-        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -103,7 +104,13 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
+          <a
+            href="/resume"
+            className="pressable focus-ring rounded-full px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-white"
+          >
+            {pt ? 'Currículo' : 'Resume'}
+          </a>
           <LanguageSwitch />
           <button
             type="button"
@@ -115,7 +122,7 @@ export function Navbar() {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
           <LanguageSwitch />
           <button
             type="button"
@@ -136,7 +143,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
-            className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-black/95 p-2 md:hidden"
+            className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-black/95 p-2 lg:hidden"
           >
             {navItems.map((item, index) => (
               <Link
@@ -152,6 +159,14 @@ export function Navbar() {
                 <span className="font-mono text-[10px] text-zinc-600">0{index + 1}</span>
               </Link>
             ))}
+            <a
+              href="/resume"
+              onClick={() => setIsOpen(false)}
+              className="focus-ring flex items-center justify-between rounded-xl px-4 py-3 text-sm text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white"
+            >
+              {pt ? 'Currículo' : 'Resume'}
+              <span className="font-mono text-[10px] text-zinc-600">06</span>
+            </a>
           </motion.div>
         )}
       </AnimatePresence>

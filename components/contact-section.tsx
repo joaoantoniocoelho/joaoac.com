@@ -12,7 +12,7 @@ const SHEEN = { delay: 0.3, duration: 1.5 };
 const socialLinks = [
   { label: 'LinkedIn', href: 'https://linkedin.com/in/joaoac' },
   { label: 'GitHub', href: 'https://github.com/joaoantoniocoelho' },
-  { label: 'X / Twitter', href: 'https://x.com/joaoac_dev' },
+  { label: 'X', href: 'https://x.com/joaoac_dev' },
 ];
 
 export function ContactSection() {
@@ -98,8 +98,8 @@ export function ContactSection() {
               </h2>
               <p className="mt-5 max-w-xl text-sm leading-7 text-zinc-400 md:text-base">
                 {pt
-                  ? 'Software, um problema técnico difícil ou uma landing page que precisa de um ponto de vista mais forte. Fique à vontade para entrar em contato.'
-                  : 'Software, a difficult technical problem, or a landing page that needs a stronger point of view. Feel free to reach out.'}
+                  ? 'Contratando para uma vaga sênior de engenharia, quer conversar sobre algo que escrevi ou tem um problema difícil que não sai da cabeça? Eu leio todas as mensagens.'
+                  : 'Hiring for a senior engineering role, want to talk about something I wrote, or have a hard problem you can\'t stop thinking about? I read every message.'}
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-2.5">
                 <a
@@ -107,7 +107,7 @@ export function ContactSection() {
                   className="pressable focus-ring group inline-flex items-center gap-3 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
                 >
                   <FiMail className="h-4 w-4" />
-                  {pt ? 'Envie um e-mail' : 'Send me an email'}
+                  {pt ? 'Me envie um e-mail' : 'Send me an email'}
                   <FiArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </a>
                 <button
@@ -145,18 +145,26 @@ export function ContactSection() {
         </motion.div>
 
         <footer className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} João Coelho</span>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new Event('open-command-menu'))}
-            className="focus-ring group inline-flex w-fit items-center gap-2 rounded-full text-left transition-colors hover:text-zinc-300"
-            aria-label={pt ? 'Abrir navegação rápida' : 'Open quick navigation'}
-          >
-            {pt ? 'Feito com curiosidade e muito debugging.' : 'Built with curiosity and a lot of debugging.'}
-            <kbd className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[9px] text-zinc-700 transition-colors group-hover:border-white/20 group-hover:text-zinc-400">
-              /
-            </kbd>
-          </button>
+          <span>© 2026 João Coelho. {pt ? 'Feito com curiosidade e muito debugging.' : 'Built with curiosity and a lot of debugging.'}</span>
+          <div className="flex flex-wrap items-center gap-4">
+            <a href="/resume" className="focus-ring rounded-full transition-colors hover:text-zinc-300">
+              {pt ? 'Currículo' : 'Resume'}
+            </a>
+            <a href="/feed.xml" className="focus-ring rounded-full transition-colors hover:text-zinc-300">
+              RSS
+            </a>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event('open-command-menu'))}
+              className="focus-ring group inline-flex w-fit items-center gap-2 rounded-full text-left transition-colors hover:text-zinc-300"
+              aria-label={pt ? 'Abrir navegação rápida' : 'Open quick navigation'}
+            >
+              {pt ? 'Navegação rápida' : 'Quick nav'}
+              <kbd className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[9px] text-zinc-700 transition-colors group-hover:border-white/20 group-hover:text-zinc-400">
+                /
+              </kbd>
+            </button>
+          </div>
         </footer>
       </div>
     </section>

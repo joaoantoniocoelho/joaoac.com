@@ -4,8 +4,13 @@
       "title": "Engenheiro de Software Sênior",
       "company": "ADP",
       "companyUrl": "https://www.linkedin.com/company/adp/",
-      "period": "Maio de 2025 - Atualmente",
+      "period": "Março de 2025 – Presente",
       "description": "Hoje trabalho na construção de uma AI Factory para acelerar o ciclo de engenharia de software dentro da ADP. A plataforma combina harnesses, loops de engenharia e orquestração de agentes para planejar, executar, validar e revisar mudanças com diferentes modelos. Na prática, iniciativas que antes levavam várias semanas já foram concluídas em uma, mantendo qualidade e custo sob controle. Atuo na arquitetura da plataforma, na definição dos fluxos entre agentes e na transformação de problemas ainda ambíguos em ferramentas que engenheiros conseguem usar no trabalho real. Antes disso, fui um dos principais engenheiros do aplicativo MyTax, contribuindo em Flutter, serviços de backend, infraestrutura em nuvem e decisões de arquitetura.",
+      "highlights": [
+        "Engenheiro central no AI Factory interno da ADP: orquestração multiagente que planeja, executa, valida e revisa mudanças de código usando múltiplos provedores de LLM.",
+        "Trabalho de engenharia antes estimado em várias semanas entregue em cerca de uma, com qualidade e custo de modelos sob controle.",
+        "Antes disso, um dos principais engenheiros do ADP MyTax (React, Node.js, AWS): integrações bancárias e pagamentos automatizados ao IRS para freelancers nos EUA, além da arquitetura do novo app mobile em Flutter que substituirá a plataforma web."
+      ],
       "technologies": ["Node.js", "TypeScript", "Flutter", "AWS", "LLMs", "Agentes de IA", "Busca Vetorial", "Ferramentas de IA"],
       "companyInfo": "A ADP desenvolve produtos e serviços de folha de pagamento, RH, impostos, benefícios e gestão da força de trabalho para empresas e profissionais no mundo todo. Trabalho na organização de produto e engenharia da ADP, em produtos e plataformas digitais mais recentes."
     },
@@ -13,8 +18,14 @@
       "title": "Consultor de Desenvolvimento",
       "company": "SAP",
       "companyUrl": "https://www.linkedin.com/company/sap/",
-      "period": "Fevereiro de 2024 - Maio de 2025",
+      "period": "Fevereiro de 2024 – Março de 2025",
       "description": "Na SAP, trabalhei no Ariba Category Management, uma plataforma corporativa voltada à gestão estratégica de compras. Em um ambiente global, com regras de negócio complexas e integrações entre diferentes sistemas, desenvolvi soluções de backend com Java, Spring Boot, Node.js e SAP BTP. Meu trabalho ia além da implementação: participei de decisões de arquitetura, revisões de código e da evolução de soluções que precisavam permanecer claras e sustentáveis dentro de uma plataforma de grande porte. Também integrei recursos de IA ao produto e apoiei outros desenvolvedores na análise de problemas técnicos. Foi uma experiência importante para consolidar minha atuação em arquitetura e engenharia de software na escala de uma empresa como a SAP.",
+      "highlights": [
+        "Recomendações de estratégia de categoria com IA no SAP Ariba Category Management, adotadas por clientes dos setores automotivo, de aviação e de tecnologia.",
+        "Backend em Java, Spring Boot, Node.js e SAP CAP sobre SAP BTP, com regras de negócio complexas e integrações entre múltiplos sistemas.",
+        "Decisões de arquitetura e code review em time global; apoio a outros desenvolvedores em problemas técnicos difíceis."
+      ],
+      "_todo": "Adicionar um caso concreto da SAP quando houver um disponível.",
       "technologies": ["Java", "Spring Boot", "Node.js", "SAP CAP", "SAP UI5", "SAP BTP", "Integrações de IA", "Arquitetura em Nuvem"],
       "companyInfo": "A SAP desenvolve software corporativo usado por empresas no mundo todo para gerenciar áreas como finanças, compras, cadeia de suprimentos, RH e operações. Trabalhei na organização SAP Ariba, focada em produtos de compras e gestão de categorias."
     },
@@ -22,16 +33,24 @@
       "title": "Desenvolvedor Full Stack",
       "company": "Bazk",
       "companyUrl": "https://www.linkedin.com/company/bazk/",
-      "period": "Dezembro de 2021 - Janeiro de 2024",
+      "period": "Dezembro de 2021 – Janeiro de 2024",
       "description": "Entrei na Bazk como trainee e cresci até atuar como desenvolvedor full stack. Trabalhei em sistemas de pagamento que processavam mais de 400 transações por minuto, onde confiabilidade, segurança e observabilidade tinham impacto direto. Atuei em serviços de backend, fluxos de pagamento, regras de conformidade, ferramentas internas, testes, infraestrutura e monitoramento em produção. Foi ali que aprendi, na prática, a trabalhar com sistemas distribuídos e com as responsabilidades de um software que movimenta dinheiro de verdade.",
+      "highlights": [
+        "Sistemas de pagamento e compliance processando mais de 400 transações por minuto para plataformas internacionais de gaming.",
+        "Projetei e construí o rules engine de compliance (Node.js) que automatizou checagens de fraude e regulatórias.",
+        "Duas promoções em dois anos: estagiário → desenvolvedor I → desenvolvedor II."
+      ],
       "technologies": ["Java", "Spring Boot", "Node.js", "TypeScript", "React.js", "AWS", "PostgreSQL", "MongoDB", "Microsserviços", "Jest", "JUnit", "Spock"],
       "companyInfo": "A Bazk era uma fintech focada em infraestrutura de pagamentos para e-commerce, atuando em processamento de pagamentos, fluxos de checkout, integrações financeiras e sistemas relacionados à conformidade."
     },
     {
       "title": "Desenvolvedor Full Stack",
       "company": "Pling Brasil",
-      "period": "Setembro de 2018 - Março de 2019",
+      "period": "Setembro de 2018 – Março de 2019",
       "description": "Minha primeira experiência profissional em software foi na Pling Brasil, como trainee no Universos, um agregador de notícias baseado em web scraping. Trabalhei em toda a stack, criando serviços e APIs em Node.js, integrações com MongoDB e interfaces em React. Foi onde aprendi a construir um produto em equipe, colocar código em produção, corrigir problemas reais e transformar ideias em algo que as pessoas pudessem usar.",
+      "highlights": [
+        "Construí o Universos, agregador de notícias baseado em web scraping, de ponta a ponta com um time pequeno (Node.js, MongoDB, React)."
+      ],
       "technologies": ["TypeScript", "Node.js", "React.js", "MongoDB", "APIs REST", "Web Scraping"],
       "companyInfo": "A Pling Brasil era uma pequena startup de desenvolvimento de software que criava produtos digitais e prestava serviços de desenvolvimento para clientes."
     }

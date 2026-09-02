@@ -14,9 +14,9 @@ It is designed to feel expressive without becoming distracting: motion supports 
 
 - Responsive, dark-first interface with ambient scroll-based color transitions
 - Animated professional timeline with a dedicated experience page
+- MDX blog at `/blog`, with RSS at `/feed.xml`
 - Active-section navigation and keyboard command menu (`/` or `⌘ K`)
 - Byte, an animated rabbit guide with a predefined conversational flow
-- Live Medium articles with hourly revalidation and graceful fallback
 - Accessible motion through `prefers-reduced-motion`
 - Responsive interactions designed for keyboard, pointer, and touch
 
@@ -55,10 +55,10 @@ No environment variables are required for local development.
 ```text
 app/          Routes, metadata, and global styles
 components/   Page sections, interactions, and shared UI
+content/      Blog posts (MDX) and Byte prompts
 data/         Professional experience content
-services/     External content integrations
 public/       Static images and Byte sprites
 lib/          Shared utilities
 ```
 
-Professional experience is maintained in `data/experiences.json`. Recent writing is loaded from João's Medium feed and revalidated every hour.
+Professional experience is maintained in `data/experiences.json`. Blog posts live in `content/posts` as MDX.

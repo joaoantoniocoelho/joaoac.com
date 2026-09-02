@@ -7,38 +7,16 @@ import { usePathname } from 'next/navigation';
 import { FiArrowUpRight, FiCheck, FiCopy, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
 import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
 import { useLocale, isHomePath } from '@/lib/i18n';
-
-const CONTACT_EMAIL = 'joaoantonioscoelho@gmail.com';
-
-type PromptId =
-  | 'not-on-site'
-  | 'work-style'
-  | 'favorite-problems'
-  | 'random-fact'
-  | 'when-stuck'
-  | 'tech-opinion'
-  | 'learning-now'
-  | 'away-from-keyboard'
-  | 'ideal-project'
-  | 'experience'
-  | 'contact'
-  | 'site-secret'
-  | 'why-rabbit'
-  | 'byte-secret';
-
-type GuideLink = {
-  label: string;
-  href?: string;
-  external?: boolean;
-  action?: 'reveal-email' | 'copy-email';
-};
-
-type Prompt = {
-  question: string;
-  answer: string;
-  links?: GuideLink[];
-  next: PromptId[];
-};
+import {
+  discoveryOrder,
+  initialPrompts,
+  prompts,
+  promptsPtBr,
+  type GuideLink,
+  type Prompt,
+  type PromptId,
+} from '@/content/byte-prompts';
+import { CONTACT_EMAIL } from '@/lib/site';
 
 type ChatMessage = {
   id: number;
@@ -47,193 +25,6 @@ type ChatMessage = {
   links?: GuideLink[];
 };
 
-const prompts: Record<PromptId, Prompt> = {
-  'not-on-site': {
-    question: "Tell me something that isn't on the site.",
-    answer:
-      'João keeps a mental queue of things he wants to understand. It grows considerably faster than it gets resolved. Curiosity is less of a trait and more of a maintenance issue.',
-    next: ['random-fact', 'work-style', 'tech-opinion', 'site-secret'],
-  },
-  'work-style': {
-    question: "What's João like to work with?",
-    answer:
-      'He asks why until the problem becomes clear, then looks for the simplest solution that will still make sense six months later. He cares about fixing the cause, not just silencing the symptom.',
-    next: ['favorite-problems', 'when-stuck', 'ideal-project', 'experience'],
-  },
-  'favorite-problems': {
-    question: 'What kind of problems does he enjoy?',
-    answer:
-      'The ambiguous kind. Systems with unclear edges, competing trade-offs, and enough room to improve both the architecture and the product are usually the ones that keep his attention.',
-    next: ['work-style', 'ideal-project', 'learning-now', 'experience'],
-  },
-  'random-fact': {
-    question: 'Give me a random João fact.',
-    answer:
-      'His definition of a quick experiment is optimistic. It often becomes a working prototype before he notices the scope changed.',
-    next: ['not-on-site', 'away-from-keyboard', 'when-stuck', 'tech-opinion'],
-  },
-  'when-stuck': {
-    question: 'What does he do when he gets stuck?',
-    answer:
-      'Reduce the problem until only one assumption can be wrong, add visibility, read the internals, and test again. If that fails, take a short break and come back with fewer opinions.',
-    next: ['work-style', 'tech-opinion', 'favorite-problems', 'learning-now'],
-  },
-  'tech-opinion': {
-    question: 'Does he have a tech opinion?',
-    answer:
-      'A clever abstraction is rarely worth it if the next person needs a map to understand it. Clear and boring usually ages better than impressive and mysterious.',
-    next: ['when-stuck', 'ideal-project', 'learning-now', 'site-secret'],
-  },
-  'learning-now': {
-    question: "What's he learning right now?",
-    answer:
-      'AI engineering, agents, LLMs, RAG, developer tooling, and cybersecurity are taking most of the curiosity budget right now.',
-    next: ['favorite-problems', 'tech-opinion', 'ideal-project', 'experience'],
-  },
-  'away-from-keyboard': {
-    question: 'What happens away from the keyboard?',
-    answer:
-      'Usually running, videogames, or time with his dogs. The debugging process occasionally continues in the background anyway.',
-    next: ['random-fact', 'not-on-site', 'site-secret', 'contact'],
-  },
-  'ideal-project': {
-    question: "What's his ideal project?",
-    answer:
-      'Something useful with a real technical challenge, room to shape the product, and people who care about quality without turning every decision into ceremony.',
-    next: ['favorite-problems', 'work-style', 'experience', 'contact'],
-  },
-  experience: {
-    question: 'Where has he worked?',
-    answer:
-      'His path goes from full-stack product work to backend systems, cloud architecture, mobile, and AI tooling. The complete timeline has the details.',
-    links: [{ label: 'View experience', href: '/experiences' }],
-    next: ['work-style', 'favorite-problems', 'ideal-project', 'contact'],
-  },
-  contact: {
-    question: 'How can I reach him?',
-    answer:
-      'Email is the most direct route. LinkedIn also works if you prefer a little professional context first.',
-    links: [
-      { label: 'Send an email', action: 'reveal-email' },
-      { label: 'Open LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
-    ],
-    next: ['work-style', 'ideal-project', 'experience', 'site-secret'],
-  },
-  'site-secret': {
-    question: 'Is anything hidden on this site?',
-    answer:
-      'Press / or Cmd + K. João left a quick navigation panel there for people who test keyboard shortcuts before reading instructions.',
-    next: ['not-on-site', 'random-fact', 'tech-opinion', 'contact'],
-  },
-  'why-rabbit': {
-    question: 'Why are you a rabbit?',
-    answer:
-      "Because João's last name, Coelho, means rabbit in Portuguese. I am part guide, part surname joke, and apparently the only one here allowed to have ears this dramatic.",
-    next: ['random-fact', 'not-on-site', 'site-secret', 'byte-secret'],
-  },
-  'byte-secret': {
-    question: "What shouldn't Byte tell me?",
-    answer:
-      "A repository described as just a test has never stayed just a test for very long. That's all the access my clearance level allows.",
-    next: ['random-fact', 'site-secret', 'ideal-project', 'contact'],
-  },
-};
-
-const promptsPtBr: Record<PromptId, Prompt> = {
-  'not-on-site': {
-    question: 'Conte algo que não está no site.',
-    answer: 'João mantém uma fila mental de coisas que quer entender. Ela cresce bem mais rápido do que é resolvida. Curiosidade é menos uma característica e mais uma questão de manutenção.',
-    next: ['random-fact', 'work-style', 'tech-opinion', 'site-secret'],
-  },
-  'work-style': {
-    question: 'Como é trabalhar com o João?',
-    answer: 'Ele pergunta “por quê?” até o problema ficar claro e então procura a solução mais simples que ainda fará sentido daqui a seis meses. Ele se preocupa em corrigir a causa, não apenas silenciar o sintoma.',
-    next: ['favorite-problems', 'when-stuck', 'ideal-project', 'experience'],
-  },
-  'favorite-problems': {
-    question: 'De que tipo de problema ele gosta?',
-    answer: 'Dos ambíguos. Sistemas com limites pouco claros, decisões com prós e contras e espaço suficiente para melhorar tanto a arquitetura quanto o produto costumam prender sua atenção.',
-    next: ['work-style', 'ideal-project', 'learning-now', 'experience'],
-  },
-  'random-fact': {
-    question: 'Conte uma curiosidade aleatória sobre o João.',
-    answer: 'A definição dele de experimento rápido é otimista. Muitas vezes vira um protótipo funcional antes que ele perceba que o escopo mudou.',
-    next: ['not-on-site', 'away-from-keyboard', 'when-stuck', 'tech-opinion'],
-  },
-  'when-stuck': {
-    question: 'O que ele faz quando fica travado?',
-    answer: 'Reduz o problema até que apenas uma hipótese possa estar errada, adiciona visibilidade, lê os detalhes internos e testa novamente. Se não funcionar, faz uma pausa curta e volta com menos opiniões.',
-    next: ['work-style', 'tech-opinion', 'favorite-problems', 'learning-now'],
-  },
-  'tech-opinion': {
-    question: 'Ele tem alguma opinião sobre tecnologia?',
-    answer: 'Uma abstração inteligente raramente vale a pena se a próxima pessoa precisar de um mapa para entendê-la. O claro e sem graça costuma envelhecer melhor do que o impressionante e misterioso.',
-    next: ['when-stuck', 'ideal-project', 'learning-now', 'site-secret'],
-  },
-  'learning-now': {
-    question: 'O que ele está aprendendo agora?',
-    answer: 'Engenharia de IA, agentes, LLMs, RAG, ferramentas para desenvolvedores e cibersegurança estão consumindo a maior parte do orçamento de curiosidade no momento.',
-    next: ['favorite-problems', 'tech-opinion', 'ideal-project', 'experience'],
-  },
-  'away-from-keyboard': {
-    question: 'O que acontece longe do teclado?',
-    answer: 'Normalmente corrida, videogames ou tempo com seus cachorros. O processo de debugging às vezes continua em segundo plano mesmo assim.',
-    next: ['random-fact', 'not-on-site', 'site-secret', 'contact'],
-  },
-  'ideal-project': {
-    question: 'Qual é o projeto ideal para ele?',
-    answer: 'Algo útil, com um desafio técnico real, espaço para moldar o produto e pessoas que se importam com qualidade sem transformar toda decisão em cerimônia.',
-    next: ['favorite-problems', 'work-style', 'experience', 'contact'],
-  },
-  experience: {
-    question: 'Onde ele já trabalhou?',
-    answer: 'A trajetória dele vai de produtos full stack a sistemas backend, arquitetura em nuvem, mobile e ferramentas de IA. A linha do tempo completa tem os detalhes.',
-    links: [{ label: 'Ver experiência', href: '/pt-BR/experiences' }],
-    next: ['work-style', 'favorite-problems', 'ideal-project', 'contact'],
-  },
-  contact: {
-    question: 'Como posso falar com ele?',
-    answer: 'E-mail é o caminho mais direto. O LinkedIn também funciona, se você preferir um pouco de contexto profissional antes.',
-    links: [
-      { label: 'Enviar um e-mail', action: 'reveal-email' },
-      { label: 'Abrir LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
-    ],
-    next: ['work-style', 'ideal-project', 'experience', 'site-secret'],
-  },
-  'site-secret': {
-    question: 'Existe algo escondido neste site?',
-    answer: 'Pressione / ou Cmd + K. João deixou ali um painel de navegação rápida para quem testa atalhos de teclado antes de ler as instruções.',
-    next: ['not-on-site', 'random-fact', 'tech-opinion', 'contact'],
-  },
-  'why-rabbit': {
-    question: 'Por que você é um coelho?',
-    answer: 'Porque o sobrenome do João é Coelho. Sou parte guia, parte piada com o sobrenome e, aparentemente, o único aqui autorizado a ter orelhas tão dramáticas.',
-    next: ['random-fact', 'not-on-site', 'site-secret', 'byte-secret'],
-  },
-  'byte-secret': {
-    question: 'O que o Byte não deveria me contar?',
-    answer: 'Um repositório descrito como “só um teste” nunca ficou apenas como um teste por muito tempo. Isso é tudo que meu nível de acesso permite revelar.',
-    next: ['random-fact', 'site-secret', 'ideal-project', 'contact'],
-  },
-};
-
-const initialSuggestions: PromptId[] = [
-  'why-rabbit',
-  'not-on-site',
-  'work-style',
-  'favorite-problems',
-];
-
-const discoveryOrder: PromptId[] = [
-  'when-stuck',
-  'tech-opinion',
-  'learning-now',
-  'away-from-keyboard',
-  'ideal-project',
-  'experience',
-  'contact',
-  'site-secret',
-];
 
 const initialMessage: ChatMessage = {
   id: 0,
@@ -264,7 +55,7 @@ export function ByteGuide() {
   const [showTeaser, setShowTeaser] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([localizedInitialMessage]);
   const [askedIds, setAskedIds] = useState<PromptId[]>([]);
-  const [suggestions, setSuggestions] = useState<PromptId[]>(initialSuggestions);
+  const [suggestions, setSuggestions] = useState<PromptId[]>(initialPrompts);
   const [isTyping, setIsTyping] = useState(false);
   const [isEmailCopied, setIsEmailCopied] = useState(false);
   const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
@@ -414,7 +205,7 @@ export function ByteGuide() {
     messageIdRef.current = 1;
     setMessages([localizedInitialMessage]);
     setAskedIds([]);
-    setSuggestions(initialSuggestions);
+    setSuggestions(initialPrompts);
     setIsTyping(false);
   }, [locale, localizedInitialMessage]);
 
@@ -459,7 +250,7 @@ export function ByteGuide() {
     messageIdRef.current = 1;
     setMessages([localizedInitialMessage]);
     setAskedIds([]);
-    setSuggestions(initialSuggestions);
+    setSuggestions(initialPrompts);
     setIsTyping(false);
     setIsEmailCopied(false);
     cueMascot('greeting', 900);
@@ -531,7 +322,7 @@ export function ByteGuide() {
           >
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
               <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-sky-300/20 bg-sky-300/[0.07]">
-                <Image src="/byte/byte-idle.png" alt="" width={40} height={40} className="h-10 w-10 object-contain" />
+                <Image src="/byte/byte-idle.png" alt="" aria-hidden="true" width={40} height={40} className="h-10 w-10 object-contain" />
                 <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-950 bg-emerald-300" />
               </span>
               <div className="min-w-0 flex-1">
@@ -717,7 +508,7 @@ function ByteAvatar() {
       aria-hidden="true"
       className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full border border-sky-300/20 bg-sky-300/[0.07]"
     >
-      <Image src="/byte/byte-idle.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+      <Image src="/byte/byte-idle.png" alt="" aria-hidden="true" width={28} height={28} className="h-7 w-7 object-contain" />
     </span>
   );
 }

@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
-type AmbientTone = 'sky' | 'emerald' | 'amber' | 'indigo';
+type AmbientTone = 'sky' | 'emerald' | 'violet' | 'amber' | 'indigo';
 
 const ambientLayers: Record<AmbientTone, string> = {
   sky: 'from-sky-400/20 via-cyan-400/[0.08] to-transparent',
   emerald: 'from-emerald-400/20 via-teal-400/[0.08] to-transparent',
+  violet: 'from-violet-400/20 via-fuchsia-400/[0.08] to-transparent',
   amber: 'from-amber-300/[0.18] via-orange-400/[0.07] to-transparent',
   indigo: 'from-indigo-400/20 via-violet-400/[0.08] to-transparent',
 };

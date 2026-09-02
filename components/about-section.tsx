@@ -20,7 +20,6 @@ const exploring = [
   'AI Engineering',
   'LLMs',
   'Agents',
-  'RAG',
   'Generative AI',
   'Cybersecurity',
   'Developer Tooling',
@@ -40,7 +39,6 @@ const exploringPtBr = [
   'Engenharia de IA',
   'LLMs',
   'Agentes',
-  'RAG',
   'IA Generativa',
   'Cibersegurança',
   'Ferramentas para Desenvolvedores',
@@ -104,8 +102,8 @@ export function AboutSection() {
                 </p>
                 <p>
                   {pt
-                    ? 'Ultimamente, tenho dedicado bastante tempo a explorar IA, agentes, LLMs, ferramentas para desenvolvedores e cibersegurança. Também estou começando um MBA em Cibersegurança, então esse tema tem ocupado uma parte cada vez maior dos meus estudos.'
-                    : <>Lately, I&apos;ve been spending a lot of time exploring AI, agents, LLMs, developer tooling, and cybersecurity. I&apos;m also starting an MBA in Cybersecurity, so that&apos;s becoming a bigger part of what I&apos;m studying and thinking about.</>}
+                    ? 'Ultimamente, tenho dedicado bastante tempo a explorar IA, agentes, LLMs, ferramentas para desenvolvedores e cibersegurança. Também começo em outubro de 2026 um MBA em Cibersegurança na USP/Esalq, então esse tema tem ocupado uma parte cada vez maior dos meus estudos.'
+                    : <>Lately, I&apos;ve been spending a lot of time exploring AI, agents, LLMs, developer tooling, and cybersecurity. I&apos;m also starting an MBA in Cybersecurity at USP/Esalq in October 2026, so that&apos;s becoming a bigger part of what I&apos;m studying and thinking about.</>}
                 </p>
                 <p>
                   {pt

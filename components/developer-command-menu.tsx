@@ -10,7 +10,9 @@ import {
   FiCode,
   FiCommand,
   FiCopy,
+  FiFileText,
   FiGithub,
+  FiLayers,
   FiMail,
   FiUser,
   FiX,
@@ -27,7 +29,9 @@ export function DeveloperCommandMenu() {
   const navigationActions = [
     { label: pt ? 'Sobre mim' : 'About me', description: pt ? 'Uma apresentação rápida' : 'A quick introduction', href: `${homePath}#about`, icon: FiUser },
     { label: pt ? 'Experiência' : 'Experience', description: pt ? 'Equipes, produtos e problemas' : 'Teams, products, and problems', href: `${homePath}#experience`, icon: FiBriefcase },
-    { label: pt ? 'Artigos' : 'Writing', description: pt ? 'Notas e artigos recentes' : 'Recent notes and articles', href: `${homePath}#blog`, icon: FiCode },
+    { label: pt ? 'Projetos' : 'Projects', description: pt ? 'Produtos que construí do zero' : 'Products built from scratch', href: localizedPath('/projects', locale), icon: FiLayers },
+    { label: 'Blog', description: pt ? 'Notas e artigos recentes' : 'Recent notes and articles', href: localizedPath('/blog', locale), icon: FiCode },
+    { label: pt ? 'Currículo' : 'Resume', description: pt ? 'PDF de uma página' : 'One-page PDF', href: '/resume', icon: FiFileText },
   ];
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);

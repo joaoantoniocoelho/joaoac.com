@@ -99,7 +99,7 @@
   /*
    * A highlight sweeps across the word once it scrolls into view.
    * The gradient band sits at 40%-60% of a 250%-wide background, so it lands
-   * exactly off the left edge at 100% and off the right edge at 0% — the whole
+   * exactly off the left edge at 100% and off the right edge at 0% - the whole
    * animation is the visible crossing, nothing is spent travelling off-screen.
    */
   .sheen-text {
@@ -123,7 +123,7 @@
 
   /*
    * One pass at constant speed. Timing is shared with the period that lands as
-   * the beam leaves the last letter — keep it in sync with SHEEN in
+   * the beam leaves the last letter - keep it in sync with SHEEN in
    * components/contact-section.tsx.
    */
   .sheen-text[data-sheen='on'] {

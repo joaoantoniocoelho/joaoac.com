@@ -1,21 +1,21 @@
 import { HeroSection } from '@/components/hero-section';
 import { AboutSection } from '@/components/about-section';
 import { ExperienceSection } from '@/components/experience-section';
+import { ProjectsSection } from '@/components/projects-section';
 import { BlogSection } from '@/components/blog-section';
 import { ContactSection } from '@/components/contact-section';
-import { getMediumPosts } from '@/services/medium';
+import { getAllPostSummaries } from '@/lib/posts';
 
-export const revalidate = 3600;
-
-export default async function Home() {
-  const blogPosts = await getMediumPosts();
+export default function Home() {
+  const posts = getAllPostSummaries('en');
 
   return (
     <main className="relative z-10 min-h-screen bg-transparent text-white">
       <HeroSection />
       <AboutSection />
       <ExperienceSection />
-      <BlogSection posts={blogPosts} />
+      <ProjectsSection />
+      <BlogSection posts={posts} />
       <ContactSection />
     </main>
   );

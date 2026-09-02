@@ -1,20 +1,17 @@
 "use client";
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
-import { FiArrowRight, FiChevronDown, FiExternalLink } from 'react-icons/fi';
+import { FiArrowRight, FiExternalLink } from 'react-icons/fi';
 import experiencesData from '@/data/experiences.json';
 import experiencesPtBrData from '@/data/experiences.pt-BR.json';
 import { localizedPath, useLocale } from '@/lib/i18n';
-
-const DESCRIPTION_PREVIEW_LENGTH = 360;
 
 export function ExperienceSection() {
   const locale = useLocale();
   const pt = locale === 'pt-BR';
   const data = pt ? experiencesPtBrData : experiencesData;
   const featuredExperiences = data.experiences.slice(0, 2);
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const timelineRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -22,10 +19,6 @@ export function ExperienceSection() {
     offset: ['start 72%', 'end 58%'],
   });
   const timelineProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 28, mass: 0.35 });
-
-  const toggleExpand = (index: number) => {
-    setExpandedItems((current) => ({ ...current, [index]: !current[index] }));
-  };
 
   return (
     <section id="experience" data-ambient="emerald" className="relative overflow-hidden bg-black/75 py-28 md:py-36">
@@ -73,13 +66,6 @@ export function ExperienceSection() {
             />
 
             {featuredExperiences.map((experience, index) => {
-              const isExpanded = expandedItems[index];
-              const shouldTruncate = experience.description.length > DESCRIPTION_PREVIEW_LENGTH;
-              const description =
-                isExpanded || !shouldTruncate
-                  ? experience.description
-                  : `${experience.description.slice(0, DESCRIPTION_PREVIEW_LENGTH).trimEnd()}…`;
-
               return (
                 <motion.article
                   key={`${experience.company}-${experience.period}`}
@@ -136,25 +122,14 @@ export function ExperienceSection() {
                         )}
                       </div>
 
-                      <p className="text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
-                        {description}
-                      </p>
-
-                      {shouldTruncate && (
-                        <button
-                          type="button"
-                          onClick={() => toggleExpand(index)}
-                          aria-expanded={isExpanded}
-                          className="pressable focus-ring group/button mt-4 inline-flex items-center gap-2 rounded-full text-xs font-medium uppercase tracking-[0.14em] text-zinc-500 transition-colors hover:text-white"
-                        >
-                          {isExpanded ? (pt ? 'Mostrar menos' : 'Show less') : (pt ? 'Continuar lendo' : 'Keep reading')}
-                          <FiChevronDown
-                            className={`h-3.5 w-3.5 transition-transform duration-300 ${
-                              isExpanded ? 'rotate-180' : 'group-hover/button:translate-y-0.5'
-                            }`}
-                          />
-                        </button>
-                      )}
+                      <ul className="space-y-3 text-sm leading-7 text-zinc-400 md:text-base md:leading-8">
+                        {experience.highlights.map((highlight) => (
+                          <li key={highlight} className="flex gap-3">
+                            <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-emerald-300/80" />
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
 
                       <div className="mt-7 flex flex-wrap gap-2">
                         {experience.technologies.map((technology) => (

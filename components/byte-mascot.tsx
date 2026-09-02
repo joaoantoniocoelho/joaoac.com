@@ -149,6 +149,7 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
               key={imageSource}
               src={imageSource}
               alt=""
+              aria-hidden="true"
               draggable={false}
               initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}

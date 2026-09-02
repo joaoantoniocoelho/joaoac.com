@@ -1,0 +1,76 @@
+---
+title: "This Breach Was Preventable (and Probably in Your Code Too)"
+description: "A public IDOR incident, why this class of bug is so common, and how to keep it out of your own APIs."
+date: "2025-09-09"
+tags:
+  - security
+  - apis
+---
+
+A public incident, a classic vulnerability, and how to keep IDOR flaws out of your app.
+
+This week, a Brazilian dating app designed for women was taken offline after a severe security issue was disclosed publicly. The root cause was an IDOR (Insecure Direct Object Reference) vulnerability. We're talking about an API, without any proper authorization, returning personal data from all users, including names, IDs, documents, photos and dates of birth.
+
+This isn't just a problem faced by small apps. It's a reminder that access control remains one of the most overlooked areas of development, even in 2025.
+
+Not sure what this vulnerability is or how to protect your APIs against it? Let's walk through it.
+
+## What is an IDOR?
+
+An IDOR occurs when an application exposes internal object references (IDs, for example) without validating the user's permission to access them.
+
+Consider the following example: `GET /api/users/123`
+
+If a user can change `123` to `124` and retrieve someone else's data, that's a classic IDOR.
+
+In this dating app case, the vulnerability was even worse, because the "attacker" (it wasn't an attack, to be honest - all exposed data was public) could paginate through the full list of users via a public endpoint. No ownership check, no role validation.
+
+Sometimes the user identifier isn't on the URL, but in the POST body:
+
+```http
+POST /api/users/update
+{
+  "userId": 124,
+  "name": "..."
+}
+```
+
+An attacker could modify `userId` to update another user's data.
+
+## Why do IDORs still happen?
+
+Despite being documented in the OWASP Top 10 inside [A01:2021 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) (the most serious web application security risk), IDORs are still prevalent because:
+
+1. **Speed over safety:** teams prioritize features over designing access control properly.
+2. **Misplaced trust in the front end:** "If the button isn't there, no one can access the route."
+3. **Lack of centralized auth logic.**
+
+## How to prevent IDORs
+
+1. **Always perform authorization on the server.** Check ownership or permissions for your resources. If a user requests `/users/123`, you must ensure that the current authenticated user is indeed user 123 - and not someone else attempting to guess or tamper with IDs.
+2. **Use non-predictable identifiers.** Avoid auto-incremental IDs for public APIs. Instead, use UUIDs. This isn't a replacement for auth, but it makes enumeration significantly harder.
+3. **Centralize access control logic.** Don't repeat the same check in every controller. Use interceptors, middleware, or annotations, depending on your stack.
+4. **Add tests for authorization**, especially the negative ones.
+5. **Monitor and alert.** Observe access patterns that resemble ID enumeration (sequential requests to `/users/{id}`) and trigger alerts.
+
+Using DTOs is a good practice to avoid exposing sensitive fields by accident, but they don't prevent IDOR vulnerabilities.
+
+## Final thoughts
+
+You don't need to be a billion-dollar company to suffer the consequences of insecure design. Security by design is not optional - it's a core responsibility. If you are a backend developer:
+
+> Treat every request as hostile until proven otherwise.
+
+And beyond the code, there's always the human side of a breach, one that no test suite or linter can fix.
+
+### What happens after a breach like this?
+
+Honestly? You lose trust. Affected users may feel unsafe, and that is hard to rebuild. You can:
+
+1. Take the system offline if necessary
+2. Notify users transparently
+3. Audit the full system
+4. Review and refactor the authentication flow - and don't rush the fix
+5. Document and publish
+
+At the end of the day, what defines maturity is how a team responds and how you communicate with the users.

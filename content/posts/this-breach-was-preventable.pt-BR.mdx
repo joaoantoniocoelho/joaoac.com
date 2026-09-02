@@ -1,0 +1,76 @@
+---
+title: "Essa falha era evitável (e provavelmente está no seu código também)"
+description: "Um incidente público de IDOR, por que esse tipo de falha é tão comum e como manter isso fora das suas APIs."
+date: "2025-09-09"
+tags:
+  - security
+  - apis
+---
+
+Um incidente público, uma vulnerabilidade clássica e como manter falhas de IDOR fora do seu app.
+
+Esta semana, um app brasileiro de namoro feito para mulheres saiu do ar depois que uma falha grave de segurança foi divulgada publicamente. A causa raiz foi uma vulnerabilidade de IDOR (Insecure Direct Object Reference). Estamos falando de uma API, sem autorização de verdade, devolvendo dados pessoais de todas as usuárias - nomes, IDs, documentos, fotos e datas de nascimento.
+
+Isso não é um problema só de apps pequenos. É um lembrete de que controle de acesso continua sendo uma das áreas mais negligenciadas do desenvolvimento, mesmo em 2025.
+
+Não tem certeza do que é essa vulnerabilidade ou de como proteger suas APIs contra ela? Vamos por partes.
+
+## O que é um IDOR?
+
+Um IDOR acontece quando a aplicação expõe referências internas a objetos (IDs, por exemplo) sem validar se o usuário tem permissão para acessá-los.
+
+Considere o seguinte exemplo: `GET /api/users/123`
+
+Se alguém puder trocar `123` por `124` e obter os dados de outra pessoa, isso é um IDOR clássico.
+
+No caso desse app de namoro, a falha era ainda pior: o "atacante" (não foi bem um ataque - todos os dados expostos estavam públicos) conseguia paginar a lista inteira de usuárias por um endpoint público. Sem checagem de ownership, sem validação de papel.
+
+Às vezes o identificador da pessoa não está na URL, e sim no body do POST:
+
+```http
+POST /api/users/update
+{
+  "userId": 124,
+  "name": "..."
+}
+```
+
+Alguém poderia alterar o `userId` e atualizar os dados de outra pessoa.
+
+## Por que IDORs ainda acontecem?
+
+Mesmo documentados no OWASP Top 10, dentro de [A01:2021 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) (o risco mais grave de segurança em aplicações web), IDORs continuam comuns porque:
+
+1. **Velocidade acima de segurança:** times priorizam feature em vez de desenhar o controle de acesso direito.
+2. **Confiança indevida no front-end:** "Se o botão não está lá, ninguém acessa a rota."
+3. **Falta de lógica de autorização centralizada.**
+
+## Como prevenir IDORs
+
+1. **Sempre autorize no servidor.** Verifique ownership ou permissões do recurso. Se alguém pede `/users/123`, você precisa garantir que a pessoa autenticada é de fato a usuária 123 - e não alguém tentando adivinhar ou adulterar IDs.
+2. **Use identificadores imprevisíveis.** Evite IDs autoincrementais em APIs públicas. Prefira UUIDs. Isso não substitui autenticação, mas torna a enumeração bem mais difícil.
+3. **Centralize o controle de acesso.** Não repita a mesma checagem em todo controller. Use interceptors, middleware ou annotations, conforme o stack.
+4. **Adicione testes de autorização**, principalmente os negativos.
+5. **Monitore e alerte.** Observe padrões de acesso que parecem enumeração de IDs (requisições sequenciais a `/users/{id}`) e dispare alertas.
+
+Usar DTOs é uma boa prática para não expor campos sensíveis por acidente, mas isso não previne IDOR.
+
+## Considerações finais
+
+Você não precisa ser uma empresa de bilhões para sofrer as consequências de um design inseguro. Segurança desde o desenho não é opcional - é responsabilidade central. Se você é pessoa de backend:
+
+> Trate toda requisição como hostil até prova em contrário.
+
+E além do código, existe o lado humano de um vazamento, algo que nenhum test suite ou linter resolve.
+
+### O que acontece depois de um vazamento desses?
+
+Sinceramente? Você perde confiança. Quem foi afetado pode se sentir inseguro, e isso é difícil de reconstruir. Você pode:
+
+1. Tirar o sistema do ar, se for necessário
+2. Avisar as pessoas com transparência
+3. Auditar o sistema inteiro
+4. Revisar e refatorar o fluxo de autenticação - e não ter pressa no conserto
+5. Documentar e publicar
+
+No fim, o que define maturidade é como o time responde e como você se comunica com quem usa o produto.

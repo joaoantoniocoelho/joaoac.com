@@ -118,6 +118,17 @@ export default function ExperiencesPage() {
                     <p className="mt-3 text-base text-zinc-300">{experience.company}</p>
                   )}
 
+                  {experience.highlights?.length ? (
+                    <ul className="mt-8 space-y-3 text-base leading-8 text-zinc-300 md:text-lg md:leading-9">
+                      {experience.highlights.map((highlight) => (
+                        <li key={highlight} className="flex gap-3">
+                          <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300/80" />
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+
                   <p className="mt-8 text-base leading-8 text-zinc-400 md:text-lg md:leading-9">
                     {experience.description}
                   </p>

@@ -74,6 +74,9 @@ export function HeroSection() {
       data-ambient="sky"
       className="relative flex min-h-screen items-center overflow-hidden border-b border-white/[0.06] bg-black/75 py-28 md:py-32"
     >
+      <noscript>
+        <style>{`.hero-letter{opacity:1!important;filter:none!important;transform:none!important}`}</style>
+      </noscript>
       <motion.div
         style={prefersReducedMotion ? undefined : { x: glowX, y: glowY }}
         className="pointer-events-none absolute left-0 top-0 hidden h-[32rem] w-[32rem] rounded-full bg-gradient-radial from-sky-300/[0.13] via-sky-500/[0.05] to-transparent blur-2xl lg:block"
@@ -94,10 +97,10 @@ export function HeroSection() {
             transition={{ ...revealTransition, delay: 0.15 }}
             className="h-px w-8 origin-left bg-sky-300/60"
           />
-          {pt ? 'Engenheiro de Software · Brasil' : 'Software Engineer · Brazil'}
+          {pt ? 'Engenheiro de Software Sênior · Porto Alegre, Brasil' : 'Senior Software Engineer · Porto Alegre, Brazil'}
         </motion.div>
 
-        <h1 className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.065em] text-white">
+        <h1 aria-label="João Coelho." className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.065em] text-white">
           <FocusInWord word="João" delay={0.12} reducedMotion={Boolean(prefersReducedMotion)} />
           <FocusInWord word="Coelho" delay={0.32} reducedMotion={Boolean(prefersReducedMotion)}>
             <motion.span
@@ -119,25 +122,25 @@ export function HeroSection() {
         >
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="#experience"
+              href="#blog"
               className="pressable focus-ring group inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
             >
-              {pt ? 'Veja meu trabalho' : 'View my work'}
+              {pt ? 'Ler o blog' : 'Read the blog'}
               <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
-              href="#about"
+              href="/resume"
               className="pressable focus-ring inline-flex items-center rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/30 hover:text-white"
             >
-              {pt ? 'Mais sobre mim' : 'More about me'}
+              {pt ? 'Baixar currículo' : 'Download resume'}
             </a>
           </div>
 
           <div className="flex items-end justify-center gap-8">
-            <p className="max-w-md text-sm leading-7 text-zinc-500">
+            <p className="max-w-xl text-sm leading-7 text-zinc-500">
               {pt
-                ? 'Construindo software com cuidado, de sistemas backend e nuvem a IA e tudo que existe entre eles.'
-                : 'Building thoughtful software across backend systems, cloud, AI, and everything in between.'}
+                ? 'Construo sistemas backend, infraestrutura em nuvem e ferramentas de IA - e escrevo sobre o que aprendo no caminho.'
+                : 'I build backend systems, cloud infrastructure and AI tooling - and write about what I learn along the way.'}
             </p>
           </div>
         </motion.div>
@@ -176,7 +179,7 @@ function FocusInWord({
             visible: { opacity: 1, filter: 'blur(0px)', scale: 1 },
           }}
           transition={{ duration: reducedMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block will-change-[filter,opacity,transform]"
+          className="hero-letter inline-block will-change-[filter,opacity,transform]"
         >
           {letter}
         </motion.span>
