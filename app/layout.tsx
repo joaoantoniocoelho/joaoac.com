@@ -85,11 +85,11 @@ const jsonLd = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'João Coelho | Senior Software Engineer - Backend, Cloud & AI',
+    default: 'João Coelho | Software, systems & products',
     template: '%s | João Coelho',
   },
   description:
-    'Senior software engineer at ADP writing about backend systems, cloud infrastructure and AI-powered developer tooling. Previously SAP and fintech.',
+    'Software engineer at ADP, previously SAP and Bazk. I build backend systems, AI tools, and products of my own, and write about what I learn.',
   authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
   alternates: {
     canonical: '/',
@@ -104,15 +104,15 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: 'en_US',
     alternateLocale: ['pt_BR'],
-    title: 'João Coelho | Senior Software Engineer',
-    description: 'Backend systems, cloud infrastructure and AI-powered developer tooling.',
+    title: 'João Coelho | Software, systems & products',
+    description: 'Building backend systems, AI tools, and products of my own. Currently at ADP; previously SAP and Bazk.',
     images: [{ url: '/og.png', width: 1200, height: 630, alt: 'João Coelho - Senior Software Engineer' }],
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@joaoac_dev',
-    title: 'João Coelho | Senior Software Engineer',
-    description: 'Backend systems, cloud infrastructure and AI-powered developer tooling.',
+    title: 'João Coelho | Software, systems & products',
+    description: 'Building backend systems, AI tools, and products of my own. Currently at ADP; previously SAP and Bazk.',
     images: ['/og.png'],
   },
 };

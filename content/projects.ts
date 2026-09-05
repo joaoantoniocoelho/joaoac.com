@@ -38,11 +38,11 @@ export const projects: Project[] = [
     },
     decisions: {
       en: [
-        'Cards are questions that force recall, not highlighted excerpts - the product bet against "just paste it into ChatGPT".',
+        'I chose question-and-answer cards to help students practice recall, rather than reread excerpts.',
         'AI-added content is always labeled so students can tell source material from complement.',
       ],
       'pt-BR': [
-        'Cards são perguntas que exigem recuperar a informação, não trechos recortados - a aposta do produto contra o "joga no ChatGPT".',
+        'Escolhi cards de pergunta e resposta para exercitar a memória, em vez de apenas reler trechos do material.',
         'Conteúdo adicionado pela IA é sempre rotulado para o estudante distinguir material original de complemento.',
       ],
     },
@@ -71,11 +71,11 @@ export const projects: Project[] = [
     },
     decisions: {
       en: [
-        'Deliberately no "safety score": the product shows observable facts and distances and refuses to turn them into a single number.',
+        'I left out a "safety score": observable facts and distances help compare locations, but do not establish how safe a place is.',
         'Reports warn when OSM coverage is thin instead of hiding data gaps.',
       ],
       'pt-BR': [
-        'Sem "nota de segurança" de propósito: o produto mostra fatos e distâncias observáveis e se recusa a reduzi-los a um número.',
+        'Optei por não dar uma "nota de segurança": fatos e distâncias ajudam a comparar locais, mas não determinam se um lugar é seguro.',
         'O relatório avisa quando a cobertura do OSM é baixa em vez de esconder a falta de dados.',
       ],
     },

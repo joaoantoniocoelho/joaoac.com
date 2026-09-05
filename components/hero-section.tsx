@@ -97,7 +97,7 @@ export function HeroSection() {
             transition={{ ...revealTransition, delay: 0.15 }}
             className="h-px w-8 origin-left bg-sky-300/60"
           />
-          {pt ? 'Engenheiro de Software Sênior · Porto Alegre, Brasil' : 'Senior Software Engineer · Porto Alegre, Brazil'}
+          {pt ? 'Engenheiro de software · Porto Alegre, Brasil' : 'Software engineer · Porto Alegre, Brazil'}
         </motion.div>
 
         <h1 aria-label="João Coelho." className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.045em] text-white">
@@ -120,12 +120,20 @@ export function HeroSection() {
           transition={{ ...revealTransition, delay: 0.48 }}
           className="mx-auto mt-12 flex max-w-2xl flex-col items-center gap-8 border-t border-white/10 pt-8 text-center md:mt-16 md:pt-10"
         >
+          <div className="flex items-end justify-center gap-8">
+            <p className="max-w-xl text-base leading-7 text-zinc-300">
+              {pt
+                ? 'De sistemas de pagamento a ferramentas de IA, gosto de entender como tudo funciona e levar ideias à produção. Hoje na ADP, também construindo meus próprios produtos.'
+                : 'From payment systems to AI tools, I like understanding how things work and taking ideas into production. Currently at ADP, also building products of my own.'}
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="#blog"
+              href="#projects"
               className="pressable focus-ring group inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black"
             >
-              {pt ? 'Ler o blog' : 'Read the blog'}
+              {pt ? 'Conhecer os produtos' : 'Explore my products'}
               <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
@@ -136,13 +144,7 @@ export function HeroSection() {
             </a>
           </div>
 
-          <div className="flex items-end justify-center gap-8">
-            <p className="max-w-xl text-sm leading-7 text-zinc-500">
-              {pt
-                ? 'Construo sistemas backend, infraestrutura em nuvem e ferramentas de IA - e escrevo sobre o que aprendo no caminho.'
-                : 'I build backend systems, cloud infrastructure and AI tooling - and write about what I learn along the way.'}
-            </p>
-          </div>
+
         </motion.div>
       </div>
     </section>

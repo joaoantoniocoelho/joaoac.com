@@ -30,13 +30,13 @@ export function BlogSection({ posts }: { posts: PostSummary[] }) {
               </div>
             </div>
             <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.025em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
-              {pt ? 'Sobre o que tenho escrito' : <>Things I&apos;ve been writing about</>}
+              {pt ? 'O que estou aprendendo' : <>What I&apos;m learning</>}
               <span className="text-amber-300">.</span>
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400">
               {pt
-                ? 'Notas sobre engenharia backend, desenvolvimento assistido por IA e segurança de aplicações. Mais em breve.'
-                : 'Notes on backend engineering, AI-assisted development and application security. More on the way.'}
+                ? 'Escrevo para organizar o que aprendo sobre backend, desenvolvimento com IA e segurança de aplicações.'
+                : 'I write to make sense of what I learn about backend systems, development with AI, and application security.'}
             </p>
           </div>
           <Link

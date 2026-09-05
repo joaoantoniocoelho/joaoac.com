@@ -28,7 +28,7 @@ export default function NotFound() {
               </div>
 
               <p className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-zinc-600">
-                {pt ? 'Rota não encontrada' : 'Route not found'}
+                {pt ? 'Página não encontrada' : 'Page not found'}
               </p>
               <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-tight text-white sm:text-6xl md:text-8xl">
                 {pt ? 'Esta página não existe' : <>This page doesn&apos;t exist</>}
@@ -38,7 +38,7 @@ export default function NotFound() {
 
             <div className="max-w-md lg:pb-2">
               <p className="text-base leading-8 text-zinc-400 md:text-lg">
-                {pt ? 'O blog existe.' : 'The blog does.'}
+                {pt ? 'Você pode voltar ao início ou explorar os artigos e minha experiência.' : 'You can head home or explore my writing and experience.'}
               </p>
 
               <div className="mt-9 flex flex-wrap gap-3">

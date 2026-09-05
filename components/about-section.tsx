@@ -82,7 +82,7 @@ export function AboutSection() {
           <div className="grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:gap-24">
             <div className="max-w-3xl">
               <h2 className="mb-10 text-4xl font-bold leading-[0.98] tracking-[-0.025em] text-white md:text-6xl lg:text-7xl">
-                {pt ? 'Movido pela curiosidade' : 'Built around curiosity'}<span className="text-sky-300">.</span>
+                {pt ? 'Gosto de entender o porquê' : 'I like knowing why'}<span className="text-sky-300">.</span>
               </h2>
 
               <div className="space-y-6 text-base leading-8 text-zinc-300 md:text-lg md:leading-9">
@@ -104,18 +104,18 @@ export function AboutSection() {
                 </div>
                 <p>
                   {pt
-                    ? 'Sou principalmente um cara de backend, mas gosto de participar onde quer que esteja o problema. Arquitetura, APIs, nuvem, bancos de dados, IA, bugs estranhos e sistemas que precisam escalar: é esse tipo de coisa que costuma chamar minha atenção.'
-                    : <>I&apos;m mostly a backend guy, but I like being involved wherever the problem is. Architecture, APIs, cloud, databases, AI, weird bugs, systems that need to scale: that&apos;s usually the kind of stuff that gets my attention.</>}
+                    ? 'Meu foco é backend, sistemas distribuídos e infraestrutura. Já trabalhei com pagamentos na Bazk, compras na SAP e hoje construo ferramentas de IA na ADP. Também trabalho com React e Flutter quando o produto precisa.'
+                    : <>My focus is backend, distributed systems, and infrastructure. I&apos;ve worked on payments at Bazk, procurement at SAP, and now AI tools at ADP. I also work with React and Flutter when the product needs it.</>}
                 </p>
                 <p>
                   {pt
-                    ? 'Gosto muito de entender como as coisas funcionam por baixo dos panos e transformar problemas confusos em algo mais simples e fácil de manter. Também gosto de construir do zero, especialmente quando há espaço para experimentar, tomar decisões e ajudar a moldar o produto.'
-                    : <>I really enjoy understanding how things work under the hood and turning messy problems into something simpler and easier to maintain. I also like building things from scratch, especially when there&apos;s room to experiment, make decisions, and shape the product along the way.</>}
+                    ? 'Gosto de investigar o que acontece por baixo das abstrações e escolher soluções que façam sentido para o problema e sejam simples de manter. Nos meus produtos, Revisa Aí e Ao Redor, cuido da ideia, da arquitetura e da interface até colocar tudo no ar.'
+                    : <>I like looking beneath the abstractions and choosing solutions that fit the problem and stay easy to maintain. For my own products, Revisa Aí and Ao Redor, I take care of the idea, architecture, and interface through to launch.</>}
                 </p>
                 <p>
                   {pt
-                    ? 'Ultimamente, tenho dedicado bastante tempo a explorar IA, agentes, LLMs, ferramentas para desenvolvedores e cibersegurança. Também começo em outubro de 2026 um MBA em Cibersegurança na USP/Esalq, então esse tema tem ocupado uma parte cada vez maior dos meus estudos.'
-                    : <>Lately, I&apos;ve been spending a lot of time exploring AI, agents, LLMs, developer tooling, and cybersecurity. I&apos;m also starting an MBA in Cybersecurity at USP/Esalq in October 2026, so that&apos;s becoming a bigger part of what I&apos;m studying and thinking about.</>}
+                    ? 'Tenho explorado como IA, LLMs e agentes mudam o dia a dia de desenvolvimento, e escrevo sobre o que aprendo. Cibersegurança também está nos meus estudos: começo um MBA na USP/Esalq em outubro de 2026.'
+                    : <>I&apos;m exploring how AI, LLMs, and agents change everyday development, and writing about what I learn. I&apos;m also studying cybersecurity, with an MBA at USP/Esalq starting in October 2026.</>}
                 </p>
                 <p>
                   {pt

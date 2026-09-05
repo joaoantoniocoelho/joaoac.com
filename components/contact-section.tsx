@@ -58,16 +58,16 @@ export function ContactSection() {
               >
                 {pt ? (
                   <>
-                    Vamos criar algo{' '}
+                    Vamos{' '}
                     <span className="sheen-text" data-sheen={isHeadingInView ? 'on' : undefined}>
-                      memorável
+                      conversar
                     </span>
                   </>
                 ) : (
                   <>
-                    Let&apos;s make it worth{' '}
+                    Let&apos;s{' '}
                     <span className="sheen-text" data-sheen={isHeadingInView ? 'on' : undefined}>
-                      remembering
+                      talk
                     </span>
                   </>
                 )}
@@ -99,8 +99,8 @@ export function ContactSection() {
               </h2>
               <p className="mt-5 max-w-xl text-sm leading-7 text-zinc-400 md:text-base">
                 {pt
-                  ? 'Contratando para uma vaga sênior de engenharia, quer conversar sobre algo que escrevi ou tem um problema difícil que não sai da cabeça? Eu leio todas as mensagens.'
-                  : 'Hiring for a senior engineering role, want to talk about something I wrote, or have a hard problem you can\'t stop thinking about? I read every message.'}
+                  ? 'Quer trocar ideias sobre um produto, discutir algo que escrevi ou conversar sobre uma oportunidade de trabalho? Me mande uma mensagem. Eu leio todas.'
+                  : 'Have a product idea, a question about something I wrote, or a role in mind? Send me a message. I read every one.'}
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-2.5">
                 <a

@@ -31,13 +31,13 @@ export function ProjectsSection() {
               </div>
             </div>
             <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.025em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
-              {pt ? 'Coisas que construí do zero' : <>Things I&apos;ve built from scratch</>}
+              {pt ? 'Produtos que estou construindo' : <>Products I&apos;m building</>}
               <span className="text-violet-300">.</span>
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400">
               {pt
-                ? 'Produtos que levei da ideia à produção sozinho - arquitetura, pipelines de IA, dados, interface e tudo no meio. Ambos estão no ar, ambos estão no começo.'
-                : 'Products I took from idea to production on my own - architecture, AI pipelines, data, UI and everything in between. Both are live, both are early.'}
+                ? 'Revisa Aí e Ao Redor são produtos que construo por conta própria. Os dois estão no ar e no começo: cuido das decisões de produto, arquitetura, dados, IA e interface.'
+                : 'Revisa Aí and Ao Redor are products I build independently. Both are live and early: I handle the product decisions, architecture, data, AI, and interface.'}
             </p>
           </div>
           <Link

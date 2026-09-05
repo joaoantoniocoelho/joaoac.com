@@ -11,8 +11,8 @@ export function blogIndexMetadata(locale: Locale): Metadata {
   return {
     title: 'Blog',
     description: isPt
-      ? 'Notas sobre engenharia backend, desenvolvimento assistido por IA e segurança de aplicações.'
-      : 'Notes on backend engineering, AI-assisted development and application security.',
+      ? 'Escrevo para organizar o que aprendo sobre backend, desenvolvimento com IA e segurança de aplicações.'
+      : 'I write to make sense of what I learn about backend systems, development with AI, and application security.',
     alternates: {
       canonical: path,
       languages: {
@@ -51,14 +51,14 @@ export function BlogIndex({ locale }: { locale: Locale }) {
               Blog
             </div>
             <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-tight text-white sm:text-6xl md:text-8xl">
-              {pt ? 'Sobre o que tenho escrito' : <>Things I&apos;ve been writing about</>}
+              {pt ? 'O que estou aprendendo' : <>What I&apos;m learning</>}
               <span className="text-amber-300">.</span>
             </h1>
           </div>
           <p className="max-w-md text-base leading-8 text-zinc-400 md:text-lg">
             {pt
-              ? 'Notas sobre engenharia backend, desenvolvimento assistido por IA e segurança de aplicações.'
-              : 'Notes on backend engineering, AI-assisted development and application security.'}
+              ? 'Escrevo para organizar o que aprendo sobre backend, desenvolvimento com IA e segurança de aplicações.'
+              : 'I write to make sense of what I learn about backend systems, development with AI, and application security.'}
           </p>
         </header>
 

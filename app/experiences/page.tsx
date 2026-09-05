@@ -46,15 +46,15 @@ export default function ExperiencesPage() {
               {pt ? 'Linha do tempo completa' : 'Full timeline'}
             </div>
             <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-tight text-white sm:text-6xl md:text-8xl">
-              {pt ? 'O trabalho por trás do trabalho' : 'The work behind the work'}<span className="text-emerald-300">.</span>
+              {pt ? 'O que construí em cada equipe' : 'What I built with each team'}<span className="text-emerald-300">.</span>
             </h1>
           </div>
 
           <div className="max-w-md lg:pb-2">
             <p className="text-base leading-8 text-zinc-400 md:text-lg">
               {pt
-                ? 'As equipes, os produtos, as decisões técnicas e as lições que moldaram minha forma de pensar sobre software.'
-                : 'The teams, products, technical decisions, and lessons that have shaped the way I think about software.'}
+                ? 'De um agregador de notícias a sistemas de pagamento e ferramentas de IA. Aqui estão os problemas em que trabalhei e as decisões que ajudei a tomar.'
+                : 'From a news aggregator to payment systems and AI tools. These are the problems I worked on and the decisions I helped make.'}
             </p>
             <div className="mt-8 flex items-center gap-4 text-xs uppercase tracking-[0.16em] text-zinc-600">
               <span>{experiences.length} {pt ? 'cargos' : 'roles'}</span>

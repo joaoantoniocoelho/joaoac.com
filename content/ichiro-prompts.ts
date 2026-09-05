@@ -167,7 +167,7 @@ export const prompts: Record<PromptId, Prompt> = {
   contact: {
     question: 'How can I reach him?',
     answer:
-      'Email is the most direct route, and he reads every message. Senior backend or AI engineering roles, questions about something he wrote, and genuinely hard problems get the fastest replies.',
+      'Email is the most direct route, and he reads every message. Product ideas, questions about his writing, and work opportunities are all welcome.',
     links: [
       { label: 'Send an email', action: 'reveal-email' },
       { label: 'Open LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
@@ -291,7 +291,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
   contact: {
     question: 'Como posso falar com ele?',
     answer:
-      'E-mail é o caminho mais direto, e ele lê todas as mensagens. Vagas sênior de backend ou engenharia de IA, perguntas sobre algo que ele escreveu e problemas difíceis de verdade recebem resposta mais rápido.',
+      'E-mail é o caminho mais direto, e ele lê todas as mensagens. Ideias de produto, perguntas sobre os textos e oportunidades de trabalho são bem-vindas.',
     links: [
       { label: 'Enviar um e-mail', action: 'reveal-email' },
       { label: 'Abrir LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },

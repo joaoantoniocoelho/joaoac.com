@@ -45,8 +45,8 @@ export function ExperienceSection() {
             </h2>
             <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">
               {pt
-                ? 'Algumas das equipes, produtos e problemas que moldaram a forma como desenvolvo software hoje.'
-                : 'A few of the teams, products, and problems that shaped how I build software today.'}
+                ? 'Hoje construo ferramentas de IA na ADP. Antes, trabalhei com compras na SAP e sistemas de pagamento na Bazk.'
+                : 'Today I build AI tools at ADP. Before that, I worked on procurement at SAP and payment systems at Bazk.'}
             </p>
             <a
               href={localizedPath('/experiences', locale)}
