@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FiCode, FiCompass, FiCpu } from 'react-icons/fi';
 import { useLocale } from '@/lib/i18n';
@@ -85,11 +86,22 @@ export function AboutSection() {
               </h2>
 
               <div className="space-y-6 text-base leading-8 text-zinc-300 md:text-lg md:leading-9">
-                <p className="text-xl leading-9 text-zinc-100 md:text-2xl md:leading-10">
+                <div className="grid grid-cols-[minmax(7.5rem,9.5rem)_minmax(0,1fr)] items-stretch gap-4 md:flex md:items-center md:gap-6">
+                  <div className="relative min-h-[7.5rem] overflow-hidden rounded-2xl border border-white/10 md:h-40 md:w-40 md:min-h-0 md:shrink-0">
+                    <Image
+                      src="/avatar.png"
+                      alt={pt ? 'Avatar de João Coelho em pixel art' : 'Pixel art avatar of João Coelho'}
+                      fill
+                      sizes="(min-width: 768px) 160px, 152px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="min-w-0 self-center text-xl leading-9 text-zinc-100 md:text-2xl md:leading-10">
                   {pt
                     ? 'Sou o João. Construo software, quebro coisas, conserto e quase sempre aprendo algo novo no processo.'
                     : <>I&apos;m João. I build software, break things, fix them, and usually end up learning something new in the process.</>}
-                </p>
+                  </p>
+                </div>
                 <p>
                   {pt
                     ? 'Sou principalmente um cara de backend, mas gosto de participar onde quer que esteja o problema. Arquitetura, APIs, nuvem, bancos de dados, IA, bugs estranhos e sistemas que precisam escalar: é esse tipo de coisa que costuma chamar minha atenção.'
