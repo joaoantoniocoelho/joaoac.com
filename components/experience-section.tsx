@@ -40,7 +40,7 @@ export function ExperienceSection() {
               </div>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-700">02</span>
             </div>
-            <h2 className="text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-white md:text-6xl">
+            <h2 className="text-4xl font-bold leading-[0.98] tracking-[-0.025em] text-white md:text-6xl">
               {pt ? 'Onde trabalhei' : <>Where I&apos;ve worked</>}<span className="text-emerald-300">.</span>
             </h2>
             <p className="mt-6 max-w-sm text-base leading-7 text-zinc-400">

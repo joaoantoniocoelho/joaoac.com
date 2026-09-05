@@ -100,7 +100,7 @@ export function HeroSection() {
           {pt ? 'Engenheiro de Software Sênior · Porto Alegre, Brasil' : 'Senior Software Engineer · Porto Alegre, Brazil'}
         </motion.div>
 
-        <h1 aria-label="João Coelho." className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.065em] text-white">
+        <h1 aria-label="João Coelho." className="mx-auto max-w-6xl text-center text-[clamp(4.25rem,12vw,10rem)] font-bold leading-[0.82] tracking-[-0.045em] text-white">
           <FocusInWord word="João" delay={0.12} reducedMotion={Boolean(prefersReducedMotion)} />
           <FocusInWord word="Coelho" delay={0.32} reducedMotion={Boolean(prefersReducedMotion)}>
             <motion.span

@@ -30,7 +30,7 @@ export function ProjectsSection() {
                 {pt ? 'Projetos pessoais' : 'Side projects'}
               </div>
             </div>
-            <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
+            <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.025em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
               {pt ? 'Coisas que construí do zero' : <>Things I&apos;ve built from scratch</>}
               <span className="text-violet-300">.</span>
             </h2>

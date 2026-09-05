@@ -81,7 +81,7 @@ export function AboutSection() {
 
           <div className="grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:gap-24">
             <div className="max-w-3xl">
-              <h2 className="mb-10 text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-white md:text-6xl lg:text-7xl">
+              <h2 className="mb-10 text-4xl font-bold leading-[0.98] tracking-[-0.025em] text-white md:text-6xl lg:text-7xl">
                 {pt ? 'Movido pela curiosidade' : 'Built around curiosity'}<span className="text-sky-300">.</span>
               </h2>
 

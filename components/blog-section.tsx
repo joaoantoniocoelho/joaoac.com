@@ -29,7 +29,7 @@ export function BlogSection({ posts }: { posts: PostSummary[] }) {
                 03 · Blog
               </div>
             </div>
-            <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
+            <h2 className="max-w-4xl break-words text-3xl font-bold leading-[1.02] tracking-[-0.025em] text-white sm:text-4xl md:text-6xl lg:text-7xl">
               {pt ? 'Sobre o que tenho escrito' : <>Things I&apos;ve been writing about</>}
               <span className="text-amber-300">.</span>
             </h2>

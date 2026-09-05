@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { Inter } from 'next/font/google';
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
@@ -22,7 +22,19 @@ const IchiroGuide = dynamic(
   { ssr: false },
 );
 
-const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const plexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-ibm-plex-sans',
+  display: 'swap',
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
+});
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -124,7 +136,7 @@ export default function RootLayout({
           />
         ))}
       </head>
-      <body className={inter.className}>
+      <body className={`${plexSans.variable} ${plexMono.variable} font-sans`}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AmbientBackground />

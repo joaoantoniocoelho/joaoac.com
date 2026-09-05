@@ -54,7 +54,7 @@ export function ContactSection() {
               </div>
               <h2
                 ref={headingRef}
-                className="group/sheen max-w-3xl text-3xl font-bold leading-[1.05] tracking-[-0.04em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
+                className="group/sheen max-w-3xl text-3xl font-bold leading-[1.05] tracking-[-0.025em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
               >
                 {pt ? (
                   <>
