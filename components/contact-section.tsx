@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaXTwitter } from 'react-icons/fa6';
 import { FiArrowUpRight, FiCheck, FiCopy, FiMail } from 'react-icons/fi';
 import { copyToClipboard } from '@/lib/copy-to-clipboard';
 import { useLocale } from '@/lib/i18n';
@@ -10,9 +11,9 @@ import { useLocale } from '@/lib/i18n';
 const SHEEN = { delay: 0.3, duration: 1.5 };
 
 const socialLinks = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/joaoac' },
-  { label: 'GitHub', href: 'https://github.com/joaoantoniocoelho' },
-  { label: 'X', href: 'https://x.com/joaoac_dev' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/joaoac', icon: FaLinkedin },
+  { label: 'GitHub', href: 'https://github.com/joaoantoniocoelho', icon: FaGithub },
+  { label: 'X', href: 'https://x.com/joaoac_dev', icon: FaXTwitter },
 ];
 
 export function ContactSection() {
@@ -136,7 +137,10 @@ export function ContactSection() {
                   rel="noopener noreferrer"
                   className="pressable focus-ring group flex items-center justify-between border-t border-white/10 py-3 text-sm text-zinc-400 transition-colors hover:text-white"
                 >
-                  {link.label}
+                  <span className="inline-flex items-center gap-2.5">
+                    <link.icon className="h-4 w-4" aria-hidden="true" />
+                    {link.label}
+                  </span>
                   <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </a>
               ))}
