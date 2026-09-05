@@ -2,7 +2,7 @@
 
 Site pessoal e profissional com blog. Sem freelance, sem foto, sem gráficos de skill.
 
-**Premissas técnicas:** Next.js App Router na Vercel, bilíngue (EN em `/`, PT-BR em `/pt-BR`), tema escuro, mascote "Byte", command menu.
+**Premissas técnicas:** Next.js App Router na Vercel, bilíngue (EN em `/`, PT-BR em `/pt-BR`), tema escuro, mascote "Ichiro", command menu.
 
 **Objetivo em uma frase:** quem abrir o site entende em 30 segundos que você é engenheiro sênior de backend/cloud/IA, encontra o currículo em um clique, vê dois produtos que você levou do zero à produção e percebe que você escreve sobre o que faz.
 
@@ -425,7 +425,7 @@ Coberto em 1.4.
 
 - Hero: letras do nome começam com `opacity: 0` no SSR. Respeitar `prefers-reduced-motion` (nome estático) e garantir texto visível sem JS (estado inicial visível; classe de animação aplicada após hidratação).
 - Lighthouse mobile em `/`, `/experiences`, `/projects`. Alvos: LCP < 2,5 s, CLS < 0,1, a11y ≥ 95, SEO 100.
-- Candidatos a `dynamic(() => import(...), { ssr: false })` com carregamento tardio: `ByteGuide`, `DeveloperCommandMenu`, `AmbientBackground`.
+- Candidatos a `dynamic(() => import(...), { ssr: false })` com carregamento tardio: `IchiroGuide`, `DeveloperCommandMenu`, `AmbientBackground`.
 - Contraste do texto secundário (datas, descriptions, tags) no tema escuro.
 - Foco visível e ordem de tabulação no menu e no command menu.
 - Fontes: manter um único `woff2` com preload; `font-display: swap`.

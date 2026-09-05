@@ -15,8 +15,8 @@ export type PromptId =
   | 'not-on-site'
   | 'random-fact'
   | 'site-secret'
-  | 'why-rabbit'
-  | 'byte-secret'
+  | 'meet-ichiro'
+  | 'ichiro-secret'
   | 'contact';
 
 export type GuideLink = {
@@ -33,7 +33,7 @@ export type Prompt = {
   next: PromptId[];
 };
 
-export const initialPrompts: PromptId[] = ['now', 'experience', 'resume', 'why-rabbit'];
+export const initialPrompts: PromptId[] = ['now', 'experience', 'resume', 'meet-ichiro'];
 
 export const discoveryOrder: PromptId[] = [
   'stack',
@@ -75,7 +75,7 @@ export const prompts: Record<PromptId, Prompt> = {
   },
   resume: {
     question: 'Can I get his resume?',
-    answer: 'One page, no progress bars, no photo of anyone but me on this site. Here it is.',
+    answer: 'One page, no progress bars. I inspected it between naps. Here it is.',
     links: [{ label: 'Download resume', href: '/resume' }],
     next: ['experience', 'work-style', 'contact', 'projects'],
   },
@@ -126,7 +126,7 @@ export const prompts: Record<PromptId, Prompt> = {
   'away-from-keyboard': {
     question: 'What happens away from the keyboard?',
     answer:
-      'Running, videogames, or time with his dogs. Debugging occasionally continues in the background anyway.',
+      'Running, videogames, or time with us dogs. I personally supervise the last one. Debugging occasionally continues in the background anyway.',
     next: ['random-fact', 'not-on-site', 'site-secret', 'contact'],
   },
   'ideal-project': {
@@ -139,28 +139,28 @@ export const prompts: Record<PromptId, Prompt> = {
     question: "Tell me something that isn't on the site.",
     answer:
       'He went from intern to Developer II in two years at his first fintech, and defended his thesis with the highest grade while shipping at ADP. He does not bring this up. I do.',
-    next: ['experience', 'resume', 'random-fact', 'why-rabbit'],
+    next: ['experience', 'resume', 'random-fact', 'meet-ichiro'],
   },
   'random-fact': {
     question: 'Give me a random João fact.',
     answer:
       'His definition of a quick experiment is optimistic. It usually has a domain name before it has a README.',
-    next: ['projects', 'not-on-site', 'away-from-keyboard', 'byte-secret'],
+    next: ['projects', 'not-on-site', 'away-from-keyboard', 'ichiro-secret'],
   },
   'site-secret': {
     question: 'Is anything hidden on this site?',
     answer:
       'Press / or Cmd + K. João left a quick navigation panel there for people who test keyboard shortcuts before reading instructions.',
-    next: ['why-rabbit', 'byte-secret', 'tech-opinion', 'contact'],
+    next: ['meet-ichiro', 'ichiro-secret', 'tech-opinion', 'contact'],
   },
-  'why-rabbit': {
-    question: 'Why are you a rabbit?',
+  'meet-ichiro': {
+    question: 'So, who are you?',
     answer:
-      "Because João's last name, Coelho, means rabbit in Portuguese. I am part guide, part surname joke, and the only one here allowed to have ears this dramatic.",
-    next: ['byte-secret', 'not-on-site', 'site-secret', 'now'],
+      "I'm Ichiro, João's real Shiba Inu. I traded supervising the house for supervising this site. The pixel version is quieter but just as opinionated, and the monkey is my official work equipment.",
+    next: ['ichiro-secret', 'not-on-site', 'site-secret', 'now'],
   },
-  'byte-secret': {
-    question: "What shouldn't Byte tell me?",
+  'ichiro-secret': {
+    question: "What shouldn't Ichiro tell me?",
     answer: "The browser tab count. I've seen the number. My clearance level ends there.",
     next: ['random-fact', 'projects', 'site-secret', 'contact'],
   },
@@ -172,7 +172,7 @@ export const prompts: Record<PromptId, Prompt> = {
       { label: 'Send an email', action: 'reveal-email' },
       { label: 'Open LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
     ],
-    next: ['resume', 'experience', 'now', 'why-rabbit'],
+    next: ['resume', 'experience', 'now', 'meet-ichiro'],
   },
 };
 
@@ -199,7 +199,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
   },
   resume: {
     question: 'Posso ver o currículo dele?',
-    answer: 'Uma página, sem barras de progresso e sem foto de ninguém além de mim neste site. Aqui está.',
+    answer: 'Uma página, sem barras de progresso. Eu inspecionei tudo entre um cochilo e outro. Aqui está.',
     links: [{ label: 'Baixar currículo', href: '/resume' }],
     next: ['experience', 'work-style', 'contact', 'projects'],
   },
@@ -250,7 +250,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
   'away-from-keyboard': {
     question: 'O que acontece longe do teclado?',
     answer:
-      'Corrida, videogames ou tempo com os cachorros. O debugging às vezes continua em segundo plano mesmo assim.',
+      'Corrida, videogames ou tempo com nós, os cachorros. Eu supervisiono pessoalmente a última parte. O debugging às vezes continua em segundo plano mesmo assim.',
     next: ['random-fact', 'not-on-site', 'site-secret', 'contact'],
   },
   'ideal-project': {
@@ -263,28 +263,28 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
     question: 'Conte algo que não está no site.',
     answer:
       'Ele foi de estagiário a Developer II em dois anos na primeira fintech, e defendeu o TCC com nota máxima enquanto entregava na ADP. Ele não comenta isso. Eu comento.',
-    next: ['experience', 'resume', 'random-fact', 'why-rabbit'],
+    next: ['experience', 'resume', 'random-fact', 'meet-ichiro'],
   },
   'random-fact': {
     question: 'Conte uma curiosidade aleatória sobre o João.',
     answer:
       'A definição dele de experimento rápido é otimista. Normalmente tem domínio registrado antes de ter README.',
-    next: ['projects', 'not-on-site', 'away-from-keyboard', 'byte-secret'],
+    next: ['projects', 'not-on-site', 'away-from-keyboard', 'ichiro-secret'],
   },
   'site-secret': {
     question: 'Existe algo escondido neste site?',
     answer:
       'Pressione / ou Cmd + K. O João deixou ali um painel de navegação rápida para quem testa atalhos de teclado antes de ler as instruções.',
-    next: ['why-rabbit', 'byte-secret', 'tech-opinion', 'contact'],
+    next: ['meet-ichiro', 'ichiro-secret', 'tech-opinion', 'contact'],
   },
-  'why-rabbit': {
-    question: 'Por que você é um coelho?',
+  'meet-ichiro': {
+    question: 'Então, quem é você?',
     answer:
-      'Porque o sobrenome do João é Coelho. Sou parte guia, parte piada com o sobrenome e o único aqui autorizado a ter orelhas tão dramáticas.',
-    next: ['byte-secret', 'not-on-site', 'site-secret', 'now'],
+      'Sou o Ichiro, o shiba inu do João na vida real. Troquei a supervisão da casa pela supervisão deste site. A versão em pixels é mais silenciosa, mas igualmente opinativa, e o macaquinho é meu equipamento oficial de trabalho.',
+    next: ['ichiro-secret', 'not-on-site', 'site-secret', 'now'],
   },
-  'byte-secret': {
-    question: 'O que o Byte não deveria me contar?',
+  'ichiro-secret': {
+    question: 'O que o Ichiro não deveria me contar?',
     answer: 'O número de abas do navegador. Eu vi o número. Meu nível de acesso termina aí.',
     next: ['random-fact', 'projects', 'site-secret', 'contact'],
   },
@@ -296,6 +296,6 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
       { label: 'Enviar um e-mail', action: 'reveal-email' },
       { label: 'Abrir LinkedIn', href: 'https://linkedin.com/in/joaoac', external: true },
     ],
-    next: ['resume', 'experience', 'now', 'why-rabbit'],
+    next: ['resume', 'experience', 'now', 'meet-ichiro'],
   },
 };

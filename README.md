@@ -16,7 +16,7 @@ It is designed to feel expressive without becoming distracting: motion supports 
 - Animated professional timeline with a dedicated experience page
 - MDX blog at `/blog`, with RSS at `/feed.xml`
 - Active-section navigation and keyboard command menu (`/` or `⌘ K`)
-- Byte, an animated rabbit guide with a predefined conversational flow
+- Ichiro, João's real Shiba Inu, as an animated pixel-art guide with a predefined conversational flow
 - Accessible motion through `prefers-reduced-motion`
 - Responsive interactions designed for keyboard, pointer, and touch
 
@@ -55,9 +55,9 @@ No environment variables are required for local development.
 ```text
 app/          Routes, metadata, and global styles
 components/   Page sections, interactions, and shared UI
-content/      Blog posts (MDX) and Byte prompts
+content/      Blog posts (MDX) and Ichiro prompts
 data/         Professional experience content
-public/       Static images and Byte sprites
+public/       Static images and Ichiro sprites
 lib/          Shared utilities
 ```
 

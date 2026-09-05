@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { DocumentLocale } from '@/components/document-locale';
 import { SITE_AUTHOR, SITE_NAME, SITE_URL } from '@/lib/site';
-import { bytePreloadAssets } from '@/lib/byte-assets';
+import { ichiroPreloadAssets } from '@/lib/ichiro-assets';
 
 const AmbientBackground = dynamic(
   () => import('@/components/ambient-background').then((mod) => mod.AmbientBackground),
@@ -17,8 +17,8 @@ const DeveloperCommandMenu = dynamic(
   () => import('@/components/developer-command-menu').then((mod) => mod.DeveloperCommandMenu),
   { ssr: false },
 );
-const ByteGuide = dynamic(
-  () => import('@/components/byte-guide').then((mod) => mod.ByteGuide),
+const IchiroGuide = dynamic(
+  () => import('@/components/ichiro-guide').then((mod) => mod.IchiroGuide),
   { ssr: false },
 );
 
@@ -113,13 +113,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {bytePreloadAssets.map((href, index) => (
+        {ichiroPreloadAssets.map((href, index) => (
           <link
             key={href}
             rel="preload"
             as="image"
             href={href}
-            type="image/webp"
+            type="image/png"
             fetchPriority={index === 0 ? 'high' : 'auto'}
           />
         ))}
@@ -132,7 +132,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <DeveloperCommandMenu />
-          <ByteGuide />
+          <IchiroGuide />
         </ThemeProvider>
         <Analytics />
       </body>

@@ -5,8 +5,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FiArrowUpRight, FiCheck, FiCopy, FiMessageCircle, FiRefreshCw, FiX } from 'react-icons/fi';
-import { ByteMascot, type ByteMood } from '@/components/byte-mascot';
-import { byteAssets } from '@/lib/byte-assets';
+import { IchiroMascot, type IchiroMood } from '@/components/ichiro-mascot';
+import { ichiroAssets } from '@/lib/ichiro-assets';
 import { useLocale, isHomePath } from '@/lib/i18n';
 import {
   discoveryOrder,
@@ -16,12 +16,12 @@ import {
   type GuideLink,
   type Prompt,
   type PromptId,
-} from '@/content/byte-prompts';
+} from '@/content/ichiro-prompts';
 import { CONTACT_EMAIL } from '@/lib/site';
 
 type ChatMessage = {
   id: number;
-  role: 'byte' | 'visitor';
+  role: 'ichiro' | 'visitor';
   text: string;
   links?: GuideLink[];
 };
@@ -29,25 +29,25 @@ type ChatMessage = {
 
 const initialMessage: ChatMessage = {
   id: 0,
-  role: 'byte',
-  text: "Hey, I'm Byte. The rabbit shape isn't random. I know a few things about João that did not fit on the page. Pick a question.",
+  role: 'ichiro',
+  text: "Hey, I'm Ichiro — João's real Shiba Inu and now this site's guide. I know a few things about him that did not fit on the page. Pick a question.",
 };
 
 const initialMessagePtBr: ChatMessage = {
   id: 0,
-  role: 'byte',
-  text: 'Oi, sou o Byte. O formato de coelho não é por acaso. Sei algumas coisas sobre o João que não couberam na página. Escolha uma pergunta.',
+  role: 'ichiro',
+  text: 'Oi, sou o Ichiro — o shiba inu do João na vida real e agora o guia deste site. Sei algumas coisas sobre ele que não couberam na página. Escolha uma pergunta.',
 };
 
 function getNextSuggestions(currentId: PromptId, askedIds: PromptId[], promptSet: Record<PromptId, Prompt>) {
   const asked = new Set(askedIds);
-  const unlocked: PromptId[] = askedIds.length >= 3 ? ['byte-secret'] : [];
+  const unlocked: PromptId[] = askedIds.length >= 3 ? ['ichiro-secret'] : [];
   const candidates = [...promptSet[currentId].next, ...unlocked, ...discoveryOrder];
 
   return Array.from(new Set(candidates)).filter((id) => !asked.has(id)).slice(0, 4);
 }
 
-export function ByteGuide() {
+export function IchiroGuide() {
   const locale = useLocale();
   const pt = locale === 'pt-BR';
   const promptSet = pt ? promptsPtBr : prompts;
@@ -59,7 +59,7 @@ export function ByteGuide() {
   const [suggestions, setSuggestions] = useState<PromptId[]>(initialPrompts);
   const [isTyping, setIsTyping] = useState(false);
   const [isEmailCopied, setIsEmailCopied] = useState(false);
-  const [mascotMood, setMascotMood] = useState<ByteMood>('idle');
+  const [mascotMood, setMascotMood] = useState<IchiroMood>('idle');
   const pathname = usePathname();
   const [isHeroVisible, setIsHeroVisible] = useState(isHomePath(pathname));
   const prefersReducedMotion = useReducedMotion();
@@ -76,7 +76,7 @@ export function ByteGuide() {
   const hasTeasedRef = useRef(false);
   const previousLocaleRef = useRef(locale);
 
-  const cueMascot = useCallback((nextMood: ByteMood, duration?: number) => {
+  const cueMascot = useCallback((nextMood: IchiroMood, duration?: number) => {
     window.clearTimeout(mascotTimerRef.current);
     setMascotMood(nextMood);
 
@@ -233,7 +233,7 @@ export function ByteGuide() {
           ...current,
           {
             id: messageIdRef.current++,
-            role: 'byte',
+            role: 'ichiro',
             text: prompt.answer,
             links: prompt.links,
           },
@@ -279,7 +279,7 @@ export function ByteGuide() {
       ...current,
       {
         id: messageIdRef.current++,
-        role: 'byte',
+        role: 'ichiro',
         text: pt ? `Claro. Você pode enviar um e-mail diretamente para o João em ${CONTACT_EMAIL}.` : `Of course. You can email João directly at ${CONTACT_EMAIL}.`,
         links: [{ label: pt ? 'Copiar e-mail' : 'Copy email', action: 'copy-email' }],
       },
@@ -314,7 +314,7 @@ export function ByteGuide() {
         {isOpen && (
           <motion.section
             role="dialog"
-            aria-label={pt ? 'Byte, um guia sobre o João' : 'Byte, a scripted guide to João'}
+            aria-label={pt ? 'Ichiro, um guia sobre o João' : 'Ichiro, a scripted guide to João'}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
@@ -323,11 +323,11 @@ export function ByteGuide() {
           >
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
               <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-sky-300/20 bg-sky-300/[0.07]">
-                <Image src={byteAssets.idle} alt="" aria-hidden="true" width={40} height={40} className="h-10 w-10 object-contain" />
+                <Image src={ichiroAssets.idle} alt="" aria-hidden="true" width={40} height={40} className="h-10 w-10 object-contain [image-rendering:pixelated]" />
                 <span aria-hidden="true" className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-950 bg-emerald-300" />
               </span>
               <div className="min-w-0 flex-1">
-                <h2 className="text-sm font-semibold text-white">Byte</h2>
+                <h2 className="text-sm font-semibold text-white">Ichiro</h2>
                 <p className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-emerald-300/80">
                   <motion.span
                     aria-hidden="true"
@@ -351,7 +351,7 @@ export function ByteGuide() {
                 type="button"
                 onClick={close}
                 className="pressable focus-ring grid h-8 w-8 place-items-center rounded-full text-zinc-600 transition-colors hover:bg-white/[0.06] hover:text-white"
-                aria-label={pt ? 'Fechar o Byte' : 'Close Byte'}
+                aria-label={pt ? 'Fechar o Ichiro' : 'Close Ichiro'}
               >
                 <FiX className="h-4 w-4" />
               </button>
@@ -369,7 +369,7 @@ export function ByteGuide() {
                     // Only the first bubble of a run is badged; the rest keep
                     // the indent so the column stays straight.
                     (messages[index - 1]?.role === 'visitor' || index === 0 ? (
-                      <ByteAvatar />
+                      <IchiroAvatar />
                     ) : (
                       <span aria-hidden="true" className="h-7 w-7 shrink-0" />
                     ))}
@@ -427,9 +427,9 @@ export function ByteGuide() {
                   initial={prefersReducedMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex items-end justify-start gap-2"
-                  aria-label={pt ? 'Byte está digitando' : 'Byte is typing'}
+                  aria-label={pt ? 'Ichiro está digitando' : 'Ichiro is typing'}
                 >
-                  <ByteAvatar />
+                  <IchiroAvatar />
                   <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.045] px-4 py-3.5">
                     {[0, 1, 2].map((dot) => (
                       <motion.span
@@ -479,13 +479,13 @@ export function ByteGuide() {
             exit={{ opacity: 0, y: 4 }}
             className="focus-ring absolute bottom-3 right-[7.25rem] whitespace-nowrap rounded-full sm:right-[9.25rem] border border-white/[0.12] bg-zinc-950/95 px-3.5 py-2 text-left shadow-xl shadow-black/40 backdrop-blur-xl"
           >
-            <span className="block text-xs font-medium text-zinc-200">{pt ? 'Oi, sou o Byte.' : <>Hey, I&apos;m Byte.</>}</span>
+            <span className="block text-xs font-medium text-zinc-200">{pt ? 'Oi, sou o Ichiro.' : <>Hey, I&apos;m Ichiro.</>}</span>
           </motion.button>
         )}
       </AnimatePresence>
 
       <div className={isOpen ? 'hidden sm:block' : 'block'}>
-        <ByteMascot
+        <IchiroMascot
           buttonRef={launcherRef}
           mood={mascotMood}
           isOpen={isOpen}
@@ -494,8 +494,8 @@ export function ByteGuide() {
             if (mascotMood === 'sleeping') cueMascot('idle');
           }}
           onClick={() => (isOpen ? close() : open())}
-          openLabel={pt ? 'Conversar com o Byte' : 'Talk to Byte'}
-          closeLabel={pt ? 'Fechar o Byte' : 'Close Byte'}
+          openLabel={pt ? 'Conversar com o Ichiro' : 'Talk to Ichiro'}
+          closeLabel={pt ? 'Fechar o Ichiro' : 'Close Ichiro'}
         />
       </div>
       </div>
@@ -503,13 +503,13 @@ export function ByteGuide() {
   );
 }
 
-function ByteAvatar() {
+function IchiroAvatar() {
   return (
     <span
       aria-hidden="true"
       className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full border border-sky-300/20 bg-sky-300/[0.07]"
     >
-      <Image src={byteAssets.idle} alt="" aria-hidden="true" width={28} height={28} className="h-7 w-7 object-contain" />
+      <Image src={ichiroAssets.idle} alt="" aria-hidden="true" width={28} height={28} className="h-7 w-7 object-contain [image-rendering:pixelated]" />
     </span>
   );
 }

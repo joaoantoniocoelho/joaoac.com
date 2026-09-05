@@ -2,18 +2,19 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { BYTE_IMAGE_HEIGHT, BYTE_IMAGE_WIDTH, byteAssets } from '@/lib/byte-assets';
+import { ICHIRO_IMAGE_HEIGHT, ICHIRO_IMAGE_WIDTH, ichiroAssets } from '@/lib/ichiro-assets';
 
-export type ByteMood = 'idle' | 'thinking' | 'greeting' | 'sleeping';
+export type IchiroMood = 'idle' | 'thinking' | 'greeting' | 'sleeping';
 
-const assetByMood: Record<Exclude<ByteMood, 'sleeping'>, string> = {
-  idle: byteAssets.idle,
-  thinking: byteAssets.thinking,
-  greeting: byteAssets.greeting,
+const assetByMood: Record<IchiroMood, string> = {
+  idle: ichiroAssets.idle,
+  thinking: ichiroAssets.thinking,
+  greeting: ichiroAssets.greeting,
+  sleeping: ichiroAssets.sleeping,
 };
 
-type ByteMascotProps = {
-  mood: ByteMood;
+type IchiroMascotProps = {
+  mood: IchiroMood;
   isOpen: boolean;
   compact: boolean;
   onClick: () => void;
@@ -23,7 +24,7 @@ type ByteMascotProps = {
   closeLabel?: string;
 };
 
-export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, openLabel = 'Talk to Byte', closeLabel = 'Close Byte' }: ByteMascotProps) {
+export function IchiroMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, openLabel = 'Talk to Ichiro', closeLabel = 'Close Ichiro' }: IchiroMascotProps) {
   const [isBlinking, setIsBlinking] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const blinkTimerRef = useRef<number>();
@@ -31,11 +32,12 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
 
   useEffect(() => {
     [
-      byteAssets.blink,
-      byteAssets.thinking,
-      byteAssets.greeting,
-      byteAssets.peeking,
-      byteAssets.talking,
+      ichiroAssets.blink,
+      ichiroAssets.thinking,
+      ichiroAssets.greeting,
+      ichiroAssets.peeking,
+      ichiroAssets.talking,
+      ichiroAssets.sleeping,
     ].forEach((source) => {
       const image = new window.Image();
       image.src = source;
@@ -73,14 +75,14 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
   }, [mood, prefersReducedMotion]);
 
   const imageSource = compact
-    ? byteAssets.peeking
+    ? ichiroAssets.peeking
     : isOpen && mood !== 'thinking'
-      ? byteAssets.talking
-      : mood === 'sleeping' || isBlinking
-        ? byteAssets.blink
+      ? ichiroAssets.talking
+      : isBlinking
+        ? ichiroAssets.blink
         : assetByMood[mood];
 
-  const isPriorityImage = imageSource === byteAssets.idle || imageSource === byteAssets.greeting;
+  const isPriorityImage = imageSource === ichiroAssets.idle || imageSource === ichiroAssets.greeting;
 
   const motionProps = prefersReducedMotion
     ? { animate: { opacity: 1, y: 0, rotate: 0, scale: 1 }, transition: { duration: 0 } }
@@ -154,8 +156,8 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
               alt=""
               aria-hidden="true"
               draggable={false}
-              width={BYTE_IMAGE_WIDTH}
-              height={BYTE_IMAGE_HEIGHT}
+              width={ICHIRO_IMAGE_WIDTH}
+              height={ICHIRO_IMAGE_HEIGHT}
               sizes="(max-width: 640px) 112px, 144px"
               fetchPriority={isPriorityImage ? 'high' : 'auto'}
               decoding="async"
@@ -163,7 +165,7 @@ export function ByteMascot({ mood, isOpen, compact, onClick, onWake, buttonRef, 
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.11 }}
-              className="absolute inset-0 h-full w-full select-none object-contain"
+              className="absolute inset-0 h-full w-full select-none object-contain [image-rendering:pixelated]"
             />
           </AnimatePresence>
         </motion.span>
