@@ -6,7 +6,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { DocumentLocale } from '@/components/document-locale';
-import { SITE_AUTHOR, SITE_NAME, SITE_URL } from '@/lib/site';
+import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_URL } from '@/lib/site';
+import { HOME_DESCRIPTION, HOME_OG_DESCRIPTION, HOME_TITLE, TITLE_TEMPLATE, pageMetadata } from '@/lib/seo';
 import { ichiroPreloadAssets } from '@/lib/ichiro-assets';
 
 const AmbientBackground = dynamic(
@@ -47,6 +48,8 @@ const jsonLd = {
       jobTitle: 'Senior Software Engineer',
       worksFor: { '@type': 'Organization', name: 'ADP' },
       url: SITE_URL,
+      image: `${SITE_URL}/avatar.png`,
+      email: CONTACT_EMAIL,
       sameAs: [
         'https://linkedin.com/in/joaoac',
         'https://github.com/joaoantoniocoelho',
@@ -77,44 +80,44 @@ const jsonLd = {
       url: SITE_URL,
       name: SITE_NAME,
       author: { '@id': `${SITE_URL}/#person` },
+      publisher: { '@id': `${SITE_URL}/#person` },
       inLanguage: ['en-US', 'pt-BR'],
     },
   ],
 };
 
+const home = pageMetadata({
+  locale: 'en',
+  path: '/',
+  title: HOME_TITLE.en,
+  description: HOME_DESCRIPTION.en,
+  ogDescription: HOME_OG_DESCRIPTION.en,
+  ogType: 'profile',
+  rss: true,
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'João Coelho | Software, systems & products',
-    template: '%s | João Coelho',
+    default: HOME_TITLE.en,
+    template: TITLE_TEMPLATE,
   },
-  description:
-    'Software engineer at ADP, previously SAP and Bazk. I build backend systems, AI tools, and products of my own, and write about what I learn.',
+  description: home.description,
   authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
-  alternates: {
-    canonical: '/',
-    languages: { 'en-US': '/', 'pt-BR': '/pt-BR', 'x-default': '/' },
-    types: {
-      'application/rss+xml': '/feed.xml',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
-  openGraph: {
-    type: 'profile',
-    url: '/',
-    siteName: SITE_NAME,
-    locale: 'en_US',
-    alternateLocale: ['pt_BR'],
-    title: 'João Coelho | Software, systems & products',
-    description: 'Building backend systems, AI tools, and products of my own. Currently at ADP; previously SAP and Bazk.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'João Coelho - Senior Software Engineer' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@joaoac_dev',
-    title: 'João Coelho | Software, systems & products',
-    description: 'Building backend systems, AI tools, and products of my own. Currently at ADP; previously SAP and Bazk.',
-    images: ['/og.png'],
-  },
+  alternates: home.alternates,
+  openGraph: home.openGraph,
+  twitter: home.twitter,
 };
 
 export default function RootLayout({
@@ -125,6 +128,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.lang=location.pathname==='/pt-BR'||location.pathname.startsWith('/pt-BR/')?'pt-BR':'en';",
+          }}
+        />
         {ichiroPreloadAssets.map((href, index) => (
           <link
             key={href}

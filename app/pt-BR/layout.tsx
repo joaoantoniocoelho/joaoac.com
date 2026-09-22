@@ -1,24 +1,25 @@
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/site';
+import { HOME_DESCRIPTION, HOME_OG_DESCRIPTION, HOME_TITLE, TITLE_TEMPLATE, pageMetadata } from '@/lib/seo';
+
+const home = pageMetadata({
+  locale: 'pt-BR',
+  path: '/',
+  title: HOME_TITLE['pt-BR'],
+  description: HOME_DESCRIPTION['pt-BR'],
+  ogDescription: HOME_OG_DESCRIPTION['pt-BR'],
+  ogType: 'profile',
+  rss: true,
+});
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'João Coelho | Software, sistemas e produtos',
-    template: '%s | João Coelho',
+    absolute: HOME_TITLE['pt-BR'],
+    template: TITLE_TEMPLATE,
   },
-  description:
-    'Engenheiro de software na ADP, antes SAP e Bazk. Construo sistemas backend, ferramentas de IA e meus próprios produtos, e escrevo sobre o que aprendo.',
-  alternates: {
-    canonical: '/pt-BR',
-    languages: { 'en-US': '/', 'pt-BR': '/pt-BR', 'x-default': '/' },
-  },
-  openGraph: {
-    locale: 'pt_BR',
-    alternateLocale: ['en_US'],
-    url: `${SITE_URL}/pt-BR`,
-    title: 'João Coelho | Software, sistemas e produtos',
-    description: 'Construindo sistemas backend, ferramentas de IA e meus próprios produtos. Hoje na ADP; antes, SAP e Bazk.',
-  },
+  description: home.description,
+  alternates: home.alternates,
+  openGraph: home.openGraph,
+  twitter: home.twitter,
 };
 
 export default function PortugueseLayout({ children }: { children: React.ReactNode }) {

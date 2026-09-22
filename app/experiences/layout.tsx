@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  locale: 'en',
+  path: '/experiences',
   title: 'Experience',
   description: "The teams, products, technical decisions, and lessons behind João Coelho's software engineering career.",
-  alternates: {
-    canonical: '/experiences',
-    languages: { 'en-US': '/experiences', 'pt-BR': '/pt-BR/experiences', 'x-default': '/experiences' },
-  },
-};
+});
 
 export default function ExperiencesLayout({ children }: { children: React.ReactNode }) {
   return children;
