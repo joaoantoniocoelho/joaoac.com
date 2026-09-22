@@ -4,27 +4,19 @@ import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { formatPostDate } from '@/lib/format-post-date';
 import { getAllPosts } from '@/lib/posts';
 import { localizedPath, type Locale } from '@/lib/locale';
+import { pageMetadata } from '@/lib/seo';
 
 export function blogIndexMetadata(locale: Locale): Metadata {
   const isPt = locale === 'pt-BR';
-  const path = localizedPath('/blog', locale);
-  return {
+  return pageMetadata({
+    locale,
+    path: '/blog',
     title: 'Blog',
     description: isPt
       ? 'Escrevo para organizar o que aprendo sobre backend, desenvolvimento com IA e segurança de aplicações.'
       : 'I write to make sense of what I learn about backend systems, development with AI, and application security.',
-    alternates: {
-      canonical: path,
-      languages: {
-        'en-US': '/blog',
-        'pt-BR': '/pt-BR/blog',
-        'x-default': '/blog',
-      },
-      types: {
-        'application/rss+xml': '/feed.xml',
-      },
-    },
-  };
+    rss: true,
+  });
 }
 
 export function BlogIndex({ locale }: { locale: Locale }) {
