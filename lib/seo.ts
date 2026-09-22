@@ -36,14 +36,6 @@ function languageAlternates(path: string) {
   };
 }
 
-export function sitemapLanguageAlternates(path: string) {
-  return {
-    'en-US': absoluteUrl(path),
-    'pt-BR': absoluteUrl(localizedPath(path || '/', 'pt-BR')),
-    'x-default': absoluteUrl(path),
-  };
-}
-
 export function absoluteUrl(path: string) {
   if (!path || path === '/') return SITE_URL;
   return `${SITE_URL}${path}`;
