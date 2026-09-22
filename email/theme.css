@@ -1,0 +1,70 @@
+/*
+  joaoac.com — tema email-safe
+
+  Extraído do site (dark-first, IBM Plex, acento sky-300).
+  Clientes de email ignoram boa parte de CSS moderno: use os hex
+  inline no HTML. Este arquivo é a fonte canônica dos tokens.
+
+  Acento padrão da identidade: --brand (#7dd3fc / sky-300).
+  Digest de escrita pode trocar --brand por --accent-writing (#fcd34d).
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  color-scheme: dark;
+
+  --font-sans: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", Courier, monospace;
+
+  --canvas: #000000;
+  --canvas-elevated: #0a0a0a;
+  --foreground: #fafafa;
+  --heading: #ffffff;
+  --body: #d4d4d8;
+  --muted: #a1a1aa;
+  --subtle: #71717a;
+  --faint: #52525b;
+  --ghost: #3f3f46;
+  --border: #1a1a1a;
+  --border-strong: #262626;
+  --card: #060606;
+  --button: #ffffff;
+  --button-text: #000000;
+
+  --brand: #7dd3fc;
+  --brand-muted: #64a9ca;
+  --brand-line: #4a8aa8;
+
+  --accent-experience: #6ee7b7;
+  --accent-projects: #c4b5fd;
+  --accent-writing: #fcd34d;
+  --accent-contact: #a5b4fc;
+  --link: #fde68a;
+  --code: #fef3c7;
+  --success: #6ee7b7;
+
+  --radius-card: 16px;
+  --radius-featured: 32px;
+  --radius-pill: 999px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--canvas);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--button);
+  color: var(--button-text);
+}

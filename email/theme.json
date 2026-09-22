@@ -1,0 +1,81 @@
+{
+  "name": "joaoac.com",
+  "url": "https://www.joaoac.com",
+  "mode": "dark",
+  "source": {
+    "fonts": "app/layout.tsx (IBM Plex Sans + IBM Plex Mono)",
+    "tokens": "app/globals.css + tailwind.config.ts",
+    "surface": "components (hero, navbar, blog cards, contact CTA)"
+  },
+  "fonts": {
+    "sans": {
+      "family": "'IBM Plex Sans', Helvetica, Arial, sans-serif",
+      "google": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap",
+      "weights": [400, 500, 600, 700]
+    },
+    "mono": {
+      "family": "'IBM Plex Mono', 'Courier New', Courier, monospace",
+      "google": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap",
+      "weights": [400, 500]
+    }
+  },
+  "colors": {
+    "canvas": "#000000",
+    "canvasElevated": "#0a0a0a",
+    "foreground": "#fafafa",
+    "heading": "#ffffff",
+    "body": "#d4d4d8",
+    "muted": "#a1a1aa",
+    "subtle": "#71717a",
+    "faint": "#52525b",
+    "ghost": "#3f3f46",
+    "border": "#1a1a1a",
+    "borderStrong": "#262626",
+    "card": "#060606",
+    "cardHover": "#0d0d0d",
+    "chip": "#111111",
+    "button": "#ffffff",
+    "buttonText": "#000000",
+    "buttonGhostText": "#d4d4d8",
+    "brand": "#7dd3fc",
+    "brandMuted": "#64a9ca",
+    "brandLine": "#4a8aa8",
+    "link": "#fde68a",
+    "code": "#fef3c7",
+    "success": "#6ee7b7",
+    "successText": "#a7f3d0",
+    "selectionBg": "#ffffff",
+    "selectionFg": "#000000"
+  },
+  "accents": {
+    "brand": { "token": "sky-300", "hex": "#7dd3fc", "use": "hero, about, default identity" },
+    "experience": { "token": "emerald-300", "hex": "#6ee7b7", "use": "experience section" },
+    "projects": { "token": "violet-300", "hex": "#c4b5fd", "use": "projects section" },
+    "writing": { "token": "amber-300", "hex": "#fcd34d", "use": "blog / tech digest" },
+    "contact": { "token": "indigo-300", "hex": "#a5b4fc", "use": "contact section" }
+  },
+  "email": {
+    "maxWidth": 600,
+    "contentPadding": 32,
+    "cardPadding": 28,
+    "radius": {
+      "card": "16px",
+      "featured": "32px",
+      "button": "999px",
+      "chip": "999px",
+      "mark": "999px"
+    },
+    "type": {
+      "eyebrow": "12px",
+      "eyebrowTracking": "0.24em",
+      "title": "36px",
+      "titleLineHeight": "1.05",
+      "titleTracking": "-0.025em",
+      "body": "16px",
+      "bodyLineHeight": "1.65",
+      "cardTitle": "20px",
+      "meta": "11px",
+      "footer": "12px"
+    }
+  }
+}
