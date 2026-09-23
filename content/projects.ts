@@ -16,6 +16,31 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: 'tech-digest',
+    name: 'Tech Digest',
+    url: 'https://digest.joaoac.com',
+    urlLabel: 'digest.joaoac.com',
+    oneLiner: {
+      en: 'A concise email digest about software engineering and technology.',
+      'pt-BR': 'Um resumo por e-mail, direto ao ponto, sobre engenharia de software e tecnologia.',
+    },
+    whatItDoes: {
+      en: [
+        'Brings selected technology reading into one email.',
+        'Subscribe and unsubscribe with one click, without an account.',
+      ],
+      'pt-BR': [
+        'Reúne leituras selecionadas sobre tecnologia em um e-mail.',
+        'Inscrição e cancelamento em um clique, sem criar conta.',
+      ],
+    },
+    decisions: {
+      en: ['A small, focused subscription flow with a clear way to leave.'],
+      'pt-BR': ['Um fluxo de inscrição simples, com cancelamento claro.'],
+    },
+    stack: 'Next.js on Vercel · API on Railway',
+  },
+  {
     slug: 'revisa-ai',
     name: 'Revisa Aí',
     url: 'https://revisaai.app',

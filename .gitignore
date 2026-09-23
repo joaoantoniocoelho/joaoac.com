@@ -10,6 +10,8 @@
 
 # next.js
 /.next/
+/digest/.next/
+/digest/node_modules/
 /out/
 
 # production

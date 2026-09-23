@@ -59,6 +59,9 @@ content/      Blog posts (MDX) and Ichiro prompts
 data/         Professional experience content
 public/       Static images and Ichiro sprites
 lib/          Shared utilities
+digest/       Independent Tech Digest landing for digest.joaoac.com
 ```
 
 Professional experience is maintained in `data/experiences.json`. Blog posts live in `content/posts` as MDX.
+
+The Tech Digest landing is a separate Next.js project in [`digest/`](digest/README.md). Its Vercel project uses `digest` as the Root Directory and calls the public Railway API through `NEXT_PUBLIC_DIGEST_API_URL`.
