@@ -5,14 +5,16 @@ import { copy, type Locale } from '../lib/copy';
 
 const sampleArticles = [
   {
-    source: 'The Pragmatic Engineer',
     title: 'Formal methods with Hillel Wayne',
     url: 'https://newsletter.pragmaticengineer.com/p/formal-methods-with-hillel-wayne',
   },
   {
-    source: "Simon Willison's Newsletter",
-    title: 'The last six months in LLMs in five minutes',
+    title: 'The last six months in LLMs, in five minutes',
     url: 'https://simonw.substack.com/p/the-last-six-months-in-llms-in-five',
+  },
+  {
+    title: 'What changed in SQLite this year',
+    url: 'https://sqlite.org/changes.html',
   },
 ] as const;
 
@@ -63,18 +65,32 @@ export function LandingDetails({ locale }: { locale: Locale }) {
       </div>
       <div className="sample-edition">
         <div className="sample-edition-header">
-          <span className="sample-brand">Tech Digest<span className="accent-period">.</span></span>
-          <span className="sample-edition-label">{t.preview}</span>
+          <span className="sample-brand">TECH DIGEST</span>
+          <span className="sample-edition-stamp">{t.sampleStamp}</span>
+        </div>
+        <span className="sample-rule" aria-hidden="true" />
+        <div className="sample-edition-intro">
+          <h3>{t.sampleEditionTitle}</h3>
+          <p>{t.sampleEditionDate}</p>
+          <p>{t.sampleEditionCount}</p>
         </div>
         <ol>
           {sampleArticles.map((article, index) => <li key={article.url}>
-            <p className="sample-source">{String(index + 1).padStart(2, '0')} / {article.source}</p>
-            <h3>{article.title}</h3>
-            <p className="sample-why"><span>{t.sampleWhy}:</span> {t.sampleReasons[index]}</p>
-            <a href={article.url} target="_blank" rel="noopener noreferrer" aria-label={`${t.sampleRead}: ${article.title}`}>{t.sampleRead} <span aria-hidden="true">↗</span></a>
+            <h4><a href={article.url} target="_blank" rel="noopener noreferrer">{article.title}<span aria-hidden="true">↗</span></a></h4>
+            <p>{t.sampleArticleMeta[index]}</p>
+            {index === 0 && <p className="sample-story-note">{t.sampleLeadTopic}</p>}
           </li>)}
         </ol>
-        <div className="sample-edition-bottom"><span>TECH DIGEST</span><span>01—08</span></div>
+        <div className="sample-edition-footer">
+          <p>{t.sampleCurated}</p>
+          <div>
+            <a href="https://joaoac.com" target="_blank" rel="noopener noreferrer">{t.sampleWebsite}</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://x.com/joaoac_dev" target="_blank" rel="noopener noreferrer">X</a>
+            <span aria-hidden="true">·</span>
+            <span className="sample-unsubscribe">{t.sampleUnsubscribe}</span>
+          </div>
+        </div>
       </div>
     </section>
 
