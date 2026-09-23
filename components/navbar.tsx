@@ -18,8 +18,8 @@ export function Navbar() {
   const homePath = localizedPath('/', locale);
   const navItems = [
     { href: `${homePath}#about`, label: pt ? 'Sobre' : 'About' },
-    { href: `${homePath}#experience`, label: pt ? 'Experiência' : 'Experience' },
     { href: `${homePath}#projects`, label: pt ? 'Projetos' : 'Projects' },
+    { href: `${homePath}#experience`, label: pt ? 'Experiência' : 'Experience' },
     { href: `${homePath}#blog`, label: 'Blog' },
     { href: `${homePath}#contact`, label: pt ? 'Contato' : 'Contact' },
   ];
@@ -37,7 +37,7 @@ export function Navbar() {
 
         if (isHomePath(pathname)) {
           const marker = window.scrollY + window.innerHeight * 0.38;
-          const current = ['about', 'experience', 'projects', 'blog', 'contact']
+          const current = ['about', 'projects', 'experience', 'blog', 'contact']
             .map((id) => document.getElementById(id))
             .filter((section): section is HTMLElement => Boolean(section))
             .find((section) => marker >= section.offsetTop && marker < section.offsetTop + section.offsetHeight);
