@@ -90,6 +90,7 @@ export default function ProjectsPage() {
                       </p>
                       <ProjectStatusHeader
                         name={project.name}
+                        showStage={project.slug !== 'tech-digest'}
                         titleAs="h2"
                         titleClassName="break-words text-3xl font-semibold tracking-tight text-white md:text-4xl"
                       />

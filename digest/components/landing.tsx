@@ -6,6 +6,7 @@ import { copy, type Locale } from '../lib/copy';
 import { DigestHeader } from './digest-header';
 import { FocusTitle } from './focus-title';
 import { DigestFooter } from './digest-footer';
+import { LandingDetails } from './landing-details';
 
 type FormState = 'idle' | 'loading' | 'success' | 'invalid' | 'rate' | 'unavailable';
 
@@ -45,7 +46,8 @@ export function Landing({ locale }: { locale: Locale }) {
     <div className="ambient-screen" aria-hidden="true"><span className="ambient-primary" /><span className="ambient-secondary" /></div>
     <DigestHeader locale={locale} />
     <div className="container">
-      <main className="hero">
+      <main>
+      <section className="hero">
         <span className="hero-glow" aria-hidden="true" />
         <div className="hero-copy">
           <div className="eyebrow hero-reveal">{t.eyebrow}</div>
@@ -53,7 +55,7 @@ export function Landing({ locale }: { locale: Locale }) {
           <p className="lead">{t.intro}</p>
           <p className="detail">{t.detail}</p>
         </div>
-        <div className="signup-card hero-reveal-card">
+        <div className="signup-card hero-reveal-card" id="subscribe">
           <div className="card-top"><span className="card-label">Tech Digest / Inbox</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>
           <h2>{locale === 'en' ? 'Get the next edition.' : 'Receba a próxima edição.'}</h2>
           <p>{locale === 'en' ? 'One good email is enough to start.' : 'Basta um e-mail para começar.'}</p>
@@ -65,6 +67,8 @@ export function Landing({ locale }: { locale: Locale }) {
           </form>
           <p className="fine-print">{t.privacy}</p>
         </div>
+      </section>
+      <LandingDetails locale={locale} />
       </main>
       <DigestFooter locale={locale} />
     </div>

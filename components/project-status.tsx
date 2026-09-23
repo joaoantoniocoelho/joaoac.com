@@ -7,12 +7,14 @@ type ProjectStatusHeaderProps = {
   name: string;
   titleAs?: 'h2' | 'h3';
   titleClassName?: string;
+  showStage?: boolean;
 };
 
 export function ProjectStatusHeader({
   name,
   titleAs = 'h3',
   titleClassName = 'break-words text-2xl font-semibold tracking-tight text-white',
+  showStage = true,
 }: ProjectStatusHeaderProps) {
   const locale = useLocale();
   const pt = locale === 'pt-BR';
@@ -23,7 +25,7 @@ export function ProjectStatusHeader({
     <div className="min-w-0">
       <div className="flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-1">
         <Title className={titleClassName}>{name}</Title>
-        <span className="text-sm font-normal text-zinc-500">{pt ? 'fase inicial' : 'early stage'}</span>
+        {showStage && <span className="text-sm font-normal text-zinc-500">{pt ? 'fase inicial' : 'early stage'}</span>}
       </div>
       <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-emerald-400">
         <span className="relative flex h-2 w-2 shrink-0">

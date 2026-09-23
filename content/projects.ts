@@ -21,24 +21,30 @@ export const projects: Project[] = [
     url: 'https://digest.joaoac.com',
     urlLabel: 'digest.joaoac.com',
     oneLiner: {
-      en: 'A concise email digest about software engineering and technology.',
-      'pt-BR': 'Um resumo por e-mail, direto ao ponto, sobre engenharia de software e tecnologia.',
+      en: 'A daily tech digest that monitors selected sources, classifies and ranks articles, removes duplicate stories, and emails up to eight links worth opening.',
+      'pt-BR': 'Um digest diário de tecnologia que monitora fontes selecionadas, classifica e ranqueia artigos, remove histórias repetidas e envia por e-mail até oito links que valem a leitura.',
     },
     whatItDoes: {
       en: [
-        'Brings selected technology reading into one email.',
-        'Subscribe and unsubscribe with one click, without an account.',
+        'Jev classifies recent articles; deterministic Python scoring ranks them.',
+        'Semantic deduplication, scheduled delivery, and one-click subscriptions.',
       ],
       'pt-BR': [
-        'Reúne leituras selecionadas sobre tecnologia em um e-mail.',
-        'Inscrição e cancelamento em um clique, sem criar conta.',
+        'Jev classifica artigos recentes; uma pontuação determinística em Python define o ranking.',
+        'Deduplicação semântica, entrega agendada e inscrição com um clique.',
       ],
     },
     decisions: {
-      en: ['A small, focused subscription flow with a clear way to leave.'],
-      'pt-BR': ['Um fluxo de inscrição simples, com cancelamento claro.'],
+      en: [
+        'Jev identifies interests; deterministic weights decide the final ranking.',
+        'Article text is processed temporarily while SQLite stores metadata and classification results.',
+      ],
+      'pt-BR': [
+        'Jev identifica interesses; pesos determinísticos definem o ranking final.',
+        'O texto dos artigos é processado temporariamente; o SQLite guarda metadados e resultados da classificação.',
+      ],
     },
-    stack: 'Next.js on Vercel · API on Railway',
+    stack: 'Python · Jev / TypeSafe · Railway · Resend',
   },
   {
     slug: 'revisa-ai',
