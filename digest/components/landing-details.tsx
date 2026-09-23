@@ -1,3 +1,6 @@
+'use client';
+
+import type { MouseEvent } from 'react';
 import { copy, type Locale } from '../lib/copy';
 
 const sampleArticles = [
@@ -13,53 +16,56 @@ const sampleArticles = [
   },
 ] as const;
 
+function backToTop(event: MouseEvent<HTMLAnchorElement>) {
+  event.preventDefault();
+  window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+}
+
 export function LandingDetails({ locale }: { locale: Locale }) {
   const t = copy[locale];
 
   return <>
-    <section className="details-section process-section" aria-labelledby="process-heading">
+    <section className="details-section pain-section" aria-labelledby="pain-heading">
       <div className="section-heading">
-        <p className="section-kicker">01 / {t.processLabel}</p>
-        <h2 id="process-heading">{t.processTitle}<span className="accent-period">.</span></h2>
-        <p>{t.processIntro}</p>
+        <p className="section-kicker">01 / {t.painLabel}</p>
+        <h2 id="pain-heading">{t.painTitle}<span className="accent-period">.</span></h2>
+        <p>{t.painIntro}</p>
       </div>
-      <ol className="process-steps">
-        {t.steps.map((step, index) => <li key={step.title}>
-          <span className="step-number">{String(index + 1).padStart(2, '0')}</span>
-          <h3>{step.title}</h3>
-          <p>{step.description}</p>
-        </li>)}
-      </ol>
-      <figure className="pipeline">
-        <figcaption className="pipeline-label">{t.pipelineLabel}</figcaption>
-        <ol className="pipeline-flow">
-          {t.pipeline.map((stage, index) => <li key={stage} className={index === t.pipeline.length - 1 ? 'last-stage' : ''}>{stage}</li>)}
-        </ol>
-      </figure>
-    </section>
-
-    <section className="details-section engineering-section" aria-labelledby="engineering-heading">
-      <div className="section-heading">
-        <p className="section-kicker">02 / {t.engineeringLabel}</p>
-        <h2 id="engineering-heading">{t.engineeringTitle}<span className="accent-period">.</span></h2>
-        <p>{t.engineeringIntro}</p>
+      <div className="pain-grid">
+        {t.painItems.map(item => <article className="pain-card" key={item.number}>
+          <span className="pain-index">{item.number} /</span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </article>)}
       </div>
-      <div className="engineering-points">
-        {t.engineering.map(point => <div key={point.title}>
-          <h3>{point.title}</h3>
-          <p>{point.description}</p>
-        </div>)}
+      <div className="answer-panel">
+        <span className="answer-symbol" aria-hidden="true">↳</span>
+        <div>
+          <h3>{t.answerTitle}</h3>
+          <p>{t.answerDescription}</p>
+        </div>
+        <span className="answer-mark" aria-hidden="true">TD</span>
       </div>
     </section>
 
     <section className="details-section sample-section" aria-labelledby="sample-heading">
-      <div className="section-heading">
-        <p className="section-kicker">03 / {t.sampleLabel}</p>
-        <h2 id="sample-heading">{t.sampleTitle}<span className="accent-period">.</span></h2>
-        <p>{t.sampleIntro}</p>
+      <div className="sample-intro">
+        <div className="section-heading">
+          <p className="section-kicker">02 / {t.sampleLabel}</p>
+          <h2 id="sample-heading">{t.sampleTitle}<span className="accent-period">.</span></h2>
+          <p>{t.sampleIntro}</p>
+        </div>
+        <div className="sample-aside">
+          <span className="sample-aside-mark" aria-hidden="true">“</span>
+          <h3>{t.sampleAsideTitle}</h3>
+          <p>{t.sampleAsideDescription}</p>
+        </div>
       </div>
       <div className="sample-edition">
-        <p className="sample-edition-label">Tech Digest <span>/ {locale === 'en' ? 'preview' : 'prévia'}</span></p>
+        <div className="sample-edition-header">
+          <span className="sample-brand">Tech Digest<span className="accent-period">.</span></span>
+          <span className="sample-edition-label">{t.preview}</span>
+        </div>
         <ol>
           {sampleArticles.map((article, index) => <li key={article.url}>
             <p className="sample-source">{String(index + 1).padStart(2, '0')} / {article.source}</p>
@@ -68,15 +74,32 @@ export function LandingDetails({ locale }: { locale: Locale }) {
             <a href={article.url} target="_blank" rel="noopener noreferrer" aria-label={`${t.sampleRead}: ${article.title}`}>{t.sampleRead} <span aria-hidden="true">↗</span></a>
           </li>)}
         </ol>
+        <div className="sample-edition-bottom"><span>TECH DIGEST</span><span>01—08</span></div>
       </div>
     </section>
 
+    <section className="details-section process-section" aria-labelledby="process-heading">
+      <div className="section-heading">
+        <p className="section-kicker">03 / {t.processLabel}</p>
+        <h2 id="process-heading">{t.processTitle}<span className="accent-period">.</span></h2>
+        <p>{t.processIntro}</p>
+      </div>
+      <ol className="process-steps">
+        {t.steps.map((step, index) => <li key={step.title}>
+          <span className="step-number">0{index + 1}</span>
+          <div><h3>{step.title}</h3><p>{step.description}</p></div>
+          <span className="step-arrow" aria-hidden="true">↗</span>
+        </li>)}
+      </ol>
+    </section>
+
     <section className="final-cta" aria-labelledby="final-heading">
-      <div>
+      <div className="final-copy">
+        <p className="section-kicker">04 / {t.finalLabel}</p>
         <h2 id="final-heading">{t.finalTitle}</h2>
         <p>{t.finalDescription}</p>
       </div>
-      <a href="#subscribe">{t.finalAction}<span aria-hidden="true">↑</span></a>
+      <a href="#page-top" onClick={backToTop}>{t.finalAction}<span aria-hidden="true">↑</span></a>
     </section>
   </>;
 }

@@ -7,6 +7,7 @@ import { DigestHeader } from './digest-header';
 import { FocusTitle } from './focus-title';
 import { DigestFooter } from './digest-footer';
 import { LandingDetails } from './landing-details';
+import { NextEditionCountdown } from './next-edition-countdown';
 
 type FormState = 'idle' | 'loading' | 'success' | 'invalid' | 'rate' | 'unavailable';
 
@@ -45,7 +46,7 @@ export function Landing({ locale }: { locale: Locale }) {
   return <div className="shell">
     <div className="ambient-screen" aria-hidden="true"><span className="ambient-primary" /><span className="ambient-secondary" /></div>
     <DigestHeader locale={locale} />
-    <div className="container">
+    <div className="container" id="page-top">
       <main>
       <section className="hero">
         <span className="hero-glow" aria-hidden="true" />
@@ -54,11 +55,13 @@ export function Landing({ locale }: { locale: Locale }) {
           <FocusTitle text={t.title} />
           <p className="lead">{t.intro}</p>
           <p className="detail">{t.detail}</p>
+          <p className="hero-note"><span aria-hidden="true">✳</span>{t.heroNote}</p>
         </div>
         <div className="signup-card hero-reveal-card" id="subscribe">
-          <div className="card-top"><span className="card-label">Tech Digest / Inbox</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>
-          <h2>{locale === 'en' ? 'Get the next edition.' : 'Receba a próxima edição.'}</h2>
-          <p>{locale === 'en' ? 'One good email is enough to start.' : 'Basta um e-mail para começar.'}</p>
+          <div className="card-top"><span className="card-label">TECH DIGEST / 001</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>
+          <NextEditionCountdown locale={locale} />
+          <h2>{t.cardTitle}</h2>
+          <p className="card-description">{t.cardDescription}</p>
           <form onSubmit={submit} noValidate>
             <label className="field-label" htmlFor="digest-email">{t.email}</label>
             <input className="email-input" id="digest-email" type="email" autoComplete="email" maxLength={254} placeholder={t.placeholder} value={email} onChange={event => { setEmail(event.target.value); if (state !== 'loading') setState('idle'); }} disabled={state === 'loading'} required />
