@@ -43,7 +43,7 @@ export function BlogSection({ posts }: { posts: PostSummary[] }) {
             href={localizedPath('/blog', locale)}
             className="pressable focus-ring group inline-flex items-center gap-2 rounded-full text-sm font-medium text-zinc-400 transition-colors hover:text-white"
           >
-            {pt ? 'Todos os posts →' : 'All posts →'}
+            {pt ? 'Todos os posts' : 'All posts'}
             <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.header>
