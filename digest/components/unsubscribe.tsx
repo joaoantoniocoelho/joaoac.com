@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { apiBaseUrl, unsubscribePath, validToken } from '../lib/api';
 import { copy, type Locale } from '../lib/copy';
 import { DigestHeader } from './digest-header';
+import { DigestFooter } from './digest-footer';
 
 type State = 'confirm' | 'loading' | 'success' | 'invalid' | 'unavailable';
 
@@ -51,7 +52,7 @@ export function Unsubscribe({ token }: { token: string }) {
           <a className="small-link" href={locale === 'en' ? '/' : '/pt-BR'}>← {t.back}</a>
         </section>
       </main>
-      <footer className="footer"><span>© {new Date().getFullYear()} Tech Digest</span><span>{t.from}</span></footer>
+      <DigestFooter locale={locale} />
     </div>
   </div>;
 }

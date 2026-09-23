@@ -5,6 +5,7 @@ import { apiBaseUrl } from '../lib/api';
 import { copy, type Locale } from '../lib/copy';
 import { DigestHeader } from './digest-header';
 import { FocusTitle } from './focus-title';
+import { DigestFooter } from './digest-footer';
 
 type FormState = 'idle' | 'loading' | 'success' | 'invalid' | 'rate' | 'unavailable';
 
@@ -65,7 +66,7 @@ export function Landing({ locale }: { locale: Locale }) {
           <p className="fine-print">{t.privacy}</p>
         </div>
       </main>
-      <footer className="footer"><span>© {new Date().getFullYear()} Tech Digest</span><span>{t.from}</span></footer>
+      <DigestFooter locale={locale} />
     </div>
   </div>;
 }
