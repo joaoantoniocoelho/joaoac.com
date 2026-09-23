@@ -36,8 +36,8 @@ export function ProjectsSection() {
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400">
               {pt
-                ? 'Revisa Aí, Ao Redor e Tech Digest são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
-                : 'Revisa Aí, Ao Redor, and Tech Digest are projects I build independently. I handle product decisions, architecture, data, and interface.'}
+                ? 'Revisa Aí e Tech Digest são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
+                : 'Revisa Aí and Tech Digest are projects I build independently. I handle product decisions, architecture, data, and interface.'}
             </p>
           </div>
           <Link
@@ -49,7 +49,7 @@ export function ProjectsSection() {
           </Link>
         </motion.header>
 
-        <div className="grid min-w-0 gap-5 lg:grid-cols-3">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-2">
           {projects.map((project, index) => (
             <motion.article
               key={project.slug}

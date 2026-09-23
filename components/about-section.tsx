@@ -109,8 +109,8 @@ export function AboutSection() {
                 </p>
                 <p>
                   {pt
-                    ? 'Gosto de investigar o que acontece por baixo das abstrações e escolher soluções que façam sentido para o problema e sejam simples de manter. Nos meus produtos, Revisa Aí e Ao Redor, cuido da ideia, da arquitetura e da interface até colocar tudo no ar.'
-                    : <>I like looking beneath the abstractions and choosing solutions that fit the problem and stay easy to maintain. For my own products, Revisa Aí and Ao Redor, I take care of the idea, architecture, and interface through to launch.</>}
+                    ? 'Gosto de investigar o que acontece por baixo das abstrações e escolher soluções que façam sentido para o problema e sejam simples de manter. Nos meus produtos, Revisa Aí e Tech Digest, cuido da ideia, da arquitetura e da interface até colocar tudo no ar.'
+                    : <>I like looking beneath the abstractions and choosing solutions that fit the problem and stay easy to maintain. For my own products, Revisa Aí and Tech Digest, I take care of the idea, architecture, and interface through to launch.</>}
                 </p>
                 <p>
                   {pt

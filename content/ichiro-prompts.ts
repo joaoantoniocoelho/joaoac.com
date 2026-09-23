@@ -82,7 +82,7 @@ export const prompts: Record<PromptId, Prompt> = {
   projects: {
     question: 'Has he built anything on his own?',
     answer:
-      'Two products, both live and both early. Revisa Aí turns medical study PDFs into flashcards; Ao Redor compares what surrounds a rental before you book. He built every layer of each, which explains the tab count.',
+      'Two products, both live and both early. Revisa Aí turns medical study PDFs into flashcards; Tech Digest collects selected technology reading in a concise email. He built every layer of each, which explains the tab count.',
     links: [{ label: 'See projects', href: '/projects' }],
     next: ['stack', 'random-fact', 'blog', 'contact'],
   },
@@ -206,7 +206,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
   projects: {
     question: 'Ele construiu algo por conta própria?',
     answer:
-      'Dois produtos, ambos no ar e ambos no começo. O Revisa Aí transforma PDFs de Medicina em flashcards; o Ao Redor compara o entorno de uma hospedagem antes da reserva. Ele construiu todas as camadas dos dois, o que explica a quantidade de abas.',
+      'Dois produtos, ambos no ar e ambos no começo. O Revisa Aí transforma PDFs de Medicina em flashcards; o Tech Digest reúne leituras de tecnologia em um e-mail direto ao ponto. Ele construiu todas as camadas dos dois, o que explica a quantidade de abas.',
     links: [{ label: 'Ver projetos', href: '/pt-BR/projects' }],
     next: ['stack', 'random-fact', 'blog', 'contact'],
   },

@@ -73,37 +73,4 @@ export const projects: Project[] = [
     },
     stack: 'Next.js on Vercel · Node.js · MongoDB · Gemini · Redis · BullMQ',
   },
-  {
-    slug: 'ao-redor',
-    name: 'Ao Redor',
-    url: 'https://aoredor.com',
-    urlLabel: 'aoredor.com',
-    oneLiner: {
-      en: 'Compares what surrounds short-term rentals and hotels before you book.',
-      'pt-BR': 'Compara o entorno de hospedagens antes de você reservar.',
-    },
-    whatItDoes: {
-      en: [
-        'Side-by-side numbers for each address from OpenStreetMap: street commerce within 250/500 m, walkable street grid, distance to transit, parks and malls.',
-        'Covers nine Brazilian cities; first analysis free, passwordless e-mail login, private reports with revocable share links.',
-        'One-time payment for analysis packs, no subscription.',
-      ],
-      'pt-BR': [
-        'Números lado a lado para cada endereço a partir do OpenStreetMap: comércio de rua a 250/500 m, malha caminhável, distância até transporte, praças e shoppings.',
-        'Cobre nove cidades brasileiras; primeira análise grátis, login por código de e-mail, relatórios privados com link compartilhável revogável.',
-        'Pagamento único por pacote de análises, sem assinatura.',
-      ],
-    },
-    decisions: {
-      en: [
-        'I left out a "safety score": observable facts and distances help compare locations, but do not establish how safe a place is.',
-        'Reports warn when OSM coverage is thin instead of hiding data gaps.',
-      ],
-      'pt-BR': [
-        'Optei por não dar uma "nota de segurança": fatos e distâncias ajudam a comparar locais, mas não determinam se um lugar é seguro.',
-        'O relatório avisa quando a cobertura do OSM é baixa em vez de esconder a falta de dados.',
-      ],
-    },
-    stack: 'Next.js on Vercel · Node.js · PostgreSQL · OpenStreetMap',
-  },
 ];
