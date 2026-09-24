@@ -48,8 +48,7 @@ a { color: inherit; }
 .lead,.detail { max-width: 630px; opacity: 0; transform: translateY(18px); animation: rise-in .85s cubic-bezier(.22,1,.36,1) .55s forwards; }
 .lead { margin: 0; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.16); color: #e1e8eb; font-size: clamp(17px,1.5vw,19px); line-height: 1.48; }
 .detail { margin: 12px 0 0; color: #9cabb2; font-size: 14px; line-height: 1.6; animation-delay: .68s; }
-.hero-note { display: flex; align-items: center; gap: 11px; margin: 21px 0 0; color: #b7dae3; font-size: 12px; font-weight: 500; }
-.hero-note span { color: #80d4eb; font-size: 21px; line-height: 1; }
+.hero-note { margin: 21px 0 0; color: #b7dae3; font-size: 12px; font-weight: 500; }
 .hero-reveal-card { opacity: 0; transform: translateY(22px); animation: rise-in .85s cubic-bezier(.22,1,.36,1) .7s forwards; }
 .signup-card { min-width: 0; padding: clamp(24px,2.7vw,31px); border: 1px solid rgba(165,214,230,.22); border-radius: 24px; background: linear-gradient(145deg,rgba(30,50,57,.9),rgba(14,23,28,.97) 50%,rgba(9,16,20,.98)); box-shadow: 0 30px 90px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.08); scroll-margin-top: 110px; }
 .card-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.13); }
@@ -130,7 +129,7 @@ a { color: inherit; }
 .step-number { padding-top: 4px; color: #80d4e9; font-size: 13px; }
 .process-steps h3 { margin: 0 0 7px; font-size: 19px; font-weight: 600; letter-spacing: -.025em; }
 .process-steps p { max-width: 430px; margin: 0; color: #a5b4ba; font-size: 14px; line-height: 1.65; }
-.step-arrow { justify-self: end; color: #6a8d99; font-size: 19px; }
+.step-arrow { justify-self: end; align-self: center; width: 18px; height: 18px; color: #6a8d99; }
 
 .final-cta { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 35px; margin: 100px 0; padding: clamp(38px,6vw,72px); overflow: hidden; border: 1px solid rgba(126,207,229,.25); border-radius: 26px; background: radial-gradient(circle at 88% 10%,rgba(100,205,235,.16),transparent 38%),linear-gradient(120deg,#152a32,#0a151b 60%,#101e24); }
 .final-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .12; background-image: radial-gradient(#a0def1 1px,transparent 1px); background-size: 22px 22px; mask-image: linear-gradient(90deg,transparent,#000); }
@@ -139,7 +138,7 @@ a { color: inherit; }
 .final-cta h2 { max-width: 660px; margin: 0; font-size: clamp(38px,5vw,67px); line-height: 1.06; letter-spacing: -.055em; }
 .final-cta .final-copy > p:last-child { margin: 17px 0 0; color: #b3c6cd; font-size: 16px; line-height: 1.6; }
 .final-cta a { display: inline-flex; align-items: center; justify-content: center; gap: 17px; flex: none; min-height: 52px; padding: 14px 21px; border-radius: 10px; background: #d9f5fc; color: #071114; font-size: 14px; font-weight: 700; text-decoration: none; transition: background .2s,transform .2s; }
-.final-cta a:hover { background: #fff; transform: translateY(-2px); }.final-cta a span { font-size: 20px; font-weight: 400; line-height: 0; }
+.final-cta a:hover { background: #fff; transform: translateY(-2px); }
 
 .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 27px 0 34px; border-top: 1px solid rgba(255,255,255,.11); color: #819199; font-size: 12px; }
 .footer-links { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 22px; }
@@ -172,7 +171,6 @@ a { color: inherit; }
 @media (max-width: 700px) {
   .container { padding: 0 24px; }.digest-nav { padding: 16px 16px 0; }.digest-nav-inner { padding: 0 16px; }.brand-name { font-size: 18px; }
   .hero { padding-top: 125px; padding-bottom: 65px; }.hero-title { font-size: clamp(49px,10vw,70px); }
-  .hero-note { align-items: flex-start; }
   .pain-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 35px; }.pain-card { min-height: 0; padding: 22px; }.pain-card h3 { max-width: none; margin-top: 25px; }
   .answer-panel { padding: 27px; }.answer-mark { display: none; }
   .sample-intro { display: block; }.sample-aside { margin-top: 37px; }

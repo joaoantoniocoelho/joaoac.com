@@ -1,7 +1,10 @@
 'use client';
 
 import type { MouseEvent } from 'react';
+import { FiFilter, FiRss, FiSend } from 'react-icons/fi';
 import { copy, type Locale } from '../lib/copy';
+
+const stepIcons = [FiRss, FiFilter, FiSend];
 
 const sampleArticles = [
   {
@@ -76,7 +79,7 @@ export function LandingDetails({ locale }: { locale: Locale }) {
         </div>
         <ol>
           {sampleArticles.map((article, index) => <li key={article.url}>
-            <h4><a href={article.url} target="_blank" rel="noopener noreferrer">{article.title}<span aria-hidden="true">↗</span></a></h4>
+            <h4><a href={article.url} target="_blank" rel="noopener noreferrer">{article.title}<span aria-hidden="true">&gt;</span></a></h4>
             <p>{t.sampleArticleMeta[index]}</p>
             {index === 0 && <p className="sample-story-note">{t.sampleLeadTopic}</p>}
           </li>)}
@@ -101,11 +104,14 @@ export function LandingDetails({ locale }: { locale: Locale }) {
         <p>{t.processIntro}</p>
       </div>
       <ol className="process-steps">
-        {t.steps.map((step, index) => <li key={step.title}>
-          <span className="step-number">0{index + 1}</span>
-          <div><h3>{step.title}</h3><p>{step.description}</p></div>
-          <span className="step-arrow" aria-hidden="true">↗</span>
-        </li>)}
+        {t.steps.map((step, index) => {
+          const Icon = stepIcons[index];
+          return <li key={step.title}>
+            <span className="step-number">0{index + 1}</span>
+            <div><h3>{step.title}</h3><p>{step.description}</p></div>
+            <Icon className="step-arrow" aria-hidden="true" />
+          </li>;
+        })}
       </ol>
     </section>
 
@@ -115,7 +121,7 @@ export function LandingDetails({ locale }: { locale: Locale }) {
         <h2 id="final-heading">{t.finalTitle}</h2>
         <p>{t.finalDescription}</p>
       </div>
-      <a href="#page-top" onClick={backToTop}>{t.finalAction}<span aria-hidden="true">↑</span></a>
+      <a href="#page-top" onClick={backToTop}>{t.finalAction}</a>
     </section>
   </>;
 }

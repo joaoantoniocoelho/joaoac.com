@@ -55,7 +55,7 @@ export function Landing({ locale }: { locale: Locale }) {
           <FocusTitle text={t.title} />
           <p className="lead">{t.intro}</p>
           <p className="detail">{t.detail}</p>
-          <p className="hero-note"><span aria-hidden="true">✳</span>{t.heroNote}</p>
+          <p className="hero-note">{t.heroNote}</p>
         </div>
         <div className="signup-card hero-reveal-card" id="subscribe">
           <div className="card-top"><span className="card-label">TECH DIGEST / 001</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>
