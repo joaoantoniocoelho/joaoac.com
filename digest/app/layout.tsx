@@ -14,11 +14,13 @@ export const metadata: Metadata = {
     description: 'A little less noise. A little more signal.',
     type: 'website',
     url: 'https://digest.joaoac.com',
+    images: [{ url: 'https://www.joaoac.com/avatar.png', width: 1254, height: 1254, alt: 'João Coelho' }],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Tech Digest',
     description: 'A little less noise. A little more signal.',
+    images: ['https://www.joaoac.com/avatar.png'],
   },
 };
 

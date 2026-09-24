@@ -36,7 +36,7 @@ export async function BlogArticle({ post, locale }: { post: Post; locale: Locale
     },
     publisher: { '@id': `${SITE_URL}/#person` },
     isPartOf: { '@id': `${SITE_URL}/#website` },
-    image: `${SITE_URL}/og.png`,
+    image: `${SITE_URL}/avatar.png`,
     mainEntityOfPage: url,
     url,
     inLanguage: pt ? 'pt-BR' : 'en-US',

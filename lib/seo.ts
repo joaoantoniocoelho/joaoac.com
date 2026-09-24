@@ -3,10 +3,10 @@ import { localizedPath, type Locale } from '@/lib/locale';
 import { SITE_AUTHOR, SITE_NAME, SITE_URL } from '@/lib/site';
 
 export const OG_IMAGE = {
-  url: '/og.png',
-  width: 1200,
-  height: 630,
-  alt: 'João Coelho - Senior Software Engineer',
+  url: '/avatar.png',
+  width: 1254,
+  height: 1254,
+  alt: 'João Coelho',
 } as const;
 
 export const TITLE_TEMPLATE = '%s | João Coelho';
@@ -111,7 +111,7 @@ export function pageMetadata({
     },
     openGraph,
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       creator: '@joaoac_dev',
       title: socialTitle,
       description: socialDescription,
