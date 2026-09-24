@@ -22,10 +22,22 @@ export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLoc
   const nextPath = nextLocale === 'en' ? '/' : '/pt-BR';
 
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 24);
+    let frameId = 0;
+
+    const update = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        frameId = 0;
+      });
+    };
+
     update();
     window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   useEffect(() => { setOptimisticLocale(null); }, [locale]);
