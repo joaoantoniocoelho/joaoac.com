@@ -9,7 +9,17 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://digest.joaoac.com'),
   title: { default: 'Tech Digest | João Coelho', template: '%s | Tech Digest' },
   description: 'Selected reading on software engineering and technology, delivered in a concise email.',
-  openGraph: { title: 'Tech Digest', description: 'A little less noise. A little more signal.', type: 'website' },
+  openGraph: {
+    title: 'Tech Digest',
+    description: 'A little less noise. A little more signal.',
+    type: 'website',
+    url: 'https://digest.joaoac.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tech Digest',
+    description: 'A little less noise. A little more signal.',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
