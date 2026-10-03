@@ -112,7 +112,7 @@ export function pageMetadata({
     openGraph,
     twitter: {
       card: 'summary',
-      creator: '@joaoac_dev',
+      creator: '@joaoac_',
       title: socialTitle,
       description: socialDescription,
       images: [OG_IMAGE.url],

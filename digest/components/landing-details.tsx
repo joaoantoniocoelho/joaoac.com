@@ -89,7 +89,7 @@ export function LandingDetails({ locale }: { locale: Locale }) {
           <div>
             <a href="https://joaoac.com" target="_blank" rel="noopener noreferrer">{t.sampleWebsite}</a>
             <span aria-hidden="true">·</span>
-            <a href="https://x.com/joaoac_dev" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://x.com/joaoac_" target="_blank" rel="noopener noreferrer">X</a>
             <span aria-hidden="true">·</span>
             <span className="sample-unsubscribe">{t.sampleUnsubscribe}</span>
           </div>

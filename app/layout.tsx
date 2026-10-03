@@ -53,7 +53,7 @@ const jsonLd = {
       sameAs: [
         'https://linkedin.com/in/joaoac',
         'https://github.com/joaoantoniocoelho',
-        'https://x.com/joaoac_dev',
+        'https://x.com/joaoac_',
       ],
       knowsAbout: [
         'Backend Engineering',

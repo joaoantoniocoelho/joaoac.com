@@ -13,7 +13,7 @@ const SHEEN = { delay: 0.3, duration: 1.5 };
 const socialLinks = [
   { label: 'LinkedIn', href: 'https://linkedin.com/in/joaoac', icon: FaLinkedin },
   { label: 'GitHub', href: 'https://github.com/joaoantoniocoelho', icon: FaGithub },
-  { label: 'X', href: 'https://x.com/joaoac_dev', icon: FaXTwitter },
+  { label: 'X', href: 'https://x.com/joaoac_', icon: FaXTwitter },
 ];
 
 export function ContactSection() {

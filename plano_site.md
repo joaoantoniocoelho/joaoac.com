@@ -69,12 +69,12 @@ export const metadata: Metadata = {
     description: "Backend systems, cloud infrastructure and AI-powered developer tooling.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "João Coelho - Senior Software Engineer" }],
   },
-  twitter: { card: "summary_large_image", creator: "@joaoac_dev" },
+  twitter: { card: "summary_large_image", creator: "@joaoac_" },
 };
 ```
 
 - Remover `keywords`.
-- `twitter:creator` hoje é `@joaoac`; o perfil linkado no footer é `@joaoac_dev`. Alinhar.
+- `twitter:creator` hoje é `@joaoac`; o perfil linkado no footer é `@joaoac_`. Alinhar.
 - PT-BR: `title.default` = "João Coelho | Engenheiro de Software Sênior - Backend, Cloud e IA"; `description` = "Engenheiro de software sênior na ADP escrevendo sobre sistemas backend, infraestrutura em nuvem e ferramentas de desenvolvimento com IA. Antes, SAP e fintech."; `openGraph.locale` = `pt_BR`; `<html lang="pt-BR">`.
 - Por página: `/experiences` → title "Experience", description "The teams, products, technical decisions, and lessons behind João Coelho's software engineering career." (já existe, manter). `/projects` → "Projects", "Products João Coelho built end to end, from idea to production." `/blog` → "Writing", "Notes on backend engineering, AI-assisted development and application security."
 
@@ -204,7 +204,7 @@ const jsonLd = {
         "https://linkedin.com/in/joaoac",
         "https://github.com/joaoantoniocoelho",
         "https://medium.com/@joaoac",
-        "https://x.com/joaoac_dev",
+        "https://x.com/joaoac_",
       ],
       knowsAbout: ["Backend Engineering", "Distributed Systems", "AWS", "Node.js", "TypeScript", "Java", "Spring Boot", "AI Agents", "LLM Integration"],
       alumniOf: { "@type": "CollegeOrUniversity", name: "PUCRS" },
