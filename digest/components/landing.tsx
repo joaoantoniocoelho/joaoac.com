@@ -8,10 +8,11 @@ import { FocusTitle } from './focus-title';
 import { DigestFooter } from './digest-footer';
 import { LandingDetails } from './landing-details';
 import { NextEditionCountdown } from './next-edition-countdown';
+import type { PublicEdition } from '../lib/editions';
 
 type FormState = 'idle' | 'loading' | 'success' | 'invalid' | 'rate' | 'unavailable';
 
-export function Landing({ locale }: { locale: Locale }) {
+export function Landing({ locale, latestEdition }: { locale: Locale; latestEdition: PublicEdition | null }) {
   const t = copy[locale];
   const [email, setEmail] = useState('');
   const [state, setState] = useState<FormState>('idle');
@@ -56,6 +57,7 @@ export function Landing({ locale }: { locale: Locale }) {
           <p className="lead">{t.intro}</p>
           <p className="detail">{t.detail}</p>
           <p className="hero-note">{t.heroNote}</p>
+          {latestEdition && <div className="latest-edition-links"><a href={`/digest/${latestEdition.date}`}>{t.readLatestEdition} →</a><a href="/digest">{t.browseArchive} →</a></div>}
         </div>
         <div className="signup-card hero-reveal-card" id="subscribe">
           <div className="card-top"><span className="card-label">TECH DIGEST / 001</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>
@@ -71,7 +73,7 @@ export function Landing({ locale }: { locale: Locale }) {
           <p className="fine-print">{t.privacy}</p>
         </div>
       </section>
-      <LandingDetails locale={locale} />
+      <LandingDetails locale={locale} latestEdition={latestEdition} />
       </main>
       <DigestFooter locale={locale} />
     </div>

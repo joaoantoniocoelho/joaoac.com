@@ -13,6 +13,22 @@ npm run dev
 
 `NEXT_PUBLIC_DIGEST_API_URL` aponta para a API pública. A landing envia `POST /subscribe` com JSON e `POST /unsubscribe/{token}` sem corpo, somente após confirmação. Ela não envia credenciais nem chama jobs. O link de cancelamento não tem prefixo de idioma. A página usa a preferência salva no navegador ou seu idioma para escolher entre inglês e pt-BR; o botão troca o idioma sem alterar o token nem a URL.
 
+As páginas `/digest` e `/digest/YYYY-MM-DD` usam `GET /digests` e
+`GET /digests/YYYY-MM-DD` na API do Railway. Publique a API antes do site para
+disponibilizar essas rotas. Novas edições entram no arquivo após o envio diário e
+a invalidação do cache.
+A home em inglês e em português mostra até três artigos da edição mais recente e
+links para a edição completa e para o arquivo. Se a API estiver indisponível, a
+home mantém a amostra ilustrativa atual.
+
+As páginas de edição são geradas e guardadas na primeira visita (`generateStaticParams`
+retorna `[]`). O arquivo é gerado no build. Os dados da API e as páginas têm
+revalidação de uma hora como fallback. Após um envio, Railway chama
+`POST /api/revalidate` com `DIGEST_REVALIDATE_TOKEN` via Bearer e as datas da edição
+nova e da anterior. O endpoint invalida o arquivo, ambas as edições e os dados
+compartilhados; a regeneração ocorre na próxima visita. Configure o mesmo token
+nas variáveis de ambiente dos dois serviços.
+
 ## Configuração de produção
 
 1. **Vercel:** importe o mesmo repositório como um **novo projeto** `tech-digest-landing`. Defina **Root Directory** como `digest`, framework Next.js, install command `npm ci` e build command `npm run build`. Crie a variável **Production** `NEXT_PUBLIC_DIGEST_API_URL=https://api.digest.joaoac.com`. Adicione `digest.joaoac.com` em **Settings → Domains**. Mantenha `joaoac.com` e `www.joaoac.com` somente no projeto Vercel do site principal.
