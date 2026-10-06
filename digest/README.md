@@ -11,7 +11,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-`NEXT_PUBLIC_DIGEST_API_URL` aponta para a API pública. A landing envia `POST /subscribe` com JSON e `POST /unsubscribe/{token}` sem corpo, somente após confirmação. Ela não envia credenciais nem chama jobs. O link de cancelamento não tem prefixo de idioma. A página usa a preferência salva no navegador ou seu idioma para escolher entre inglês e pt-BR; o botão troca o idioma sem alterar o token nem a URL.
+`NEXT_PUBLIC_DIGEST_API_URL` aponta para a API pública. A landing envia `POST /subscribe` com JSON e `POST /unsubscribe/{token}` sem corpo, somente após confirmação. Ela não envia credenciais nem chama jobs. O formulário de inscrição (landing e páginas de edição) também envia `acquisition_source` (parâmetro `ref`, ou `direct` quando a visita não tem `ref` nem UTM), `acquisition_url` (origem e caminho da página, sem query) e, quando presentes, `utm_source`/`utm_medium`/`utm_campaign`. A primeira URL da sessão com `ref` ou UTM fica no `sessionStorage` e tem prioridade no envio, para a origem não se perder na navegação interna. Os valores são truncados aos limites do backend; se a API ainda responder 413, o formulário reenvia só o e-mail. O link de cancelamento não tem prefixo de idioma. A página usa a preferência salva no navegador ou seu idioma para escolher entre inglês e pt-BR; o botão troca o idioma sem alterar o token nem a URL.
 
 As páginas `/digest` e `/digest/YYYY-MM-DD` usam `GET /digests?page=N` e
 `GET /digests/YYYY-MM-DD` na API do Railway. Publique a API antes do site: o site

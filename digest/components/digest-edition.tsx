@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { copy, type Locale } from '../lib/copy';
-import { archivePath, editionPath, formatEditionDate, isEditionDate, otherLocale, subscribePath } from '../lib/digest-routes';
+import { archivePath, editionPath, formatEditionDate, isEditionDate, otherLocale } from '../lib/digest-routes';
 import { getEdition, safeArticleUrl } from '../lib/editions';
 import { DigestFooter } from './digest-footer';
 import { DigestHeader } from './digest-header';
 import { DocumentLocale } from './document-locale';
+import { SignupForm } from './signup-form';
 
 export async function editionMetadata(locale: Locale, date: string): Promise<Metadata> {
   if (!isEditionDate(date)) return {};
@@ -42,7 +43,6 @@ export async function DigestEdition({ locale, date }: { locale: Locale; date: st
   if (!edition) notFound();
   const t = copy[locale];
   const day = formatEditionDate(locale, date);
-  const subscribe = subscribePath(locale);
 
   return <div className="shell public-digest-shell">
     <DocumentLocale locale={locale} />
@@ -53,7 +53,10 @@ export async function DigestEdition({ locale, date }: { locale: Locale; date: st
         <p className="section-kicker">{t.editionKicker} · {day}</p>
         <h1>Tech Digest — {day}</h1>
         <p className="public-digest-lead">{t.editionLead(edition.articles.length)}</p>
-        <div className="public-digest-cta"><span>{t.editionCta}</span><Link href={subscribe}>{t.subscribeLink} →</Link></div>
+        <section className="public-digest-cta" aria-label={t.editionSignupLabel}>
+          <p>{t.editionCta}</p>
+          <SignupForm locale={locale} inputId="edition-email-top" variant="inline" />
+        </section>
         <ol className="public-article-list">
           {edition.articles.map((article, index) => {
             const url = safeArticleUrl(article.url);
@@ -68,7 +71,12 @@ export async function DigestEdition({ locale, date }: { locale: Locale; date: st
             </li>;
           })}
         </ol>
-        <div className="public-digest-bottom-cta"><h2>{t.editionBottomTitle}</h2><p>{t.editionBottomText}</p><Link href={subscribe}>{t.editionBottomAction} →</Link></div>
+        <section className="public-digest-bottom-cta" aria-labelledby="edition-signup-bottom-title">
+          <h2 id="edition-signup-bottom-title">{t.editionBottomTitle}</h2>
+          <p>{t.editionBottomText}</p>
+          <SignupForm locale={locale} inputId="edition-email-bottom" variant="inline" />
+          <p className="fine-print">{t.privacy}</p>
+        </section>
         <nav className="public-digest-pagination" aria-label={t.editionNavigation}>
           {edition.older_date ? <Link href={editionPath(locale, edition.older_date)} rel="prev">← {t.previousEdition}</Link> : <span />}
           <Link href={archivePath(locale)}>{t.fullArchive}</Link>
