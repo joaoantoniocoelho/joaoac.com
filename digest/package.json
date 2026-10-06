@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test": "node --test"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",

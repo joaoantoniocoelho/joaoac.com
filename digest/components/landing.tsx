@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { apiBaseUrl } from '../lib/api';
 import { copy, type Locale } from '../lib/copy';
+import { archivePath, editionPath } from '../lib/digest-routes';
 import { DigestHeader } from './digest-header';
 import { FocusTitle } from './focus-title';
 import { DigestFooter } from './digest-footer';
@@ -57,7 +58,7 @@ export function Landing({ locale, latestEdition }: { locale: Locale; latestEditi
           <p className="lead">{t.intro}</p>
           <p className="detail">{t.detail}</p>
           <p className="hero-note">{t.heroNote}</p>
-          {latestEdition && <div className="latest-edition-links"><a href={`/digest/${latestEdition.date}`}>{t.readLatestEdition} →</a><a href="/digest">{t.browseArchive} →</a></div>}
+          {latestEdition && <div className="latest-edition-links"><a href={editionPath(locale, latestEdition.date)}>{t.readLatestEdition} →</a><a href={archivePath(locale)}>{t.browseArchive} →</a></div>}
         </div>
         <div className="signup-card hero-reveal-card" id="subscribe">
           <div className="card-top"><span className="card-label">TECH DIGEST / 001</span><span className="signal" aria-hidden="true"><span/><span/><span/></span></div>

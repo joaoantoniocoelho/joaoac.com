@@ -40,9 +40,13 @@ export async function POST(request: Request): Promise<Response> {
 
   revalidateTag('digest-editions', { expire: 0 });
   revalidateTag(`digest-edition:${payload.date}`, { expire: 0 });
-  revalidatePath('/digest');
-  revalidatePath(`/digest/${payload.date}`);
-  if (previousDate) revalidatePath(`/digest/${previousDate}`);
+  // The previous edition now links forward to the new one through its own newer_date.
+  if (previousDate) revalidateTag(`digest-edition:${previousDate}`, { expire: 0 });
+  for (const prefix of ['', '/pt-BR']) {
+    revalidatePath(`${prefix}/digest`);
+    revalidatePath(`${prefix}/digest/${payload.date}`);
+    if (previousDate) revalidatePath(`${prefix}/digest/${previousDate}`);
+  }
   revalidatePath('/');
   revalidatePath('/pt-BR');
 
