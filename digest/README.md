@@ -13,10 +13,18 @@ npm run dev
 
 `NEXT_PUBLIC_DIGEST_API_URL` aponta para a API pública. A landing envia `POST /subscribe` com JSON e `POST /unsubscribe/{token}` sem corpo, somente após confirmação. Ela não envia credenciais nem chama jobs. O link de cancelamento não tem prefixo de idioma. A página usa a preferência salva no navegador ou seu idioma para escolher entre inglês e pt-BR; o botão troca o idioma sem alterar o token nem a URL.
 
-As páginas `/digest` e `/digest/YYYY-MM-DD` usam `GET /digests` e
-`GET /digests/YYYY-MM-DD` na API do Railway. Publique a API antes do site para
-disponibilizar essas rotas. Novas edições entram no arquivo após o envio diário e
-a invalidação do cache.
+As páginas `/digest` e `/digest/YYYY-MM-DD` usam `GET /digests?page=N` e
+`GET /digests/YYYY-MM-DD` na API do Railway. Publique a API antes do site: o site
+espera a resposta paginada (`editions`, `page`, `has_more`) e os campos
+`older_date`/`newer_date` da edição. Novas edições entram no arquivo após o envio
+diário e a invalidação do cache.
+O arquivo mostra 20 edições por página, com URLs `/digest?page=N`; um `page`
+inválido redireciona para a primeira página e uma página além do fim retorna 404.
+As mesmas páginas existem em português em `/pt-BR/digest` e
+`/pt-BR/digest/YYYY-MM-DD`. Os links mantêm o idioma atual, e o switch do header
+leva à mesma página no outro idioma. O conteúdo dos artigos vem da API e não é
+traduzido.
+Testes unitários: `npm test` (runner nativo do Node, sem dependências).
 A home em inglês e em português mostra até três artigos da edição mais recente e
 links para a edição completa e para o arquivo. Se a API estiver indisponível, a
 home mantém a amostra ilustrativa atual.

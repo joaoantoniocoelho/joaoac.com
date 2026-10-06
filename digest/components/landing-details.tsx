@@ -3,6 +3,7 @@
 import type { MouseEvent } from 'react';
 import { FiFilter, FiRss, FiSend } from 'react-icons/fi';
 import { copy, type Locale } from '../lib/copy';
+import { archivePath, editionPath } from '../lib/digest-routes';
 import { safeArticleUrl, type PublicEdition } from '../lib/editions';
 
 const stepIcons = [FiRss, FiFilter, FiSend];
@@ -92,7 +93,7 @@ export function LandingDetails({ locale, latestEdition }: { locale: Locale; late
             {index === 0 && <p className="sample-story-note">{t.sampleLeadTopic}</p>}
           </li>)}
         </ol>
-        {latestEdition && <div className="sample-edition-actions"><a href={`/digest/${latestEdition.date}`}>{t.readFullEdition} →</a><a href="/digest">{t.browseArchive} →</a></div>}
+        {latestEdition && <div className="sample-edition-actions"><a href={editionPath(locale, latestEdition.date)}>{t.readFullEdition} →</a><a href={archivePath(locale)}>{t.browseArchive} →</a></div>}
         <div className="sample-edition-footer">
           <p>{t.sampleCurated}</p>
           <div>

@@ -4,13 +4,24 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import type { Locale } from '../lib/copy';
+import { homePath } from '../lib/digest-routes';
 
 const locales = [
   { id: 'en' as const, short: 'EN', Flag: FlagUS },
   { id: 'pt-BR' as const, short: 'PT', Flag: FlagBR },
 ];
 
-export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLocaleChange?: (locale: Locale) => void }) {
+type HeaderLink = { href: string; label: string };
+
+type DigestHeaderProps = {
+  locale: Locale;
+  onLocaleChange?: (locale: Locale) => void;
+  // Same page in the other locale; defaults to the other locale's landing page.
+  alternatePath?: string;
+  link?: HeaderLink;
+};
+
+export function DigestHeader({ locale, onLocaleChange, alternatePath, link }: DigestHeaderProps) {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
@@ -19,7 +30,7 @@ export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLoc
   const shown = optimisticLocale ?? locale;
   const pt = shown === 'pt-BR';
   const nextLocale: Locale = pt ? 'en' : 'pt-BR';
-  const nextPath = nextLocale === 'en' ? '/' : '/pt-BR';
+  const nextPath = alternatePath ?? homePath(nextLocale);
 
   useEffect(() => {
     let frameId = 0;
@@ -44,6 +55,8 @@ export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLoc
   useEffect(() => { if (!onLocaleChange) router.prefetch(nextPath); }, [onLocaleChange, router, nextPath]);
 
   function toggle() {
+    // alternatePath only points away from the current page's locale; a second click while that navigation is pending has nowhere to go.
+    if (alternatePath && shown !== locale) return;
     setOptimisticLocale(nextLocale);
     if (onLocaleChange) {
       onLocaleChange(nextLocale);
@@ -55,10 +68,12 @@ export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLoc
 
   return <nav className="digest-nav" aria-label={pt ? 'Navegação principal' : 'Main navigation'}>
     <div className={`digest-nav-inner${scrolled ? ' is-scrolled' : ''}`}>
-      <a className="brand" href={pt ? '/pt-BR' : '/'} aria-label={`Tech Digest, ${pt ? 'início' : 'home'}`}>
+      <a className="brand" href={homePath(shown)} aria-label={`Tech Digest, ${pt ? 'início' : 'home'}`}>
         <span className="brand-mark">TD</span>
         <span className="brand-name">Tech Digest</span>
       </a>
+      <div className="digest-nav-actions">
+      {link && <a className="digest-nav-link" href={link.href}>{link.label} →</a>}
       <button className="language-switch" type="button" role="switch" aria-checked={pt} aria-label={pt ? 'Mudar idioma para inglês' : 'Switch language to Portuguese'} title={pt ? 'Switch to English' : 'Mudar para português'} onClick={toggle}>
         <motion.span className="language-thumb" aria-hidden="true" initial={false} animate={{ x: pt ? '100%' : '0%' }} transition={prefersReducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 190, damping: 26, mass: 1 }} />
         {locales.map(({ id, short, Flag }) => {
@@ -69,6 +84,7 @@ export function DigestHeader({ locale, onLocaleChange }: { locale: Locale; onLoc
           </span>;
         })}
       </button>
+      </div>
     </div>
   </nav>;
 }
