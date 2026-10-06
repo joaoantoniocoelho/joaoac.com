@@ -181,7 +181,7 @@ a { color: inherit; }
 .share-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
 .share-button { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid rgba(126,207,229,.3); border-radius: 10px; background: rgba(44,119,143,.14); color: #d5e9ee; font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: border-color .2s,color .2s; }
 .share-button:hover { border-color: #89d9ec; color: #fff; }.share-button svg { width: 14px; height: 14px; }
-.share-url { max-width: 560px; height: 42px; margin-top: 4px; font-size: 13px; }
+.share-url { max-width: 560px; height: 42px; margin-top: 4px; font-size: 13px; }.share-url[readonly] { opacity: 1; cursor: text; }
 .public-digest-bottom-cta { margin-top: 35px; padding: clamp(27px,5vw,45px); border: 1px solid rgba(126,207,229,.26); border-radius: 19px; background: linear-gradient(120deg,#152a32,#0a151b); }
 .public-digest-bottom-cta h2 { margin: 0; font-size: clamp(25px,4vw,38px); letter-spacing: -.04em; }
 .public-digest-bottom-cta h2 + p { margin: 11px 0 0; color: #b3c6cd; line-height: 1.6; }

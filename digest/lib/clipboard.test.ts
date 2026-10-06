@@ -33,7 +33,10 @@ describe('copyText', () => {
   });
 
   it('falls back when the Clipboard API is missing', async () => {
-    assert.equal(await copyText(link, undefined, () => true), true);
+    const fallbackCalls: string[] = [];
+    const copied = await copyText(link, undefined, value => { fallbackCalls.push(value); return true; });
+    assert.equal(copied, true);
+    assert.deepEqual(fallbackCalls, [link]);
   });
 
   it('reports failure when no method can copy', async () => {

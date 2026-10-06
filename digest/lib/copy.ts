@@ -174,7 +174,7 @@ export const copy = {
     editionMetaTitle: (day: string) => `Edição de ${day}`,
     editionMetaDescription: (count: number, day: string) => `${count} ${count === 1 ? 'artigo selecionado' : 'artigos selecionados'} pelo Tech Digest sobre engenharia de software em ${day}.`,
     shareTitle: 'Compartilhe este digest',
-    shareText: 'Conhece alguém que gostaria desta edição? Envie para essa pessoa.',
+    shareText: 'Conhece alguém que gostaria desta edição? Mande o link para essa pessoa.',
     copyLink: 'Copiar link', linkCopied: 'Link copiado',
     copyFailed: 'Não foi possível copiar o link. Selecione-o abaixo e copie manualmente.',
     shareLink: 'Link desta edição',

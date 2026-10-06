@@ -16,16 +16,22 @@ export async function copyText(value: string, clipboard: ClipboardWriter | undef
 }
 
 export function copyWithSelection(value: string): boolean {
+  // Selecting moves focus to the textarea; restore it so keyboard and screen reader users keep their place.
+  const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const textArea = document.createElement('textarea');
   textArea.value = value;
   textArea.setAttribute('readonly', '');
   textArea.style.position = 'fixed';
   textArea.style.opacity = '0';
+  // 16px avoids the iOS zoom on focus; setSelectionRange is needed because select() is a no-op on iOS.
+  textArea.style.fontSize = '16px';
   document.body.appendChild(textArea);
   textArea.select();
+  textArea.setSelectionRange(0, value.length);
   try {
     return document.execCommand('copy');
   } finally {
     textArea.remove();
+    previousFocus?.focus();
   }
 }
