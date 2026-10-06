@@ -24,6 +24,11 @@ As mesmas páginas existem em português em `/pt-BR/digest` e
 `/pt-BR/digest/YYYY-MM-DD`. Os links mantêm o idioma atual, e o switch do header
 leva à mesma página no outro idioma. O conteúdo dos artigos vem da API e não é
 traduzido.
+Ao final de cada edição, o bloco "Share this digest" oferece copiar o link, X e
+LinkedIn. Os links apontam para a URL canônica da edição no idioma atual com
+`ref=share` (copiar), `ref=x` ou `ref=linkedin`, que entram como
+`acquisition_source` na inscrição de quem chegar por eles. Não há código de
+indicação por usuário.
 Testes unitários: `npm test` (runner nativo do Node, sem dependências).
 A home em inglês e em português mostra até três artigos da edição mais recente e
 links para a edição completa e para o arquivo. Se a API estiver indisponível, a
