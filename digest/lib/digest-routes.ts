@@ -2,6 +2,8 @@ import type { Locale } from './copy';
 
 export type SearchParams = Record<string, string | string[] | undefined>;
 
+export const siteOrigin = 'https://digest.joaoac.com';
+
 const localePrefix: Record<Locale, string> = { en: '', 'pt-BR': '/pt-BR' };
 
 export function otherLocale(locale: Locale): Locale {
@@ -23,6 +25,10 @@ export function archivePath(locale: Locale, page = 1): string {
 
 export function editionPath(locale: Locale, date: string): string {
   return `${localePrefix[locale]}/digest/${date}`;
+}
+
+export function editionUrl(locale: Locale, date: string): string {
+  return `${siteOrigin}${editionPath(locale, date)}`;
 }
 
 // Returns null for anything the API would reject, so the page can redirect instead of erroring.

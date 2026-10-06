@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { archivePath, editionPath, formatEditionDate, homePath, otherLocale, parsePage, subscribePath } from './digest-routes.ts';
+import { archivePath, editionPath, editionUrl, formatEditionDate, homePath, otherLocale, parsePage, subscribePath } from './digest-routes.ts';
 
 describe('digest routes', () => {
   it('keeps English paths unprefixed and Portuguese paths under /pt-BR', () => {
@@ -10,6 +10,11 @@ describe('digest routes', () => {
     assert.equal(subscribePath('pt-BR'), '/pt-BR#subscribe');
     assert.equal(editionPath('en', '2026-10-05'), '/digest/2026-10-05');
     assert.equal(editionPath('pt-BR', '2026-10-05'), '/pt-BR/digest/2026-10-05');
+  });
+
+  it('builds absolute edition URLs on the public site', () => {
+    assert.equal(editionUrl('en', '2026-10-05'), 'https://digest.joaoac.com/digest/2026-10-05');
+    assert.equal(editionUrl('pt-BR', '2026-10-05'), 'https://digest.joaoac.com/pt-BR/digest/2026-10-05');
   });
 
   it('only adds the page query after the first archive page', () => {

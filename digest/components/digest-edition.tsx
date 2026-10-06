@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { copy, type Locale } from '../lib/copy';
-import { archivePath, editionPath, formatEditionDate, isEditionDate, otherLocale } from '../lib/digest-routes';
+import { archivePath, editionPath, editionUrl, formatEditionDate, isEditionDate, otherLocale } from '../lib/digest-routes';
 import { getEdition, safeArticleUrl } from '../lib/editions';
 import { DigestFooter } from './digest-footer';
 import { DigestHeader } from './digest-header';
 import { DocumentLocale } from './document-locale';
+import { ShareDigest } from './share-digest';
 import { SignupForm } from './signup-form';
 
 export async function editionMetadata(locale: Locale, date: string): Promise<Metadata> {
@@ -17,7 +18,7 @@ export async function editionMetadata(locale: Locale, date: string): Promise<Met
   const day = formatEditionDate(locale, date);
   const title = t.editionMetaTitle(day);
   const description = t.editionMetaDescription(edition.articles.length, day);
-  const url = `https://digest.joaoac.com${editionPath(locale, date)}`;
+  const url = editionUrl(locale, date);
   return {
     title,
     description,
@@ -71,6 +72,7 @@ export async function DigestEdition({ locale, date }: { locale: Locale; date: st
             </li>;
           })}
         </ol>
+        <ShareDigest locale={locale} editionUrl={editionUrl(locale, date)} day={day} />
         <section className="public-digest-bottom-cta" aria-labelledby="edition-signup-bottom-title">
           <h2 id="edition-signup-bottom-title">{t.editionBottomTitle}</h2>
           <p>{t.editionBottomText}</p>

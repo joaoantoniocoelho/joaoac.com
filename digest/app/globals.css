@@ -175,6 +175,13 @@ a { color: inherit; }
 .public-article-list h2 a { text-decoration: none; }.public-article-list h2 a:hover { color: #8bdcf0; }
 .public-article-why { max-width: 690px; margin: 14px 0 0; color: #c1cdd1; font-size: 15px; line-height: 1.7; }
 .public-article-source { display: inline-block; margin-top: 15px; color: #8bdcf0; font-size: 13px; text-decoration: none; }.public-article-source:hover { color: #fff; }
+.public-digest-share { margin-top: 10px; padding: 31px 0 0; border-top: 1px solid rgba(255,255,255,.14); }
+.public-digest-share h2 { margin: 0; font-size: clamp(20px,2.6vw,25px); letter-spacing: -.03em; }
+.public-digest-share h2 + p { margin: 9px 0 0; color: #b3c6cd; font-size: 15px; line-height: 1.6; }
+.share-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+.share-button { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid rgba(126,207,229,.3); border-radius: 10px; background: rgba(44,119,143,.14); color: #d5e9ee; font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: border-color .2s,color .2s; }
+.share-button:hover { border-color: #89d9ec; color: #fff; }.share-button svg { width: 14px; height: 14px; }
+.share-url { max-width: 560px; height: 42px; margin-top: 4px; font-size: 13px; }
 .public-digest-bottom-cta { margin-top: 35px; padding: clamp(27px,5vw,45px); border: 1px solid rgba(126,207,229,.26); border-radius: 19px; background: linear-gradient(120deg,#152a32,#0a151b); }
 .public-digest-bottom-cta h2 { margin: 0; font-size: clamp(25px,4vw,38px); letter-spacing: -.04em; }
 .public-digest-bottom-cta h2 + p { margin: 11px 0 0; color: #b3c6cd; line-height: 1.6; }
