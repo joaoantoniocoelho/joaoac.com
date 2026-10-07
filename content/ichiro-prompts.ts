@@ -3,7 +3,6 @@ export type PromptId =
   | 'experience'
   | 'stack'
   | 'resume'
-  | 'projects'
   | 'blog'
   | 'work-style'
   | 'favorite-problems'
@@ -37,7 +36,6 @@ export const initialPrompts: PromptId[] = ['now', 'experience', 'resume', 'meet-
 
 export const discoveryOrder: PromptId[] = [
   'stack',
-  'projects',
   'blog',
   'work-style',
   'favorite-problems',
@@ -71,27 +69,20 @@ export const prompts: Record<PromptId, Prompt> = {
     question: 'What does he actually work with?',
     answer:
       'Mostly Node.js/TypeScript and Java/Spring Boot on AWS, with PostgreSQL and MongoDB underneath. React and Flutter when the problem reaches a screen. Lately, a lot of LLMs and agents.',
-    next: ['now', 'tech-opinion', 'projects', 'learning-now'],
+    next: ['now', 'tech-opinion', 'learning-now'],
   },
   resume: {
     question: 'Can I get his resume?',
     answer: 'One page, no progress bars. I inspected it between naps. Here it is.',
     links: [{ label: 'Download resume', href: '/resume' }],
-    next: ['experience', 'work-style', 'contact', 'projects'],
-  },
-  projects: {
-    question: 'Has he built anything on his own?',
-    answer:
-      'One product, live and early. Tech Digest collects selected technology reading in a concise email. He built every layer of it, which explains the tab count.',
-    links: [{ label: 'See projects', href: '/projects' }],
-    next: ['stack', 'random-fact', 'blog', 'contact'],
+    next: ['experience', 'work-style', 'contact'],
   },
   blog: {
     question: 'Does he write?',
     answer:
       'Yes: engineering, AI-assisted development and application security. Publishing cadence is a known issue. A fix is in progress.',
     links: [{ label: 'Read the blog', href: '/blog' }],
-    next: ['learning-now', 'tech-opinion', 'projects', 'contact'],
+    next: ['learning-now', 'tech-opinion', 'contact'],
   },
   'work-style': {
     question: "What's João like to work with?",
@@ -145,7 +136,7 @@ export const prompts: Record<PromptId, Prompt> = {
     question: 'Give me a random João fact.',
     answer:
       'His definition of a quick experiment is optimistic. It usually has a domain name before it has a README.',
-    next: ['projects', 'not-on-site', 'away-from-keyboard', 'ichiro-secret'],
+    next: ['not-on-site', 'away-from-keyboard', 'ichiro-secret'],
   },
   'site-secret': {
     question: 'Is anything hidden on this site?',
@@ -162,7 +153,7 @@ export const prompts: Record<PromptId, Prompt> = {
   'ichiro-secret': {
     question: "What shouldn't Ichiro tell me?",
     answer: "The browser tab count. I've seen the number. My clearance level ends there.",
-    next: ['random-fact', 'projects', 'site-secret', 'contact'],
+    next: ['random-fact', 'site-secret', 'contact'],
   },
   contact: {
     question: 'How can I reach him?',
@@ -195,27 +186,20 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
     question: 'Com o que ele trabalha de verdade?',
     answer:
       'Principalmente Node.js/TypeScript e Java/Spring Boot na AWS, com PostgreSQL e MongoDB por baixo. React e Flutter quando o problema chega à tela. Ultimamente, muito LLM e agente.',
-    next: ['now', 'tech-opinion', 'projects', 'learning-now'],
+    next: ['now', 'tech-opinion', 'learning-now'],
   },
   resume: {
     question: 'Posso ver o currículo dele?',
     answer: 'Uma página, sem barras de progresso. Eu inspecionei tudo entre um cochilo e outro. Aqui está.',
     links: [{ label: 'Baixar currículo', href: '/resume' }],
-    next: ['experience', 'work-style', 'contact', 'projects'],
-  },
-  projects: {
-    question: 'Ele construiu algo por conta própria?',
-    answer:
-      'Um produto, no ar e ainda no começo. O Tech Digest reúne leituras de tecnologia em um e-mail direto ao ponto. Ele construiu todas as camadas, o que explica a quantidade de abas.',
-    links: [{ label: 'Ver projetos', href: '/pt-BR/projects' }],
-    next: ['stack', 'random-fact', 'blog', 'contact'],
+    next: ['experience', 'work-style', 'contact'],
   },
   blog: {
     question: 'Ele escreve?',
     answer:
       'Sim: engenharia, desenvolvimento assistido por IA e segurança de aplicações. A frequência de publicação é um problema conhecido. Uma correção está em andamento.',
     links: [{ label: 'Ler o blog', href: '/pt-BR/blog' }],
-    next: ['learning-now', 'tech-opinion', 'projects', 'contact'],
+    next: ['learning-now', 'tech-opinion', 'contact'],
   },
   'work-style': {
     question: 'Como é trabalhar com o João?',
@@ -269,7 +253,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
     question: 'Conte uma curiosidade aleatória sobre o João.',
     answer:
       'A definição dele de experimento rápido é otimista. Normalmente tem domínio registrado antes de ter README.',
-    next: ['projects', 'not-on-site', 'away-from-keyboard', 'ichiro-secret'],
+    next: ['not-on-site', 'away-from-keyboard', 'ichiro-secret'],
   },
   'site-secret': {
     question: 'Existe algo escondido neste site?',
@@ -286,7 +270,7 @@ export const promptsPtBr: Record<PromptId, Prompt> = {
   'ichiro-secret': {
     question: 'O que o Ichiro não deveria me contar?',
     answer: 'O número de abas do navegador. Eu vi o número. Meu nível de acesso termina aí.',
-    next: ['random-fact', 'projects', 'site-secret', 'contact'],
+    next: ['random-fact', 'site-secret', 'contact'],
   },
   contact: {
     question: 'Como posso falar com ele?',
