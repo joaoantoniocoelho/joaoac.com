@@ -46,37 +46,4 @@ export const projects: Project[] = [
     },
     stack: 'Python · Jev / TypeSafe · Railway · Resend',
   },
-  {
-    slug: 'revisa-ai',
-    name: 'Revisa Aí',
-    url: 'https://revisaai.app',
-    urlLabel: 'revisaai.app',
-    oneLiner: {
-      en: 'Turns medical study PDFs into flashcards ready for spaced repetition.',
-      'pt-BR': 'Transforma PDFs de Medicina em flashcards prontos para repetição espaçada.',
-    },
-    whatItDoes: {
-      en: [
-        'Upload lecture notes, slides or summaries; the file is processed and discarded.',
-        'Generates question-and-answer cards with clinical explanations, with three depth levels and an optional "beyond the PDF" mode that flags AI-added cards separately.',
-        'Review in-app with spaced repetition or export to Anki (.apkg).',
-      ],
-      'pt-BR': [
-        'Envie apostilas, slides ou resumos; o arquivo é processado e descartado.',
-        'Gera cards de pergunta e resposta com explicação clínica, em três níveis de profundidade, com modo opcional "além do PDF" que marca separadamente os cards complementares.',
-        'Revise no app com repetição espaçada ou exporte para o Anki (.apkg).',
-      ],
-    },
-    decisions: {
-      en: [
-        'I chose question-and-answer cards to help students practice recall, rather than reread excerpts.',
-        'AI-added content is always labeled so students can tell source material from complement.',
-      ],
-      'pt-BR': [
-        'Escolhi cards de pergunta e resposta para exercitar a memória, em vez de apenas reler trechos do material.',
-        'Conteúdo adicionado pela IA é sempre rotulado para o estudante distinguir material original de complemento.',
-      ],
-    },
-    stack: 'Next.js on Vercel · Node.js · MongoDB · Gemini · Redis · BullMQ',
-  },
 ];

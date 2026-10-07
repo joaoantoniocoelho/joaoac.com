@@ -36,8 +36,8 @@ export function ProjectsSection() {
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400">
               {pt
-                ? 'Revisa Aí e Tech Digest são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
-                : 'Revisa Aí and Tech Digest are projects I build independently. I handle product decisions, architecture, data, and interface.'}
+                ? 'Tech Digest é um projeto que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
+                : 'Tech Digest is a project I build independently. I handle product decisions, architecture, data, and interface.'}
             </p>
           </div>
           <Link

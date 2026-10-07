@@ -54,11 +54,11 @@ export default function ProjectsPage() {
           <div className="max-w-md lg:pb-2">
             <p className="text-base leading-8 text-zinc-400 md:text-lg">
               {pt
-                ? 'Revisa Aí e Tech Digest são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
-                : 'Revisa Aí and Tech Digest are projects I build independently. I handle product decisions, architecture, data, and interface.'}
+                ? 'Tech Digest é um projeto que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
+                : 'Tech Digest is a project I build independently. I handle product decisions, architecture, data, and interface.'}
             </p>
             <div className="mt-8 flex items-center gap-4 text-xs uppercase tracking-[0.16em] text-zinc-600">
-              <span>{projects.length} {pt ? 'produtos' : 'products'}</span>
+              <span>{projects.length} {projects.length === 1 ? (pt ? 'produto' : 'product') : pt ? 'produtos' : 'products'}</span>
               <span className="h-1 w-1 rounded-full bg-zinc-700" />
               <span>{pt ? 'Em produção' : 'In production'}</span>
             </div>
