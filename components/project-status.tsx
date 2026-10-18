@@ -1,6 +1,7 @@
 'use client';
 
 import { useReducedMotion } from 'framer-motion';
+import type { ProjectStatus } from '@/content/projects';
 import { useLocale } from '@/lib/i18n';
 
 type ProjectStatusHeaderProps = {
@@ -8,6 +9,7 @@ type ProjectStatusHeaderProps = {
   titleAs?: 'h2' | 'h3';
   titleClassName?: string;
   showStage?: boolean;
+  status?: ProjectStatus;
 };
 
 export function ProjectStatusHeader({
@@ -15,6 +17,7 @@ export function ProjectStatusHeader({
   titleAs = 'h3',
   titleClassName = 'break-words text-2xl font-semibold tracking-tight text-white',
   showStage = true,
+  status = 'live',
 }: ProjectStatusHeaderProps) {
   const locale = useLocale();
   const pt = locale === 'pt-BR';
@@ -27,15 +30,22 @@ export function ProjectStatusHeader({
         <Title className={titleClassName}>{name}</Title>
         {showStage && <span className="text-sm font-normal text-zinc-500">{pt ? 'fase inicial' : 'early stage'}</span>}
       </div>
-      <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-emerald-400">
-        <span className="relative flex h-2 w-2 shrink-0">
-          {!prefersReducedMotion && (
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/50" />
-          )}
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.75)]" />
-        </span>
-        {pt ? 'Em produção' : 'In production'}
-      </div>
+      {status === 'live' ? (
+        <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-emerald-400">
+          <span className="relative flex h-2 w-2 shrink-0">
+            {!prefersReducedMotion && (
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/50" />
+            )}
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.75)]" />
+          </span>
+          {pt ? 'Em produção' : 'In production'}
+        </div>
+      ) : (
+        <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-amber-300">
+          <span className="relative inline-flex h-2 w-2 shrink-0 rounded-full bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.6)]" />
+          {pt ? 'Em breve · lista de espera aberta' : 'Coming soon · waitlist open'}
+        </div>
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ export default function ProjectsPage() {
   const pt = locale === 'pt-BR';
   const homePath = localizedPath('/', locale);
   const prefersReducedMotion = useReducedMotion();
+  const liveCount = projects.filter((project) => project.status === 'live').length;
 
   return (
     <main data-ambient="violet" className="relative z-10 min-h-screen overflow-hidden bg-black/75 text-white">
@@ -54,13 +55,15 @@ export default function ProjectsPage() {
           <div className="max-w-md lg:pb-2">
             <p className="text-base leading-8 text-zinc-400 md:text-lg">
               {pt
-                ? 'Tech Digest é um projeto que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
-                : 'Tech Digest is a project I build independently. I handle product decisions, architecture, data, and interface.'}
+                ? 'Tech Digest e Alturo são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
+                : 'Tech Digest and Alturo are projects I build independently. I handle product decisions, architecture, data, and interface.'}
             </p>
-            <div className="mt-8 flex items-center gap-4 text-xs uppercase tracking-[0.16em] text-zinc-600">
+            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-zinc-600">
               <span>{projects.length} {projects.length === 1 ? (pt ? 'produto' : 'product') : pt ? 'produtos' : 'products'}</span>
               <span className="h-1 w-1 rounded-full bg-zinc-700" />
-              <span>{pt ? 'Em produção' : 'In production'}</span>
+              <span>{liveCount} {pt ? 'em produção' : 'in production'}</span>
+              <span className="h-1 w-1 rounded-full bg-zinc-700" />
+              <span>{projects.length - liveCount} {pt ? 'em breve' : 'coming soon'}</span>
             </div>
           </div>
         </motion.header>
@@ -90,7 +93,8 @@ export default function ProjectsPage() {
                       </p>
                       <ProjectStatusHeader
                         name={project.name}
-                        showStage={project.slug !== 'tech-digest'}
+                        showStage={false}
+                        status={project.status}
                         titleAs="h2"
                         titleClassName="break-words text-3xl font-semibold tracking-tight text-white md:text-4xl"
                       />

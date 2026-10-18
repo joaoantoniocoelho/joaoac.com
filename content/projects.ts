@@ -3,8 +3,11 @@ export type Localized<T> = {
   'pt-BR': T;
 };
 
+export type ProjectStatus = 'live' | 'coming-soon';
+
 export type Project = {
   slug: string;
+  status: ProjectStatus;
   name: string;
   url: string;
   urlLabel: string;
@@ -17,6 +20,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'tech-digest',
+    status: 'live',
     name: 'Tech Digest',
     url: 'https://digest.joaoac.com',
     urlLabel: 'digest.joaoac.com',
@@ -45,5 +49,37 @@ export const projects: Project[] = [
       ],
     },
     stack: 'Python · Jev / TypeSafe · Railway · Resend',
+  },
+  {
+    slug: 'alturo',
+    status: 'coming-soon',
+    name: 'Alturo',
+    url: 'https://usealturo.app',
+    urlLabel: 'usealturo.app',
+    oneLiner: {
+      en: 'A reading companion for iPhone: focus sessions, a personal library, and a giraffe that evolves with the time you read.',
+      'pt-BR': 'Um companheiro de leitura para iPhone: sessões de foco, biblioteca pessoal e uma girafa que evolui com o tempo que você lê.',
+    },
+    whatItDoes: {
+      en: [
+        'Timed reading sessions of 15 to 60 minutes, built to keep chosen apps out of the way.',
+        'A library of physical books and ebooks, a notebook for excerpts and reflections, and a mascot with four stages.',
+      ],
+      'pt-BR': [
+        'Sessões de leitura de 15 a 60 minutos, pensadas para deixar de lado os apps escolhidos.',
+        'Biblioteca de livros físicos e ebooks, caderno de trechos e reflexões e um mascote com quatro estágios.',
+      ],
+    },
+    decisions: {
+      en: [
+        'XP, stage, and streak are always derived from the sessions, never stored as counters.',
+        'No backend and no account: data stays on the device and, later, in the user’s own iCloud.',
+      ],
+      'pt-BR': [
+        'XP, estágio e sequência são sempre calculados a partir das sessões, nunca salvos como contador.',
+        'Sem backend e sem conta: os dados ficam no aparelho e, depois, no iCloud do próprio usuário.',
+      ],
+    },
+    stack: 'Swift · SwiftUI · SwiftData · Next.js · Cloudflare Workers · Resend',
   },
 ];

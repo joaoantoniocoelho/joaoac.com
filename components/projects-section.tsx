@@ -36,8 +36,8 @@ export function ProjectsSection() {
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400">
               {pt
-                ? 'Tech Digest é um projeto que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
-                : 'Tech Digest is a project I build independently. I handle product decisions, architecture, data, and interface.'}
+                ? 'Tech Digest e Alturo são projetos que construo por conta própria. Cuido das decisões de produto, arquitetura, dados e interface.'
+                : 'Tech Digest and Alturo are projects I build independently. I handle product decisions, architecture, data, and interface.'}
             </p>
           </div>
           <Link
@@ -66,7 +66,7 @@ export function ProjectsSection() {
                 className="pressable focus-ring group flex h-full min-w-0 cursor-pointer flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 transition-colors duration-300 hover:border-violet-300/25 hover:bg-white/[0.05] md:p-8"
               >
                 <div className="mb-5">
-                  <ProjectStatusHeader name={project.name} showStage={project.slug !== 'tech-digest'} />
+                  <ProjectStatusHeader name={project.name} showStage={false} status={project.status} />
                 </div>
                 <p className="text-sm leading-7 text-zinc-400">{project.oneLiner[locale]}</p>
                 <ul className="mt-6 space-y-2.5 text-sm leading-6 text-zinc-500">
