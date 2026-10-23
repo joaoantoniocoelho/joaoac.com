@@ -43,6 +43,11 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
   </section>
 
   <section class="page journey" aria-labelledby="journey">
+    <div class="intro">
+      {t.intro.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
     <h2 id="journey">{t.journey}</h2>
     <ol>
       {experiences.map((experience) => (
@@ -100,6 +105,16 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
 
   .journey {
     padding-top: 104px;
+  }
+
+  .intro {
+    margin-bottom: 72px;
+    font-size: clamp(19px, 1.8vw, 21px);
+    line-height: 1.5;
+  }
+
+  .intro p + p {
+    margin-top: 16px;
   }
 
   h2 {

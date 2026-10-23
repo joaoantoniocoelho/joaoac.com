@@ -74,7 +74,7 @@ export const projects: Project[] = [
     },
     whatItDoes: {
       en: [
-        'reading sessions from 15 to 60 minutes keep chosen apps out of the way.',
+        'focused reading sessions help you put distractions aside and make more time for books.',
         'keep physical books and ebooks in one library, save notes, and follow the mascot through four stages.',
       ],
       'pt-BR': [

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import AvatarCard from '../components/AvatarCard.astro';
+import OutsideOfCode from '../components/OutsideOfCode.astro';
 import PostCover from '../components/PostCover.astro';
 import { projects } from '../data/projects.ts';
 import { postsFor } from '../lib/content.ts';
@@ -92,6 +93,8 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
       ))}
     </div>
   </section>
+
+  <OutsideOfCode locale={locale} />
 </Base>
 
 <style>

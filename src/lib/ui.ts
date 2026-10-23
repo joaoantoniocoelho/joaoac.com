@@ -35,8 +35,8 @@ export const ui = {
     switchLanguageShort: 'pt',
     footer: { copyright: 'copyright', email: 'email' },
     home: {
-      lead: 'i write about software, ai, and security.',
-      leadMuted: 'i build a few things on the side, too.',
+      lead: 'i build software',
+      leadMuted: 'and write about what i learn along the way.',
       readWriting: 'read my posts',
       viewProjects: 'view projects',
       writingTitle: 'writing.',
@@ -45,6 +45,25 @@ export const ui = {
       readPost: 'read post',
       learnMore: 'learn more',
       comingSoon: 'coming soon',
+    },
+    outside: {
+      title: 'outside of code.',
+      lead: 'a few things i enjoy away from the keyboard.',
+      shelfTitle: 'on my shelf.',
+      shelfHint: 'covers with a note flip over.',
+      status: { reading: 'reading now', next: 'up next', finished: 'finished' },
+      by: 'by',
+      flip: 'flip the cover to read my note',
+      flipBack: 'flip the cover back',
+      repeatTitle: 'on repeat.',
+      repeatText: 'a few songs i never get tired of.',
+      runTitle: 'on the run.',
+      runText: 'training for my first half marathon.',
+      runFacts: [
+        { label: 'goal', value: 'first half marathon · aug 2027' },
+        { label: 'routine', value: 'running three times a week' },
+        { label: 'favorite part', value: 'long runs clear my head' },
+      ],
     },
     card: {
       flip: 'flip the card to learn more about me',
@@ -91,6 +110,11 @@ export const ui = {
     about: {
       title: 'about.',
       email: 'send an email',
+      intro: [
+        "i've always been curious about how things work and why they're the way they are.",
+        'software engineering gives me a way to explore that curiosity, solve problems, and create things from scratch.',
+        "i enjoy learning, questioning ideas, and building things that might make someone's day a little better.",
+      ],
       journey: 'journey.',
       dayToDay: 'day to day',
       dayToDayText:
@@ -136,8 +160,8 @@ export const ui = {
     switchLanguageShort: 'en',
     footer: { copyright: 'copyright', email: 'e-mail' },
     home: {
-      lead: 'escrevo sobre software, ia e segurança.',
-      leadMuted: 'e tiro alguns projetos do papel.',
+      lead: 'construo software',
+      leadMuted: 'e escrevo sobre o que aprendo pelo caminho.',
       readWriting: 'ler meus textos',
       viewProjects: 'ver projetos',
       writingTitle: 'textos.',
@@ -146,6 +170,25 @@ export const ui = {
       readPost: 'ler o texto',
       learnMore: 'conhecer o projeto',
       comingSoon: 'em breve',
+    },
+    outside: {
+      title: 'fora do código.',
+      lead: 'algumas coisas de que gosto longe do teclado.',
+      shelfTitle: 'na minha estante.',
+      shelfHint: 'as capas com nota viram.',
+      status: { reading: 'lendo agora', next: 'a seguir', finished: 'lido' },
+      by: 'de',
+      flip: 'virar a capa para ler minha nota',
+      flipBack: 'virar a capa de volta',
+      repeatTitle: 'no repeat.',
+      repeatText: 'algumas músicas que nunca me cansam.',
+      runTitle: 'na corrida.',
+      runText: 'treinando para a minha primeira meia maratona.',
+      runFacts: [
+        { label: 'meta', value: 'primeira meia maratona · ago 2027' },
+        { label: 'rotina', value: 'correr três vezes por semana' },
+        { label: 'parte favorita', value: 'os treinos longos clareiam minha cabeça' },
+      ],
     },
     card: {
       flip: 'virar o card para saber mais sobre mim',
@@ -192,6 +235,11 @@ export const ui = {
     about: {
       title: 'sobre mim.',
       email: 'mandar um e-mail',
+      intro: [
+        'sempre tive curiosidade sobre como as coisas funcionam e por que elas são do jeito que são.',
+        'a engenharia de software me permite explorar essa curiosidade, resolver problemas e criar coisas do zero.',
+        'gosto de aprender, questionar ideias e construir coisas que possam deixar o dia de alguém um pouco melhor.',
+      ],
       journey: 'por onde passei.',
       dayToDay: 'no dia a dia',
       dayToDayText:

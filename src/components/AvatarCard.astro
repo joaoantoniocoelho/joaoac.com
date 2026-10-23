@@ -249,6 +249,13 @@ const facts = [
     clip-path: inset(0 0 0 0);
   }
 
+  /* Touch screens have no hover to reveal the color, so it shows from the start. */
+  @media (hover: none) {
+    .front :global(.color) {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
   .glare {
     position: absolute;
     inset: 0;

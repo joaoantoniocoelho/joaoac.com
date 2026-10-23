@@ -9,9 +9,9 @@ export const HOME_TITLE = {
 } as const;
 
 export const HOME_DESCRIPTION = {
-  en: 'software engineer at ADP. i write about software, ai, and security, and build a few projects outside work.',
+  en: 'software engineer at ADP. i build software and write about what i learn along the way, from engineering to ai and security.',
   'pt-BR':
-    'engenheiro de software na ADP. escrevo sobre software, ia e segurança e faço alguns projetos fora do trabalho.',
+    'engenheiro de software na ADP. construo software e escrevo sobre o que aprendo pelo caminho, de engenharia a ia e segurança.',
 } as const;
 
 export function absoluteUrl(path: string): string {

@@ -1,0 +1,571 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { readingLog } from '../data/bookshelf.ts';
+import { onRepeat } from '../data/music.ts';
+import { shelfFrom } from '../lib/bookshelf.ts';
+import type { Locale } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].outside;
+
+const covers = import.meta.glob<{ default: ImageMetadata }>('../assets/books/*.{jpg,png,webp}', {
+  eager: true,
+});
+const coverFor = (slug: string) =>
+  Object.entries(covers).find(([path]) => path.split('/').pop()?.startsWith(`${slug}.`))?.[1]
+    .default;
+
+const books = shelfFrom(readingLog).map((book) => {
+  const status =
+    book.status === 'finished' && book.finishedIn
+      ? `${t.status.finished} · ${book.finishedIn}`
+      : t.status[book.status];
+  return {
+    ...book,
+    title: book.title[locale],
+    note: book.note?.[locale],
+    statusLabel: status,
+    cover: coverFor(book.slug),
+  };
+});
+const hasNotes = books.some((book) => book.note);
+---
+
+<section class="page-wide outside" aria-labelledby="home-outside">
+  <h2 class="section-title" id="home-outside">
+    {t.title}
+  </h2>
+  <p class="subhead lead">{t.lead}</p>
+
+  <div class="tile shelf">
+    <div class="shelf-head">
+      <h3>{t.shelfTitle}</h3>
+      {hasNotes && <span class="hint">{t.shelfHint}</span>}
+    </div>
+    <ol class="books">
+      {books.map((book) => {
+        const noteId = `book-note-${book.slug}`;
+        const cover = book.cover ? (
+          <Image
+            src={book.cover}
+            alt=""
+            widths={[240, 480]}
+            sizes="240px"
+            format="webp"
+            loading="lazy"
+            class="cover-image"
+          />
+        ) : (
+          <span class="cover-fallback">
+            <span class="fallback-title">{book.title}</span>
+            <span class="fallback-author">{book.author}</span>
+          </span>
+        );
+        return (
+          <li class="book">
+            <div class="stage">
+              {book.note ? (
+                <div class="flip" data-book-card>
+                  <button
+                    type="button"
+                    class="face front"
+                    aria-label={`${book.title}, ${t.by} ${book.author}. ${book.statusLabel}. ${t.flip}`}
+                    aria-expanded="false"
+                    aria-controls={noteId}
+                    data-book-flip
+                  >
+                    {cover}
+                    <span class="badge" aria-hidden="true">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 12a8 8 0 1 1-2.34-5.66" />
+                        <path d="M20 4v4h-4" />
+                      </svg>
+                    </span>
+                  </button>
+                  <div class="face back" id={noteId} inert data-book-back>
+                    <div class="back-head">
+                      <span class="back-status">{book.statusLabel}</span>
+                      <button type="button" class="close" aria-label={t.flipBack} data-book-unflip>
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M2 2l10 10M12 2L2 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span class="back-title">{book.title}.</span>
+                    <span class="back-author">{book.author}</span>
+                    <span class="back-rule" aria-hidden="true" />
+                    <p class="back-note">“{book.note}”</p>
+                  </div>
+                </div>
+              ) : (
+                <div class="static-cover">{cover}</div>
+              )}
+            </div>
+            <span class="book-title">{book.title}</span>
+            <span class="book-status">{book.statusLabel}</span>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+
+  <div class="tile-row hobbies">
+    <div class="tile tile-dark hobby">
+      <span class="hobby-icon" aria-hidden="true">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
+          <rect x="3" y="14" width="5" height="7" rx="2" />
+          <rect x="16" y="14" width="5" height="7" rx="2" />
+        </svg>
+      </span>
+      <div class="hobby-text">
+        <h3>{t.repeatTitle}</h3>
+        <p>{t.repeatText}</p>
+      </div>
+      <ol class="rows">
+        {onRepeat.map((track, index) => (
+          <li>
+            <span class="row-label">{String(index + 1).padStart(2, '0')}</span>
+            <span>{track.song}</span>
+            <span class="row-value row-muted">{track.artist}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="tile hobby">
+      <span class="hobby-icon" aria-hidden="true">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z" />
+          <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z" />
+          <path d="M16 17h4" />
+          <path d="M4 13h4" />
+        </svg>
+      </span>
+      <div class="hobby-text">
+        <h3>{t.runTitle}</h3>
+        <p>{t.runText}</p>
+      </div>
+      <ul class="rows">
+        {t.runFacts.map((fact) => (
+          <li>
+            <span class="row-label">{fact.label}</span>
+            <span class="row-value">{fact.value}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { startBookshelf } from '../scripts/bookshelf.ts';
+
+  startBookshelf();
+</script>
+
+<style>
+  .outside {
+    padding-top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lead {
+    margin: -16px auto 28px;
+    text-align: center;
+  }
+
+  .shelf {
+    padding: clamp(24px, 4vw, 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .shelf-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+
+  h3 {
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .hint {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .books {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px clamp(16px, 4vw, 48px);
+  }
+
+  .book {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 240px;
+    margin-bottom: 18px;
+    perspective: 1400px;
+  }
+
+  .flip,
+  .static-cover {
+    position: relative;
+    aspect-ratio: 2 / 3;
+  }
+
+  .flip {
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .flip.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  @media (hover: hover) {
+    .flip:not(.is-flipped):hover {
+      transform: translateY(-6px) rotateY(-8deg);
+    }
+  }
+
+  .face,
+  .static-cover {
+    border-radius: 4px 8px 8px 4px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgb(0 0 0 / 8%),
+      0 20px 34px -16px rgb(0 0 0 / 45%);
+  }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .front {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  /* A soft crease along the spine so flat cover images read as books. */
+  .front::after,
+  .static-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 10px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 22%),
+      rgb(255 255 255 / 0%) 40%,
+      rgb(0 0 0 / 18%) 70%,
+      rgb(0 0 0 / 0%)
+    );
+  }
+
+  .book :global(.cover-image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cover-fallback {
+    width: 100%;
+    height: 100%;
+    padding: 18% 12% 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--fg);
+    color: var(--on-dark);
+    text-align: center;
+  }
+
+  .fallback-title {
+    font-family: var(--font-display);
+    font-size: clamp(17px, 2vw, 24px);
+    line-height: 1.1;
+    font-weight: 600;
+  }
+
+  .fallback-author {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--on-dark-muted);
+  }
+
+  .badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: rgb(0 0 0 / 35%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / 22%);
+  }
+
+  .back {
+    transform: rotateY(180deg);
+    padding: clamp(16px, 9%, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--tile-dark);
+    color: var(--on-dark);
+    text-align: left;
+    border-radius: 8px 4px 4px 8px;
+    cursor: pointer;
+  }
+
+  .back-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: -6px -8px 4px 0;
+  }
+
+  .back-status,
+  .back-author {
+    font-size: 13px;
+    color: var(--on-dark-muted);
+  }
+
+  .back-title {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .back-rule {
+    height: 1px;
+    margin: 10px 0;
+    background: rgb(255 255 255 / 14%);
+  }
+
+  .back-note {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .close {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 18%);
+    background: rgb(255 255 255 / 12%);
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /* The note settles in line by line once the cover has turned. */
+  .back > :not(.back-head) {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.4s,
+      transform 0.6s var(--ease-out);
+  }
+
+  .is-flipped .back > :not(.back-head) {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.35s;
+  }
+
+  .is-flipped .back > .back-rule,
+  .is-flipped .back > .back-note {
+    transition-delay: 0.45s;
+  }
+
+  .book-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .book-status {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .hobby {
+    padding: 28px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .hobby-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8e8ed;
+  }
+
+  .tile-dark .hobby-icon {
+    background: rgb(255 255 255 / 12%);
+  }
+
+  .hobby h3 {
+    font-size: 22px;
+  }
+
+  .hobby p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .tile-dark p {
+    color: var(--on-dark-muted);
+  }
+
+  .rows {
+    --row-line: var(--line);
+    --row-muted: var(--muted);
+
+    flex: 1 0 100%;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--row-line);
+  }
+
+  .tile-dark .rows {
+    --row-line: rgb(255 255 255 / 14%);
+    --row-muted: var(--on-dark-muted);
+  }
+
+  .rows li {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--row-line);
+    font-size: 15px;
+  }
+
+  .row-label,
+  .row-muted {
+    font-size: 13px;
+    color: var(--row-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row-label {
+    flex-shrink: 0;
+  }
+
+  .row-value {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  /* On phones the shelf becomes a swipeable row that bleeds to the tile's edges. */
+  @media (max-width: 640px) {
+    .books {
+      --bleed: clamp(24px, 4vw, 44px);
+
+      display: flex;
+      gap: 16px;
+      margin-inline: calc(-1 * var(--bleed));
+      padding: 8px var(--bleed) 0;
+      scroll-padding-inline: var(--bleed);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .books::-webkit-scrollbar {
+      display: none;
+    }
+
+    .book {
+      flex: 0 0 68%;
+      scroll-snap-align: center;
+    }
+  }
+</style>
