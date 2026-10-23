@@ -1,0 +1,57 @@
+---
+import Dots from './Dots.astro';
+---
+
+<div class="phone">
+  <div class="phone-screen">
+    <div class="island"></div>
+    <p class="p-eyebrow">sexta, 23 de outubro</p>
+    <p class="p-title display-font">
+      hoje<span class="pt">.</span>
+    </p>
+
+    <div class="card3d">
+      <div class="flipper" data-flipper>
+        <div class="face front">
+          <div class="face-top">
+            <span>nº 296 · ciência</span>
+            <span class="mono">1 min</span>
+          </div>
+          <p class="fq display-font">por que a Lua parece maior no horizonte?</p>
+          <Dots class="face-dots" />
+          <div class="face-bot">
+            <button class="pill" type="button" data-flip-open>
+              descobrir →
+            </button>
+          </div>
+        </div>
+        <div class="face back" aria-hidden="true" data-back>
+          <div class="face-top">
+            <span>a resposta curta</span>
+            <button
+              class="round"
+              type="button"
+              data-flip-close
+              aria-label="virar o cartão de volta"
+              tabindex="-1"
+            >
+              ↺
+            </button>
+          </div>
+          <p class="bl display-font">Ela não cresce. Quem exagera é o seu cérebro.</p>
+          <p class="back-note">o resto da explicação cabe em um minuto.</p>
+          <div class="face-bot">
+            <a class="pill pill-mark" href="#descoberta" tabindex="-1">
+              ler a explicação →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kv">
+      <span>amanhã</span>
+      <span>por que bocejar é contagioso?</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,402 @@
+---
+import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import Mark from '../components/Mark.astro';
+import Phone from '../components/Phone.astro';
+import Widgets from '../components/Widgets.astro';
+import Dots from '../components/Dots.astro';
+import { splitHighlight } from '../lib/highlight.ts';
+import { PLANS, formatBRL, perMonthCents, yearlyDiscountPercent } from '../lib/pricing.ts';
+import { APP_STORE_URL, AUTHOR_URL, CONTACT_EMAIL, TAGLINE } from '../lib/site.ts';
+
+const description =
+  'o por quê? é um app com uma pergunta interessante por dia: uma frase de resposta, um minuto de leitura e o resto do dia para pensar nela.';
+
+const steps = [
+  [
+    '07h',
+    'a pergunta chega.',
+    'um aviso por dia, no horário que você escolher. nada de lembrete de sequência.',
+  ],
+  [
+    'uma frase',
+    'toque em descobrir.',
+    'o cartão vira e entrega a resposta curta. quem quiser mais segue para a explicação.',
+  ],
+  [
+    'um minuto',
+    'leia e pense.',
+    'três parágrafos curtos, um desenho e uma frase grifada. o resto do dia é para pensar nela.',
+  ],
+];
+
+const body = [
+  {
+    text: 'Fotografe a Lua perto do horizonte e depois no alto do céu. Nas duas fotos, ela ocupa o mesmo espaço. O que muda é a forma como você interpreta a distância.',
+    hi: '',
+  },
+  {
+    text: 'Perto do horizonte, há prédios, árvores e morros entre você e a Lua. Esse cenário faz o cérebro concluir que ela está muito longe, e ele compensa aumentando o tamanho que você percebe.',
+    hi: 'o cérebro concluir que ela está muito longe',
+  },
+  {
+    text: 'No alto do céu, sem nada para comparar, essa correção não acontece. O efeito intriga gente desde Ptolomeu, e até hoje não existe uma explicação única aceita por todos.',
+    hi: '',
+  },
+].map((p) => ({ ...p, parts: splitHighlight(p.text, p.hi) }));
+
+const facts = [
+  ['o nome disso', 'ilusão da Lua'],
+  ['intriga desde', 'Ptolomeu, século II'],
+  ['faça o teste', 'olhe por um rolo de papel'],
+];
+
+const principles = [
+  [
+    'sem sequência de dias.',
+    'ninguém é cobrado por faltar. cada dia é uma pergunta nova, e o arquivo guarda as outras.',
+    false,
+  ],
+  [
+    'um aviso por dia.',
+    'no horário que você escolher, e só. o único número na tela é o da edição.',
+    false,
+  ],
+  [
+    'sem anúncios.',
+    'a assinatura paga a pesquisa e a escrita de cada edição. nada além do necessário.',
+    true,
+  ],
+] as const;
+
+// 3x3 glyph per theme: which dots are lit.
+const themes = [
+  ['ciência', 'como as coisas funcionam.', 58, '010111010'],
+  ['natureza', 'o planeta, os bichos, o tempo lá fora.', 54, '101010111'],
+  ['mente', 'por que pensamos e sentimos assim.', 61, '111101111'],
+  ['tecnologia', 'o que existe por trás das telas.', 39, '101111101'],
+  ['história', 'a origem do que parece óbvio.', 44, '110011100'],
+  ['cotidiano', 'o mistério das coisas pequenas.', 40, '000010000'],
+] as const;
+
+const { anual, mensal } = PLANS;
+const discount = yearlyDiscountPercent(anual.cents, mensal.cents);
+
+const faq = [
+  [
+    'tem versão grátis?',
+    'não. o plano anual começa com 7 dias grátis para você experimentar; o mensal não tem período de teste. dentro do app, o primeiro dia é uma descoberta inteira.',
+  ],
+  [
+    'dá para cancelar?',
+    'quando quiser, pelos Ajustes do iPhone. o anual não renova se você cancelar antes do fim do período.',
+  ],
+  [
+    'posso ler as perguntas antigas?',
+    'sim. todas ficam no arquivo, organizadas por tema, para ler quando quiser. a pergunta do dia segue igual para todo mundo.',
+  ],
+  [
+    'quando chega a pergunta?',
+    'às 7h, ou no horário que você escolher no início. dá para mudar depois.',
+  ],
+  [
+    'tem widget?',
+    'tem, em três tamanhos e na tela bloqueada. ele mostra a pergunta de relance; depois de ler, mostra a resposta curta.',
+  ],
+];
+
+const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Store';
+---
+
+<Base title="por quê? uma pergunta interessante por dia." description={description}>
+  <header class="wrap top">
+    <a href="/" aria-label="por quê?">
+      <Wordmark />
+    </a>
+    <div class="top-actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="alternar tema claro e escuro"
+      >
+        <svg
+          class="sun"
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"></path>
+        </svg>
+        <svg
+          class="moon"
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"></path>
+        </svg>
+      </button>
+      <a class="pill pill-ghost" href="#preco">
+        preço
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">app para iPhone</p>
+        <h1 class="display-font">
+          uma pergunta por dia<span class="pt">.</span>
+        </h1>
+        <p class="sub">
+          <b>Uma pequena descoberta.</b> um minuto para ler, o resto do dia para pensar nela.
+        </p>
+        <div class="actions">
+          <a
+            class="pill"
+            href={APP_STORE_URL ?? '#preco'}
+            aria-disabled={APP_STORE_URL ? undefined : 'true'}
+          >
+            {storeLabel}
+          </a>
+          <a class="pill pill-ghost" href="#descoberta">
+            ver uma descoberta
+          </a>
+        </div>
+        <p class="hint">toque em descobrir no cartão ao lado.</p>
+      </div>
+      <Phone />
+    </section>
+
+    <section class="sec" id="como-funciona">
+      <div class="wrap">
+        <div class="sec-h">
+          <h2 class="display-font">
+            como funciona<span class="pt">.</span>
+          </h2>
+          <p>o ritual inteiro em três passos. nenhum deles pede mais de um minuto.</p>
+        </div>
+        <div class="steps">
+          {steps.map(([k, title, text]) => (
+            <div class="step">
+              <span class="k mono">{k}</span>
+              <div>
+                <b>
+                  {title.slice(0, -1)}
+                  <span class="pt">.</span>
+                </b>
+                <span>{text}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="descoberta">
+      <div class="wrap read">
+        <div class="sec-h" style="margin-bottom:0">
+          <h2 class="display-font">
+            uma descoberta<span class="pt">.</span>
+          </h2>
+          <p>
+            uma frase de resposta, um desenho, três parágrafos curtos e um bloco para guardar. a
+            frase principal é grifada enquanto você lê.
+          </p>
+        </div>
+        <article class="article">
+          <p class="eyebrow">nº 296 · ciência · 1 min</p>
+          <h3 class="rq display-font">por que a Lua parece maior no horizonte?</h3>
+          <p class="lead display-font">Ela não cresce. Quem exagera é o seu cérebro.</p>
+          <figure class="fig">
+            <Dots />
+            <figcaption>as duas luas do desenho têm exatamente o mesmo tamanho.</figcaption>
+          </figure>
+          {body.map(({ parts }) => (
+            <p class="bp">
+              {parts.before}
+              {parts.mark && <span class="hl">{parts.mark}</span>}
+              {parts.after}
+            </p>
+          ))}
+          <div class="keep">
+            <h4>
+              para guardar<span class="pt">.</span>
+            </h4>
+            <dl>
+              {facts.map(([k, v]) => (
+                <div>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="widgets">
+      <div class="wrap widgets">
+        <div class="sec-h" style="margin-bottom:0">
+          <h2 class="display-font">
+            na tela de início<span class="pt">.</span>
+          </h2>
+          <p>
+            o widget mostra a pergunta de relance. a resposta, só abrindo o app. depois de ler, ele
+            passa a mostrar a resposta curta e já anuncia a de amanhã.
+          </p>
+        </div>
+        <Widgets />
+      </div>
+    </section>
+
+    <section class="sec" id="principios">
+      <div class="wrap">
+        <div class="sec-h">
+          <h2 class="display-font">
+            nada além do necessário<span class="pt">.</span>
+          </h2>
+        </div>
+        <div class="principles">
+          {principles.map(([title, text, dark]) => (
+            <div class:list={['principle', { dark }]}>
+              <h3 class="display-font">
+                {title.slice(0, -1)}
+                <span class="pt">.</span>
+              </h3>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="temas">
+      <div class="wrap">
+        <div class="sec-h">
+          <h2 class="display-font">
+            seis temas<span class="pt">.</span>
+          </h2>
+          <p>
+            escolha o que te deixa curioso e o arquivo se organiza em volta. a pergunta do dia
+            continua sendo surpresa.
+          </p>
+        </div>
+        <ul class="themes">
+          {themes.map(([nome, desc, total, pattern]) => (
+            <li>
+              <svg class="glyph" viewBox="0 0 30 30" aria-hidden="true">
+                {[...pattern].map((on, i) => (
+                  <circle
+                    cx={5 + (i % 3) * 10}
+                    cy={5 + Math.floor(i / 3) * 10}
+                    r={on === '1' ? 3.6 : 2}
+                    class={on === '1' ? '' : 'off'}
+                  />
+                ))}
+              </svg>
+              <div>
+                <p class="tn display-font">{nome}</p>
+                <p class="td">{desc}</p>
+              </div>
+              <span class="tc mono">{total} perguntas</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" id="preco">
+      <div class="wrap">
+        <div class="sec-h">
+          <h2 class="display-font">
+            continue descobrindo<span class="pt">.</span>
+          </h2>
+          <p>
+            sem anúncios e sem versão grátis. a assinatura paga a pesquisa e a escrita de cada
+            edição.
+          </p>
+        </div>
+        <div class="plans">
+          <div class="plan main">
+            <p class="name">
+              anual <span class="tag">{discount}% menos</span>
+            </p>
+            <p class="price display-font">{formatBRL(anual.cents)}</p>
+            <p class="per">
+              {formatBRL(perMonthCents(anual.cents))} por mês · {anual.trial}
+            </p>
+          </div>
+          <div class="plan">
+            <p class="name">mensal</p>
+            <p class="price display-font">{formatBRL(mensal.cents)}</p>
+            <p class="per">por mês · {mensal.trial}</p>
+          </div>
+        </div>
+        <p class="fine">
+          o anual é grátis por 7 dias, depois {formatBRL(anual.cents)} por ano. o mensal renova todo
+          mês. cancele quando quiser.
+        </p>
+      </div>
+    </section>
+
+    <section class="sec" id="perguntas">
+      <div class="wrap">
+        <div class="sec-h">
+          <h2 class="display-font">
+            perguntas<span class="pt">.</span>
+          </h2>
+        </div>
+        <div class="faq">
+          {faq.map(([q, a]) => (
+            <details>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap closing">
+      <Mark size="56px" />
+      <h2 class="display-font">
+        {TAGLINE.slice(0, -1)}
+        <span class="pt">.</span>
+      </h2>
+      <a
+        class="pill"
+        href={APP_STORE_URL ?? '#preco'}
+        aria-disabled={APP_STORE_URL ? undefined : 'true'}
+      >
+        {storeLabel}
+      </a>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span>
+      feito por <a href={AUTHOR_URL}>joão coelho</a>
+    </span>
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </footer>
+
+  <script>
+    import '../scripts/page.ts';
+  </script>
+</Base>

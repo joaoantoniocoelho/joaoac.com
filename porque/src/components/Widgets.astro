@@ -1,0 +1,48 @@
+---
+import Mark from './Mark.astro';
+import Dots from './Dots.astro';
+---
+
+<div class="wall">
+  <div class="wall-moon"></div>
+  <div class="wall-grid">
+    <div class="widget wmed noite">
+      <div class="wcol">
+        <div class="wtop">
+          <Mark size="15px" /> hoje <span class="mono wsub">nº 296</span>
+        </div>
+        <p class="wq display-font">por que a Lua parece maior no horizonte?</p>
+        <p class="wfoot">toque para descobrir</p>
+      </div>
+      <Dots cols={12} rows={12} class="wart" />
+    </div>
+
+    <div class="widget wsmall marca">
+      <div class="wtop">
+        <Mark size="15px" /> hoje <span class="mono wsub">296</span>
+      </div>
+      <p class="wq display-font">por que a Lua cresce no horizonte?</p>
+    </div>
+
+    <div class="widget wsmall papel">
+      <div class="wtop">
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12.5l4.5 4.5L19 7.5"></path>
+        </svg>
+        descoberto <span class="mono wsub">296</span>
+      </div>
+      <p class="wa display-font">Ela não cresce. É o seu cérebro.</p>
+      <p class="wfoot">amanhã: bocejar</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import { SITE_NAME, SITE_URL, TAGLINE } from '../lib/site.ts';
+
+type Props = { title: string; description: string };
+const { title, description } = Astro.props;
+const ogImage = new URL('/og.png', SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={SITE_URL} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icon.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content={SITE_URL} />
+    <meta property="og:title" content={`${SITE_NAME} ${TAGLINE}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      // Runs before first paint so a saved or system dark preference never flashes light.
+      try {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.dataset.theme = 'dark';
+      } catch {
+        /* storage blocked: stay light */
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

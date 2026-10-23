@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "porque-landing",
+  "compatibility_date": "2026-10-01",
+  // Static only: no Worker script runs, so requests are served straight from the edge.
+  "routes": [{ "pattern": "porque.joaoac.com", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+}

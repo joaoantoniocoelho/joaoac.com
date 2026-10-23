@@ -20,5 +20,5 @@
     "types": ["node"]
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "digest"]
+  "exclude": ["dist", "digest", "porque"]
 }
