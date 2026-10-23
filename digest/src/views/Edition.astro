@@ -1,0 +1,237 @@
+---
+import DigestLayout from '../layouts/DigestLayout.astro';
+import ShareDigest from '../components/ShareDigest.astro';
+import SignupForm from '../components/SignupForm.astro';
+import { copy, type Locale } from '../lib/copy.ts';
+import { archivePath, editionPath, editionUrl, formatEditionDate } from '../lib/digest-routes.ts';
+import { safeArticleUrl, type PublicEdition } from '../lib/editions.ts';
+
+type Props = { locale: Locale; edition: PublicEdition };
+
+const { locale, edition } = Astro.props;
+const t = copy[locale];
+const day = formatEditionDate(locale, edition.date);
+const count = edition.articles.length;
+---
+
+<DigestLayout
+  locale={locale}
+  title={t.editionMetaTitle(day)}
+  description={t.editionMetaDescription(count, day)}
+  paths={{ en: editionPath('en', edition.date), 'pt-BR': editionPath('pt-BR', edition.date) }}
+  ogType="article"
+>
+  <div class="page edition">
+    <p class="kicker">{t.editionKicker}</p>
+    <h1>{day}.</h1>
+    <p class="lead">{t.editionLead(count)}</p>
+
+    <ol class="articles">
+      {edition.articles.map((article, index) => {
+        const url = safeArticleUrl(article.url);
+        const meta = [article.source, ...article.topics].join(' · ');
+        return (
+          <li>
+            <span class="number">{String(index + 1).padStart(2, '0')}</span>
+            <div class="article">
+              <span class="meta">{meta}</span>
+              <h2>
+                {url ? (
+                  <a class="underline-hover" href={url} target="_blank" rel="noopener noreferrer">
+                    {article.title} ↗
+                  </a>
+                ) : (
+                  article.title
+                )}
+              </h2>
+              {article.why_interesting && <p class="why">{article.why_interesting}</p>}
+              {url && (
+                <a class="chevron-link source" href={url} target="_blank" rel="noopener noreferrer">
+                  {t.readAt(article.source)}
+                </a>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+
+    <div class="share-wrap">
+      <ShareDigest locale={locale} editionUrl={editionUrl(locale, edition.date)} day={day} />
+    </div>
+
+    <nav class="pager" aria-label={t.editionNavigation}>
+      {edition.older_date ? (
+        <a class="tile pager-link" href={editionPath(locale, edition.older_date)} rel="prev">
+          <span>‹ {t.previousEdition}</span>
+          <strong>{formatEditionDate(locale, edition.older_date)}</strong>
+        </a>
+      ) : (
+        <span />
+      )}
+      {edition.newer_date ? (
+        <a class="tile pager-link next" href={editionPath(locale, edition.newer_date)} rel="next">
+          <span>{t.followingEdition} ›</span>
+          <strong>{formatEditionDate(locale, edition.newer_date)}</strong>
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+    <a class="chevron-link all" href={archivePath(locale)}>
+      {t.allEditions}
+    </a>
+  </div>
+
+  <section class="page-wide signup-block" aria-labelledby="edition-signup">
+    <div class="tile tile-dark signup-tile">
+      <h2 id="edition-signup">{t.editionBottomTitle}</h2>
+      <p>{t.editionBottomText}</p>
+      <SignupForm locale={locale} inputId="edition-email" tone="dark" />
+    </div>
+  </section>
+</DigestLayout>
+
+<style>
+  .edition {
+    max-width: 760px;
+    padding-top: 80px;
+  }
+
+  .kicker {
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  h1 {
+    margin-top: 8px;
+    font-size: clamp(44px, 7vw, 80px);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .lead {
+    margin-top: 16px;
+    font-size: 21px;
+    line-height: 1.4;
+    color: var(--fg-secondary);
+  }
+
+  .articles {
+    margin: 56px 0 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .articles li {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .number {
+    padding-top: 2px;
+    font-size: 15px;
+    color: var(--faint);
+  }
+
+  .article {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .meta {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  h2 {
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .why {
+    line-height: 1.5;
+    color: var(--fg-secondary);
+  }
+
+  .source {
+    align-self: flex-start;
+    min-height: 32px;
+    font-size: 15px;
+  }
+
+  .share-wrap {
+    margin-top: 64px;
+  }
+
+  .pager {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .pager-link {
+    padding: 24px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pager-link span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .pager-link strong {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .next {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .all {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .signup-block {
+    padding-top: 120px;
+  }
+
+  .signup-tile {
+    padding: 64px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .signup-tile h2 {
+    max-width: 640px;
+    font-size: clamp(32px, 4.4vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  .signup-tile p {
+    margin: 14px 0 28px;
+    max-width: 520px;
+    line-height: 1.45;
+    color: var(--on-dark-muted);
+  }
+</style>

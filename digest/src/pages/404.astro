@@ -1,0 +1,35 @@
+---
+import DigestLayout from '../layouts/DigestLayout.astro';
+import { copy } from '../lib/copy.ts';
+
+// Rendered on demand (not prerendered) so missing editions can rewrite to it with a 404 status.
+
+const t = copy.en;
+const pt = copy['pt-BR'];
+---
+
+<DigestLayout locale="en" title="not found" noindex>
+  <section class="hero lost">
+    <p class="eyebrow">404</p>
+    <h1 class="display">nothing here.</h1>
+    <p class="subhead">nada por aqui.</p>
+    <div class="actions">
+      <a class="pill" href="/">
+        {t.back}
+      </a>
+      <a class="chevron-link" href="/pt-BR" lang="pt-BR">
+        {pt.back}
+      </a>
+    </div>
+  </section>
+</DigestLayout>
+
+<style>
+  .lost {
+    padding-top: 120px;
+  }
+
+  .actions {
+    margin-top: 32px;
+  }
+</style>

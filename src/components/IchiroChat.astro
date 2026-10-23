@@ -1,0 +1,368 @@
+---
+import { getImage } from 'astro:assets';
+import idle from '../assets/ichiro/ichiro-idle.png';
+import thinking from '../assets/ichiro/ichiro-thinking.png';
+import greeting from '../assets/ichiro/ichiro-greeting.png';
+import { discoveryOrder, initialPrompts, prompts, promptsPtBr } from '../data/ichiro-prompts.ts';
+import type { Locale } from '../lib/locale.ts';
+import { CONTACT_EMAIL } from '../lib/site.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].chat;
+
+const sprite = (src: typeof idle, size: number) =>
+  getImage({ src, width: size, height: size, format: 'webp', quality: 90 });
+const [idleImage, thinkingImage, greetingImage, avatarImage] = await Promise.all([
+  sprite(idle, 96),
+  sprite(thinking, 96),
+  sprite(greeting, 96),
+  sprite(idle, 64),
+]);
+
+const chatData = {
+  greeting: t.greeting,
+  prompts: locale === 'pt-BR' ? promptsPtBr : prompts,
+  initialPrompts,
+  discoveryOrder,
+  email: CONTACT_EMAIL,
+  strings: { emailAnswer: t.emailAnswer, copyEmail: t.copyEmail, copied: t.copied, done: t.done },
+  moods: { idle: idleImage.src, thinking: thinkingImage.src, greeting: greetingImage.src },
+};
+---
+
+<div class="ichiro" data-ichiro>
+  <section class="panel" role="dialog" aria-label={t.dialog} hidden data-ichiro-panel>
+    <header class="panel-header">
+      <span class="avatar">
+        <img src={avatarImage.src} alt="" width="48" height="48" />
+      </span>
+      <div class="who">
+        <h2>{t.name}</h2>
+        <p>{t.status}</p>
+      </div>
+      <button type="button" class="icon-button" aria-label={t.reset} data-ichiro-reset>
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9M2.5 2.5v3h3"></path>
+        </svg>
+      </button>
+      <button type="button" class="icon-button" aria-label={t.close} data-ichiro-close>
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M1 1l12 12M13 1L1 13"></path>
+        </svg>
+      </button>
+    </header>
+    <div class="transcript" aria-live="polite" data-ichiro-transcript></div>
+    <div class="suggestions">
+      <p class="visually-hidden">{t.suggested}</p>
+      <div class="chips" data-ichiro-suggestions></div>
+    </div>
+    <template data-ichiro-typing>
+      <p class="bubble from-ichiro typing" aria-label={t.typing}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </p>
+    </template>
+  </section>
+
+  <button
+    type="button"
+    class="launcher"
+    aria-label={t.open}
+    aria-expanded="false"
+    data-label-open={t.open}
+    data-label-close={t.close}
+    data-ichiro-launcher
+  >
+    <img src={idleImage.src} alt="" width="58" height="58" data-ichiro-mood />
+  </button>
+
+  <script type="application/json" data-ichiro-data set:html={JSON.stringify(chatData)} />
+</div>
+
+<script>
+  import { startIchiroChat } from '../scripts/ichiro-chat.ts';
+
+  startIchiroChat();
+</script>
+
+<style>
+  .ichiro {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+  }
+
+  .launcher {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgb(0 0 0 / 6%);
+    background: var(--tile);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .launcher:hover {
+    transform: scale(1.06);
+  }
+
+  .launcher img {
+    width: 58px;
+    height: 58px;
+    transform: translate(-3px, 2px);
+    image-rendering: pixelated;
+  }
+
+  .panel {
+    width: min(360px, calc(100vw - 40px));
+    max-height: min(560px, calc(100dvh - 120px));
+    display: flex;
+    flex-direction: column;
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 88%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgb(0 0 0 / 6%);
+    box-shadow: 0 30px 80px rgb(0 0 0 / 14%);
+    animation: panel-in 0.35s var(--ease-out) both;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 6px 10px 16px;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 50%;
+    background: var(--tile);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .avatar img {
+    width: 48px;
+    height: 48px;
+    flex: none;
+    transform: translate(-3px, 2px);
+    image-rendering: pixelated;
+  }
+
+  .who {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .who h2 {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .who p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .icon-button {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .icon-button:hover {
+    color: var(--fg);
+    background: rgb(0 0 0 / 4%);
+  }
+
+  .transcript {
+    flex: 1;
+    min-height: 220px;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .suggestions {
+    padding: 12px;
+    border-top: 1px solid rgb(0 0 0 / 6%);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ichiro :global(.bubble) {
+    max-width: 84%;
+    padding: 9px 14px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    animation: bubble-in 0.35s var(--ease-out) both;
+  }
+
+  .ichiro :global(.from-ichiro) {
+    align-self: flex-start;
+    background: #e9e9eb;
+  }
+
+  .ichiro :global(.from-visitor) {
+    align-self: flex-end;
+    max-width: 78%;
+    background: var(--fg);
+    color: #ffffff;
+  }
+
+  .ichiro :global(.bubble-links) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .ichiro :global(.bubble-link),
+  .ichiro :global(.chip) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--tile);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .ichiro :global(.bubble-link) {
+    background: #ffffff;
+  }
+
+  .ichiro :global(.bubble-link:hover),
+  .ichiro :global(.chip:hover) {
+    background: #e2e2e7;
+  }
+
+  .ichiro :global(.done) {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .ichiro :global(.typing) {
+    display: inline-flex;
+    gap: 4px;
+    padding: 14px 16px;
+  }
+
+  .ichiro :global(.typing span) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--faint);
+    animation: dot 0.9s ease-in-out infinite;
+  }
+
+  .ichiro :global(.typing span:nth-child(2)) {
+    animation-delay: 0.15s;
+  }
+
+  .ichiro :global(.typing span:nth-child(3)) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes bubble-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes dot {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ichiro {
+      right: 12px;
+      bottom: 12px;
+    }
+
+    .panel {
+      width: calc(100vw - 24px);
+    }
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import { env } from 'cloudflare:workers';
+import DigestLayout from '../layouts/DigestLayout.astro';
+import { copy } from '../lib/copy.ts';
+import { VALID_TOKEN } from '../lib/unsubscribe.ts';
+
+type Props = { token: string };
+
+const { token } = Astro.props;
+const valid = VALID_TOKEN.test(token);
+const strings = Object.fromEntries(
+  (['en', 'pt-BR'] as const).map((locale) => {
+    const t = copy[locale];
+    return [
+      locale,
+      {
+        title: t.unsubscribeTitle,
+        detail: t.unsubscribeDetail,
+        confirm: t.confirm,
+        confirming: t.confirming,
+        success: t.unsubscribeSuccess,
+        invalid: t.invalidToken,
+        unavailable: t.unavailable,
+        tryAgain: t.tryAgain,
+        back: t.back,
+      },
+    ];
+  }),
+);
+const t = copy.en;
+---
+
+<DigestLayout locale="en" title={t.unsubscribeLabel} noindex>
+  <div class="page status">
+    <section
+      class="tile card"
+      aria-live="polite"
+      data-unsubscribe
+      data-state={valid ? 'confirm' : 'invalid'}
+      data-api={env.DIGEST_API_URL}
+      data-token={valid ? token : ''}
+      data-strings={JSON.stringify(strings)}
+    >
+      <span class="check" aria-hidden="true">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 22 22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 11.5l4 4 8-9"></path>
+        </svg>
+      </span>
+      <h1 data-text="title">{valid ? t.unsubscribeTitle : t.invalidToken}</h1>
+      <p data-text="detail">{valid ? t.unsubscribeDetail : ''}</p>
+      <button type="button" class="pill" data-unsubscribe-confirm hidden={!valid}>
+        {t.confirm}
+      </button>
+      <a class="chevron-link" href="/" data-text="back">
+        {t.back}
+      </a>
+    </section>
+  </div>
+</DigestLayout>
+
+<script>
+  import { startUnsubscribe } from '../scripts/unsubscribe.ts';
+
+  startUnsubscribe();
+</script>
+
+<style>
+  .status {
+    padding-top: 96px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    width: min(520px, 100%);
+    padding: 56px clamp(24px, 6vw, 48px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 34px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    color: var(--fg-secondary);
+  }
+
+  p:empty {
+    display: none;
+  }
+
+  .pill {
+    margin-top: 16px;
+  }
+
+  .pill[hidden] {
+    display: none;
+  }
+
+  .check {
+    display: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--fg);
+    color: #ffffff;
+    place-items: center;
+  }
+
+  [data-state='success'] .check {
+    display: grid;
+  }
+</style>

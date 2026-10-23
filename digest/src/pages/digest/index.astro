@@ -1,0 +1,23 @@
+---
+import { env } from 'cloudflare:workers';
+import Archive from '../../views/Archive.astro';
+import { edgeCacheHeaders, NO_STORE } from '../../lib/cache-headers.ts';
+import { archivePath } from '../../lib/digest-routes.ts';
+import { EDITIONS_TAG } from '../../lib/revalidate.ts';
+import { archiveRoute } from '../../lib/routes.ts';
+
+const result = await archiveRoute(env.DIGEST_API_URL, Astro.url.searchParams.get('page'));
+if (result.kind === 'redirect') return Astro.redirect(archivePath('en'));
+if (result.kind === 'missing') return Astro.rewrite('/404');
+if (result.kind === 'unavailable') {
+  return new Response('Tech Digest is unavailable right now.', {
+    status: 503,
+    headers: { 'Cache-Control': NO_STORE, 'Retry-After': '300' },
+  });
+}
+for (const [name, value] of Object.entries(edgeCacheHeaders([EDITIONS_TAG]))) {
+  Astro.response.headers.set(name, value);
+}
+---
+
+<Archive locale="en" archive={result.value} />

@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+import { projects } from '../data/projects.ts';
+import type { Locale } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].projects;
+const RANKED_BARS = [92, 80, 72, 61, 52, 43, 34, 25];
+const STAGES = [28, 52, 76, 100];
+---
+
+<Base
+  locale={locale}
+  path="/projects"
+  title={ui[locale].nav.projects}
+  description={t.metaDescription}
+>
+  <section class="hero">
+    <h1 class="display">{t.title}</h1>
+  </section>
+
+  <div class="page-wide list">
+    {projects.map((project, index) => {
+      const dark = index % 2 === 1;
+      const live = project.status === 'live';
+      return (
+        <section class="project" id={project.slug} aria-labelledby={`${project.slug}-title`}>
+          <div class:list={['tile', 'showcase', { 'tile-dark': dark }]}>
+            <span class="eyebrow">{live ? t.live : t.comingSoon}</span>
+            <h2 id={`${project.slug}-title`}>{project.name}</h2>
+            <p class="one-liner">{project.oneLiner[locale]}</p>
+            <div class="actions">
+              {live && (
+                <a class="pill" href={project.url}>
+                  {t.visit}
+                </a>
+              )}
+              <a class="chevron-link" href={project.url}>
+                {project.urlLabel}
+              </a>
+            </div>
+            {project.slug === 'tech-digest' && (
+              <div class="bars" aria-hidden="true">
+                {RANKED_BARS.map((width, bar) => (
+                  <span style={`width: ${width}%; animation-delay: ${bar * 0.2}s`} />
+                ))}
+              </div>
+            )}
+            {project.slug === 'alturo' && (
+              <div class="stages" aria-hidden="true">
+                {STAGES.map((height, stage) => (
+                  <span
+                    class={`stage-${stage}`}
+                    style={`height: ${height}%; animation-delay: ${stage * 0.25}s`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="tile-row">
+            <div class="tile detail">
+              <h3>{t.whatItDoes}</h3>
+              {project.whatItDoes[locale].map((line) => (
+                <p>{line}</p>
+              ))}
+            </div>
+            <div class="tile detail">
+              <h3>{t.decisions}</h3>
+              {project.decisions[locale].map((line) => (
+                <p>{line}</p>
+              ))}
+              <p class="stack">{project.stack}</p>
+            </div>
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</Base>
+
+<style>
+  .list {
+    padding-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 88px;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-margin-top: 24px;
+  }
+
+  .showcase {
+    padding: 48px 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: 8px;
+    font-size: clamp(40px, 4vw, 48px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .one-liner {
+    margin-top: 12px;
+    max-width: 620px;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+
+  .showcase .actions {
+    margin-top: 24px;
+  }
+
+  .tile-dark .pill {
+    background: var(--on-dark);
+    color: var(--fg);
+  }
+
+  .bars {
+    margin-top: 44px;
+    width: min(620px, 100%);
+    padding: 40px 40px 44px;
+    border-radius: 24px 24px 0 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bars span {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--fg);
+    animation: pulse 3.2s ease-in-out infinite;
+  }
+
+  .stages {
+    margin-top: 44px;
+    width: min(520px, 100%);
+    height: 260px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    align-items: end;
+  }
+
+  .stages span {
+    border-radius: 14px 14px 0 0;
+    transform-origin: bottom;
+    animation: grow 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+  }
+
+  .stage-0 {
+    border: 1px solid var(--fg-secondary);
+    border-bottom: 0;
+  }
+
+  .stage-1 {
+    border: 1px solid var(--faint);
+    border-bottom: 0;
+  }
+
+  .stage-2 {
+    background: var(--fg-secondary);
+  }
+
+  .stage-3 {
+    background: var(--on-dark);
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes grow {
+    from {
+      transform: scaleY(0.4);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  .detail {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .detail p {
+    line-height: 1.5;
+  }
+
+  .detail .stack {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,178 @@
+---
+import DigestLayout from '../layouts/DigestLayout.astro';
+import { copy, type Locale } from '../lib/copy.ts';
+import { archivePath, editionPath } from '../lib/digest-routes.ts';
+import type { EditionPage } from '../lib/editions.ts';
+import { groupByMonth } from '../lib/archive.ts';
+
+type Props = { locale: Locale; archive: EditionPage };
+
+const { locale, archive } = Astro.props;
+const t = copy[locale];
+const { page, has_more: hasMore } = archive;
+const months = groupByMonth(locale, archive.editions);
+const title = page > 1 ? `${t.archiveMetaTitle} · ${t.archivePageLabel(page)}` : t.archiveMetaTitle;
+---
+
+<DigestLayout
+  locale={locale}
+  title={title}
+  description={t.archiveMetaDescription}
+  paths={{ en: archivePath('en', page), 'pt-BR': archivePath('pt-BR', page) }}
+  current="archive"
+>
+  <div class="page archive">
+    <p class="kicker">
+      {t.archiveKicker}
+      {page > 1 && ` · ${t.archivePageLabel(page)}`}
+    </p>
+    <h1>{t.archiveTitle}</h1>
+    <p class="lead">{t.archiveLead}</p>
+
+    {months.length === 0 && <p class="empty">{t.archiveEmpty}</p>}
+    {months.map((month) => (
+      <section class="month" aria-label={month.label}>
+        <h2 class="eyebrow">{month.label}</h2>
+        <ol>
+          {month.days.map((day) => (
+            <li>
+              <a class="row" href={editionPath(locale, day.date)}>
+                <span class="day">
+                  <span class="number">{day.day}</span>
+                  <span>{day.weekday}</span>
+                </span>
+                <span class="count">
+                  {t.articleCount(day.articleCount)} <span aria-hidden="true">›</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    {(page > 1 || hasMore) && (
+      <nav class="pager" aria-label={t.archiveNavigation}>
+        {page > 1 ? (
+          <a class="underline-hover" href={archivePath(locale, page - 1)} rel="prev">
+            ‹ {t.newerEditions}
+          </a>
+        ) : (
+          <span />
+        )}
+        <span class="page-label">{t.archivePageLabel(page)}</span>
+        {hasMore ? (
+          <a class="underline-hover" href={archivePath(locale, page + 1)} rel="next">
+            {t.olderEditions} ›
+          </a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
+  </div>
+</DigestLayout>
+
+<style>
+  .archive {
+    max-width: 760px;
+    padding-top: 80px;
+  }
+
+  .kicker {
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  h1 {
+    margin-top: 8px;
+    font-size: clamp(40px, 6.4vw, 72px);
+    line-height: 1.04;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .lead {
+    margin-top: 16px;
+    font-size: 21px;
+    line-height: 1.4;
+    color: var(--fg-secondary);
+  }
+
+  .empty {
+    margin-top: 48px;
+    color: var(--muted);
+  }
+
+  .month {
+    margin-top: 56px;
+  }
+
+  .month h2 {
+    margin-bottom: 12px;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row {
+    min-height: 64px;
+    margin: 0 -12px;
+    padding: 0 12px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: background 0.25s;
+  }
+
+  .row:hover {
+    background: var(--tile);
+  }
+
+  .day {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .number {
+    width: 32px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .count {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .count span {
+    color: var(--fg);
+  }
+
+  .pager {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 15px;
+  }
+
+  .page-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

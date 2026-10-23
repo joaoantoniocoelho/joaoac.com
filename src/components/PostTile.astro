@@ -1,0 +1,82 @@
+---
+import PostCover from './PostCover.astro';
+import type { SitePost } from '../lib/content.ts';
+import { localizedPath, type Locale } from '../lib/locale.ts';
+import { formatPostDate } from '../lib/posts.ts';
+import { topicLabel } from '../lib/ui.ts';
+
+type Props = { post: SitePost; locale: Locale };
+
+const { post, locale } = Astro.props;
+const dark = post.topic === 'ai';
+---
+
+<a
+  class:list={['post-tile', 'tile', 'lift', { 'tile-dark': dark }]}
+  href={localizedPath(`/blog/${post.slug}`, locale)}
+  data-topic={post.topic}
+>
+  <div class="cover-box">
+    <PostCover topic={post.topic} />
+  </div>
+  <div class="text">
+    <span class="eyebrow">{topicLabel(post.topic, locale)}</span>
+    <h2>{post.title}</h2>
+    <p>{post.description}</p>
+    <time datetime={post.date}>{formatPostDate(post.date, locale)}</time>
+  </div>
+</a>
+
+<style>
+  .post-tile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-tile[hidden] {
+    display: none;
+  }
+
+  .cover-box {
+    aspect-ratio: 16 / 10;
+    background: #ebebef;
+  }
+
+  .tile-dark .cover-box {
+    background: #000000;
+  }
+
+  .text {
+    padding: 24px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--fg-secondary);
+  }
+
+  time {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .tile-dark p {
+    color: var(--on-dark-muted);
+  }
+
+  .tile-dark time {
+    color: var(--on-dark-muted);
+  }
+</style>

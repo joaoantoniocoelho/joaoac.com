@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Single verification entry point (agent-harness): the site at the root and the digest in digest/.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+step() {
+  local project=$1 name=$2 cmd=$3
+  echo "==> [$project] $name: $cmd"
+  if ! (cd "$project" && bash -c "$cmd"); then
+    echo "✗ check failed at [$project] $name" >&2
+    exit 1
+  fi
+}
+
+for project in . digest; do
+  # Generates Astro's virtual module types (astro:content, env) that lint and typecheck rely on.
+  step "$project" sync 'npx astro sync'
+  step "$project" format 'npx prettier --check .'
+  step "$project" lint 'npx eslint . --max-warnings 0'
+  step "$project" typecheck 'npx astro check'
+  step "$project" test 'npm test'
+  step "$project" build 'npm run build'
+done
+echo "✓ check passed"

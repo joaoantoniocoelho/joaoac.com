@@ -1,0 +1,136 @@
+---
+import { env } from 'cloudflare:workers';
+import { copy, type Locale } from '../lib/copy.ts';
+
+type Props = {
+  locale: Locale;
+  // A page can render more than one form, so each needs its own input id for the label.
+  inputId: string;
+  action?: string;
+  tone?: 'light' | 'dark';
+};
+
+const { locale, inputId, action, tone = 'light' } = Astro.props;
+const t = copy[locale];
+const messageId = `${inputId}-message`;
+---
+
+<form
+  class:list={['signup', tone]}
+  novalidate
+  data-signup-form
+  data-api={env.DIGEST_API_URL}
+  data-messages={JSON.stringify({
+    success: t.subscribeSuccess,
+    invalid: t.invalidEmail,
+    rate: t.rateLimited,
+    unavailable: t.unavailable,
+    subscribing: t.subscribing,
+  })}
+>
+  <label class="visually-hidden" for={inputId}>
+    {t.email}
+  </label>
+  <div class="row">
+    <input
+      id={inputId}
+      type="email"
+      autocomplete="email"
+      maxlength="254"
+      placeholder={t.placeholder}
+      required
+      aria-describedby={messageId}
+    />
+    <button type="submit">{action ?? t.subscribe}</button>
+  </div>
+  <p class="message" id={messageId} role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  import { startSignupForms } from '../scripts/signup.ts';
+
+  startSignupForms();
+</script>
+
+<style>
+  .signup {
+    width: min(480px, 100%);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  input {
+    flex: 1 1 220px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    background: #ffffff;
+    font-size: 17px;
+  }
+
+  input:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  input[aria-invalid='true'] {
+    border-color: var(--error);
+  }
+
+  button {
+    min-height: 48px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--fg);
+    color: #ffffff;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  button:hover {
+    background: #3a3a3c;
+  }
+
+  button:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+
+  .message {
+    min-height: 20px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .message[data-kind='error'] {
+    color: var(--error);
+  }
+
+  .dark input {
+    border-color: var(--fg-secondary);
+    background: var(--fg);
+    color: var(--on-dark);
+  }
+
+  .dark button {
+    background: var(--on-dark);
+    color: var(--fg);
+  }
+
+  .dark .message {
+    color: var(--on-dark-muted);
+  }
+
+  .dark .message[data-kind='error'] {
+    color: #ff8a80;
+  }
+</style>

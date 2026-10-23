@@ -1,0 +1,101 @@
+{
+  "experiences": [
+    {
+      "title": "engenheiro de software sênior",
+      "company": "ADP",
+      "companyUrl": "https://www.linkedin.com/company/adp/",
+      "period": "março de 2025 – presente",
+      "description": "na ADP, ajudo a construir uma AI Factory interna para engenharia de software. ela usa harnesses, ciclos de engenharia e orquestração de agentes para planejar, implementar, validar e revisar mudanças com diferentes modelos. contribuo com a arquitetura e os fluxos entre agentes, transformando problemas em aberto em ferramentas que desenvolvedores conseguem usar. trabalhos que antes levavam várias semanas já foram concluídos em cerca de uma, com qualidade e custo de modelos sob controle. antes disso, fui um dos principais engenheiros do MyTax, trabalhando com Flutter, backend, infraestrutura em nuvem e arquitetura.",
+      "highlights": [
+        "na plataforma interna de IA da ADP, trabalho na arquitetura de agentes que planejam, escrevem, testam e revisam código com diferentes modelos.",
+        "uma entrega estimada em várias semanas saiu em cerca de uma, sem perder de vista a qualidade nem o custo dos modelos.",
+        "antes disso, no MyTax, trabalhei em integrações bancárias, pagamentos automatizados ao IRS e na arquitetura do novo app em Flutter para freelancers nos EUA."
+      ],
+      "technologies": [
+        "Node.js",
+        "TypeScript",
+        "Flutter",
+        "AWS",
+        "LLMs",
+        "Agentes de IA",
+        "Busca Vetorial",
+        "Ferramentas de IA"
+      ],
+      "companyInfo": "a ADP desenvolve produtos e serviços de folha de pagamento, RH, impostos, benefícios e gestão da força de trabalho para empresas e profissionais no mundo todo. trabalho na organização de produto e engenharia da ADP, em produtos e plataformas digitais mais recentes."
+    },
+    {
+      "title": "consultor de desenvolvimento",
+      "company": "SAP",
+      "companyUrl": "https://www.linkedin.com/company/sap/",
+      "period": "fevereiro de 2024 – março de 2025",
+      "description": "trabalhei no SAP Ariba Category Management, um produto para gestão estratégica de compras. desenvolvi serviços de backend com Java, Spring Boot, Node.js e SAP BTP, lidando com regras de negócio complexas e integrações entre sistemas. também integrei recursos de IA, participei de decisões de arquitetura e revisões de código e ajudei colegas a resolver problemas técnicos difíceis. manter as mudanças claras e o código fácil de manter fazia diferença numa plataforma desse tamanho.",
+      "highlights": [
+        "no SAP Ariba Category Management, trabalhei em recomendações com IA usadas por clientes dos setores automotivo, de aviação e de tecnologia.",
+        "desenvolvi serviços em Java, Spring Boot, Node.js e SAP CAP, lidando com regras de negócio e integrações entre sistemas.",
+        "também participei das decisões de arquitetura e das revisões de código de um time global."
+      ],
+      "_todo": "Adicionar um caso concreto da SAP quando houver um disponível.",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Node.js",
+        "SAP CAP",
+        "SAP UI5",
+        "SAP BTP",
+        "Integrações de IA",
+        "Arquitetura em Nuvem"
+      ],
+      "companyInfo": "a SAP desenvolve software corporativo usado por empresas no mundo todo para gerenciar áreas como finanças, compras, cadeia de suprimentos, RH e operações. trabalhei na organização SAP Ariba, focada em produtos de compras e gestão de categorias."
+    },
+    {
+      "title": "desenvolvedor full stack",
+      "company": "Bazk",
+      "companyUrl": "https://www.linkedin.com/company/bazk/",
+      "period": "dezembro de 2021 – janeiro de 2024",
+      "description": "entrei na Bazk como trainee e cresci até atuar como desenvolvedor full stack, em sistemas de pagamento com mais de 400 transações por minuto. trabalhei com backend, fluxos de pagamento, regras de compliance, ferramentas internas, testes, infraestrutura e monitoramento em produção. software que movimenta dinheiro me ensinou, na prática, como sistemas distribuídos se comportam e por que confiabilidade, segurança e observabilidade importam.",
+      "highlights": [
+        "trabalhei em sistemas de pagamento e compliance que processavam mais de 400 transações por minuto.",
+        "criei em Node.js um motor de regras para automatizar checagens de fraude e exigências regulatórias.",
+        "comecei como estagiário e fui promovido duas vezes em dois anos, até desenvolvedor II."
+      ],
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Node.js",
+        "TypeScript",
+        "React.js",
+        "AWS",
+        "PostgreSQL",
+        "MongoDB",
+        "Microsserviços",
+        "Jest",
+        "JUnit",
+        "Spock"
+      ],
+      "companyInfo": "a Bazk era uma fintech focada em infraestrutura de pagamentos para e-commerce, atuando em processamento de pagamentos, fluxos de checkout, integrações financeiras e sistemas relacionados à conformidade."
+    },
+    {
+      "title": "desenvolvedor full stack",
+      "company": "Pling Brasil",
+      "period": "setembro de 2018 – março de 2019",
+      "description": "meu primeiro trabalho com software foi na Pling Brasil. entrei como trainee e ajudei a construir o Universos, um agregador de notícias baseado em web scraping. trabalhei com serviços e APIs em Node.js, integrações com MongoDB e interfaces em React. foi meu primeiro contato com construir um produto em equipe, colocar código em produção e corrigir problemas depois que as pessoas começavam a usar.",
+      "highlights": [
+        "com um time pequeno, construí o Universos, um agregador de notícias feito com Node.js, MongoDB e React."
+      ],
+      "technologies": ["TypeScript", "Node.js", "React.js", "MongoDB", "APIs REST", "Web Scraping"],
+      "companyInfo": "a Pling Brasil era uma pequena startup de desenvolvimento de software que criava produtos digitais e prestava serviços de desenvolvimento para clientes."
+    }
+  ],
+  "skills": [
+    "Java",
+    "Spring Boot",
+    "Node.js",
+    "TypeScript",
+    "Flutter",
+    "AWS",
+    "PostgreSQL",
+    "Design de Sistemas",
+    "Arquitetura de Software",
+    "Engenharia de IA"
+  ]
+}

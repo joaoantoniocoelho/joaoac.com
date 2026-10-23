@@ -1,0 +1,72 @@
+---
+title: "uma falha de autorização que não deveria ter passado"
+description: "o que uma falha de autorização num app brasileiro ensina sobre proteger suas APIs."
+date: "2025-09-09"
+tags:
+  - security
+  - apis
+---
+
+um incidente público, uma vulnerabilidade clássica e como manter falhas de IDOR fora do seu app.
+
+esta semana, um app brasileiro de namoro feito para mulheres saiu do ar depois que uma falha grave de segurança foi divulgada publicamente. a causa raiz foi uma vulnerabilidade de IDOR (Insecure Direct Object Reference). estamos falando de uma API, sem autorização de verdade, devolvendo dados pessoais de todas as usuárias - nomes, IDs, documentos, fotos e datas de nascimento.
+
+isso não é um problema só de apps pequenos. é um lembrete de que controle de acesso continua sendo uma das áreas mais negligenciadas do desenvolvimento, mesmo em 2025.
+
+não tem certeza do que é essa vulnerabilidade ou de como proteger suas APIs contra ela? vamos por partes.
+
+## o que é um IDOR?
+um IDOR acontece quando a aplicação expõe referências internas a objetos (IDs, por exemplo) sem validar se o usuário tem permissão para acessá-los.
+
+considere o seguinte exemplo: `GET /api/users/123`
+
+se alguém puder trocar `123` por `124` e obter os dados de outra pessoa, isso é um IDOR clássico.
+
+no caso desse app de namoro, a falha era ainda pior: o "atacante" (não foi bem um ataque - todos os dados expostos estavam públicos) conseguia paginar a lista inteira de usuárias por um endpoint público. sem checagem de ownership, sem validação de papel.
+
+às vezes o identificador da pessoa não está na URL, e sim no body do POST:
+
+```http
+POST /api/users/update
+{
+  "userId": 124,
+  "name": "..."
+}
+```
+
+alguém poderia alterar o `userId` e atualizar os dados de outra pessoa.
+
+## por que IDORs ainda acontecem?
+mesmo documentados no OWASP Top 10, dentro de [A01:2021 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) (o risco mais grave de segurança em aplicações web), IDORs continuam comuns porque:
+
+1. **Velocidade acima de segurança:** times priorizam feature em vez de desenhar o controle de acesso direito.
+2. **Confiança indevida no front-end:** "Se o botão não está lá, ninguém acessa a rota."
+3. **Falta de lógica de autorização centralizada.**
+
+## como prevenir IDORs
+
+1. **Sempre autorize no servidor.** Verifique ownership ou permissões do recurso. se alguém pede `/users/123`, você precisa garantir que a pessoa autenticada é de fato a usuária 123 - e não alguém tentando adivinhar ou adulterar IDs.
+2. **Use identificadores imprevisíveis.** Evite IDs autoincrementais em APIs públicas. prefira UUIDs. isso não substitui autenticação, mas torna a enumeração bem mais difícil.
+3. **Centralize o controle de acesso.** Não repita a mesma checagem em todo controller. use interceptors, middleware ou annotations, conforme o stack.
+4. **Adicione testes de autorização**, principalmente os negativos.
+5. **Monitore e alerte.** Observe padrões de acesso que parecem enumeração de IDs (requisições sequenciais a `/users/{id}`) e dispare alertas.
+
+usar DTOs é uma boa prática para não expor campos sensíveis por acidente, mas isso não previne IDOR.
+
+## considerações finais
+você não precisa ser uma empresa de bilhões para sofrer as consequências de um design inseguro. segurança desde o desenho não é opcional - é responsabilidade central. se você é pessoa de backend:
+
+> Trate toda requisição como hostil até prova em contrário.
+
+e além do código, existe o lado humano de um vazamento, algo que nenhum test suite ou linter resolve.
+
+### o que acontece depois de um vazamento desses?
+sinceramente? você perde confiança. quem foi afetado pode se sentir inseguro, e isso é difícil de reconstruir. você pode:
+
+1. tirar o sistema do ar, se for necessário
+2. avisar as pessoas com transparência
+3. auditar o sistema inteiro
+4. revisar e refatorar o fluxo de autenticação - e não ter pressa no conserto
+5. documentar e publicar
+
+no fim, o que define maturidade é como o time responde e como você se comunica com quem usa o produto.

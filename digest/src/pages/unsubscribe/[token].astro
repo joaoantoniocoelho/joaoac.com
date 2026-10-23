@@ -1,0 +1,9 @@
+---
+import Unsubscribe from '../../views/Unsubscribe.astro';
+import { NO_STORE } from '../../lib/cache-headers.ts';
+
+// Tokens are personal, so these pages are never cached.
+Astro.response.headers.set('Cache-Control', NO_STORE);
+---
+
+<Unsubscribe token={Astro.params.token ?? ''} />

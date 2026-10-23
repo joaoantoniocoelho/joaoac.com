@@ -1,0 +1,222 @@
+---
+import '../styles/global.css';
+import { copy, type Locale } from '../lib/copy.ts';
+import {
+  archivePath,
+  homePath,
+  otherLocale,
+  siteOrigin,
+  subscribePath,
+} from '../lib/digest-routes.ts';
+
+type Props = {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  // Same page in each language; when absent, the language switch points to the other landing page.
+  paths?: Record<Locale, string>;
+  current?: 'latest' | 'archive';
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+};
+
+const {
+  locale,
+  title,
+  description = copy[locale].detail,
+  paths,
+  current,
+  noindex = false,
+  ogType = 'website',
+} = Astro.props;
+const t = copy[locale];
+const other = otherLocale(locale);
+const fullTitle = title ? `${title} | tech digest` : 'tech digest | joão coelho';
+const canonical = paths ? `${siteOrigin}${paths[locale]}` : undefined;
+const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {paths && (
+      <>
+        <link rel="alternate" hreflang="en" href={`${siteOrigin}${paths.en}`} />
+        <link rel="alternate" hreflang="pt-BR" href={`${siteOrigin}${paths['pt-BR']}`} />
+        <link rel="alternate" hreflang="x-default" href={`${siteOrigin}${paths.en}`} />
+      </>
+    )}
+    <link rel="icon" href="/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="tech digest" />
+    <meta property="og:title" content={title ?? 'tech digest'} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
+    <meta property="og:image" content="https://www.joaoac.com/avatar.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://www.joaoac.com/avatar.png" />
+    {analyticsToken && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+      />
+    )}
+  </head>
+  <body data-locale={noindex ? undefined : locale}>
+    <div class="global-bar">
+      <div class="bar-inner">
+        <a href="https://www.joaoac.com">‹ joaoac.com</a>
+        <a
+          href={paths ? paths[other] : homePath(other)}
+          hreflang={other}
+          lang={other}
+          aria-label={t.switchLanguage}
+          data-language-link
+        >
+          {t.switchLanguageShort}
+        </a>
+      </div>
+    </div>
+    <header class="product-bar">
+      <nav class="bar-inner" aria-label="tech digest">
+        <a class="product-name" href={homePath(locale)}>
+          tech digest
+        </a>
+        <span class="product-links">
+          <a href={archivePath(locale)} aria-current={current === 'archive' ? 'page' : undefined}>
+            {t.navArchive}
+          </a>
+          <a class="subscribe" href={subscribePath(locale)}>
+            {t.subscribeLink}
+          </a>
+        </span>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="bar-inner footer-inner">
+        <span>
+          © {new Date().getFullYear()} tech digest · {t.from}
+        </span>
+        <span class="footer-links">
+          <a href="https://www.joaoac.com">joaoac.com</a>
+          <a href="https://github.com/joaoantoniocoelho" rel="me">
+            github
+          </a>
+          <a href="https://x.com/joaoac_" rel="me">
+            x
+          </a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      import { startDigestPage } from '../scripts/page.ts';
+
+      startDigestPage();
+    </script>
+  </body>
+</html>
+
+<style>
+  .global-bar {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+    background: var(--tile);
+  }
+
+  .bar-inner {
+    width: 100%;
+    max-width: var(--page);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .global-bar a {
+    font-size: 12px;
+    color: var(--fg-secondary);
+  }
+
+  .product-bar {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+    border-bottom: 1px solid #e5e5ea;
+  }
+
+  .product-name {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .product-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 12px;
+  }
+
+  .product-links a {
+    color: var(--fg-secondary);
+  }
+
+  .product-links a[aria-current='page'] {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .product-links .subscribe {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    background: var(--fg);
+    color: #ffffff;
+  }
+
+  .footer {
+    margin-top: 120px;
+    background: var(--tile);
+    padding: 20px var(--gutter) 28px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-links a {
+    color: var(--fg-secondary);
+  }
+</style>

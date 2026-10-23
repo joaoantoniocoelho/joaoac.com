@@ -1,0 +1,108 @@
+---
+// Each topic gets a small typographic illustration instead of a stock image: no extra requests, crisp at any size.
+type Props = { topic: string; size?: 'small' | 'large' };
+
+const { topic, size = 'small' } = Astro.props;
+const kind = topic === 'security' ? 'grid' : topic === 'ai' ? 'prompt' : 'lines';
+const columns = size === 'large' ? 14 : 10;
+const cells = Array.from({ length: columns * 4 }, (_, index) => index);
+const owned = columns + Math.floor(columns / 2) - 1;
+---
+
+<div class:list={['cover', `cover-${kind}`, `cover-${size}`]} aria-hidden="true">
+  {kind === 'grid' && (
+    <div class="grid" style={`--columns: ${columns}`}>
+      {cells.map((cell) => (
+        <span class:list={{ owned: cell === owned, probed: cell === owned + 1 }} />
+      ))}
+    </div>
+  )}
+  {kind === 'prompt' && (
+    <span class="prompt">
+      &gt;_
+      <span class="caret" />
+    </span>
+  )}
+  {kind === 'lines' && (
+    <div class="lines">
+      <span style="width: 46%" />
+      <span style="width: 62%; margin-left: 12%" />
+      <span class="soft" style="width: 40%; margin-left: 24%" />
+      <span class="soft" style="width: 54%; margin-left: 24%" />
+      <span style="width: 30%; margin-left: 12%" />
+      <span style="width: 12%" />
+    </div>
+  )}
+</div>
+
+<style>
+  .cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .grid {
+    width: 62%;
+    display: grid;
+    grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+    gap: clamp(4px, 0.8vw, 8px);
+  }
+
+  .grid span {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: #dcdce1;
+  }
+
+  .grid .owned {
+    background: var(--fg);
+  }
+
+  .grid .probed {
+    background: none;
+    border: 1.5px dashed var(--fg);
+  }
+
+  .prompt {
+    font-size: clamp(44px, 6vw, 72px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    color: var(--on-dark);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.45em;
+    height: 0.85em;
+    margin-left: 0.1em;
+    vertical-align: -0.1em;
+    background: currentColor;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .lines {
+    width: min(300px, 50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lines span {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--fg);
+  }
+
+  .lines .soft {
+    background: var(--faint);
+  }
+</style>

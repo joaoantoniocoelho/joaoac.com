@@ -1,0 +1,15 @@
+---
+import PostView from '../../../views/PostView.astro';
+import { postsFor, type SitePost } from '../../../lib/content.ts';
+
+export async function getStaticPaths() {
+  const posts = await postsFor('pt-BR');
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+type Props = { post: SitePost };
+
+const { post } = Astro.props;
+---
+
+<PostView post={post} locale="pt-BR" />

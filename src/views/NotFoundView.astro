@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import sleeping from '../assets/ichiro/ichiro-sleeping.png';
+import { localizedPath, type Locale } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].notFound;
+---
+
+<Base locale={locale} path="/404" title={t.title} description={t.text} noindex>
+  <section class="hero lost">
+    <div class="sleeper">
+      <Image src={sleeping} alt={t.sleeping} width={288} format="webp" class="ichiro" />
+      <span class="z one" aria-hidden="true">
+        z
+      </span>
+      <span class="z two" aria-hidden="true">
+        z
+      </span>
+    </div>
+    <p class="kicker">{t.eyebrow}</p>
+    <h1>{t.title}</h1>
+    <p class="text">{t.text}</p>
+    <div class="actions">
+      <a class="pill" href={localizedPath('/', locale)}>
+        {t.home}
+      </a>
+      <a class="chevron-link" href={localizedPath('/blog', locale)}>
+        {t.writing}
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    padding-top: 120px;
+  }
+
+  .sleeper {
+    position: relative;
+  }
+
+  .sleeper :global(.ichiro) {
+    width: 144px;
+    height: auto;
+    image-rendering: pixelated;
+  }
+
+  .z {
+    position: absolute;
+    right: -12px;
+    top: 8px;
+    font-weight: 600;
+    color: var(--faint);
+    animation: float 2.8s ease-out infinite;
+  }
+
+  .two {
+    right: -24px;
+    top: 0;
+    font-size: 14px;
+    animation-delay: 1.2s;
+  }
+
+  @keyframes float {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(14px, -28px);
+    }
+  }
+
+  .kicker {
+    margin-top: 40px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  h1 {
+    margin-top: 8px;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .text {
+    margin-top: 16px;
+    max-width: 460px;
+    font-size: 21px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .actions {
+    margin-top: 32px;
+  }
+</style>

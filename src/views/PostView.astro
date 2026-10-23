@@ -1,0 +1,240 @@
+---
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import PostCover from '../components/PostCover.astro';
+import PostTile from '../components/PostTile.astro';
+import { postsFor, type SitePost } from '../lib/content.ts';
+import { localizedPath, type Locale } from '../lib/locale.ts';
+import { formatPostDate } from '../lib/posts.ts';
+import { absoluteUrl } from '../lib/seo.ts';
+import { SITE_AUTHOR, SITE_URL } from '../lib/site.ts';
+import { topicLabel, ui } from '../lib/ui.ts';
+
+type Props = { post: SitePost; locale: Locale };
+
+const { post, locale } = Astro.props;
+const t = ui[locale].post;
+const { Content } = await render(post.entry);
+const otherPosts = (await postsFor(locale)).filter((other) => other.slug !== post.slug).slice(0, 2);
+const url = absoluteUrl(localizedPath(`/blog/${post.slug}`, locale));
+const shareLinks = [
+  {
+    label: 'linkedin',
+    href: `https://www.linkedin.com/sharing/share-offsite/?${new URLSearchParams({ url })}`,
+  },
+  {
+    label: 'x',
+    href: `https://x.com/intent/post?${new URLSearchParams({ text: post.title, url })}`,
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description,
+  datePublished: post.date,
+  dateModified: post.updated ?? post.date,
+  author: { '@type': 'Person', '@id': `${SITE_URL}/#person`, name: SITE_AUTHOR, url: SITE_URL },
+  publisher: { '@id': `${SITE_URL}/#person` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  image: `${SITE_URL}/avatar.png`,
+  mainEntityOfPage: url,
+  url,
+  inLanguage: locale === 'pt-BR' ? 'pt-BR' : 'en-US',
+  keywords: post.tags.join(', '),
+};
+---
+
+<Base
+  locale={locale}
+  path={`/blog/${post.slug}`}
+  title={post.title}
+  description={post.description}
+  ogType="article"
+  article={{ publishedTime: post.date, modifiedTime: post.updated ?? post.date, tags: post.tags }}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="page-narrow head">
+      <a class="back underline-hover" href={localizedPath('/blog', locale)}>
+        ‹ {t.back}
+      </a>
+      <p class="eyebrow meta">
+        {topicLabel(post.topic, locale)} ·{' '}
+        <time datetime={post.date}>{formatPostDate(post.date, locale)}</time>
+      </p>
+      <h1>{post.title}</h1>
+      <p class="description">{post.description}</p>
+      <div class="share">
+        <button
+          type="button"
+          class="pill-soft"
+          data-copy-url={url}
+          data-copied-label={t.linkCopied}
+        >
+          {t.copyLink}
+        </button>
+        {shareLinks.map((link) => (
+          <a class="pill-soft" href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </header>
+
+    <div class="page-wide">
+      <div class="tile cover">
+        <PostCover topic={post.topic} size="large" />
+      </div>
+    </div>
+
+    <div class="page-narrow prose">
+      <Content components={{ pre: CodeBlock }} />
+    </div>
+  </article>
+
+  {otherPosts.length > 0 && (
+    <section class="page-wide more" aria-labelledby="more-writing">
+      <h2 class="section-title" id="more-writing">
+        {t.more}
+      </h2>
+      <div class="more-grid">
+        {otherPosts.map((other) => (
+          <PostTile post={other} locale={locale} />
+        ))}
+      </div>
+    </section>
+  )}
+</Base>
+
+<script>
+  import { startCopyButtons } from '../scripts/copy-buttons.ts';
+
+  startCopyButtons();
+</script>
+
+<style>
+  .head {
+    padding-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .back {
+    font-size: 14px;
+    color: var(--fg-secondary);
+  }
+
+  .meta {
+    margin-top: 24px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 4.6vw, 48px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .description {
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--fg-secondary);
+  }
+
+  .share {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cover {
+    margin-top: 44px;
+    aspect-ratio: 16 / 7;
+  }
+
+  .prose {
+    padding-top: 44px;
+    font-size: 18px;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+
+  .prose :global(h2) {
+    margin-top: 48px;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .prose :global(h3) {
+    margin-top: 36px;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-top: 22px;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 10px;
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+  }
+
+  .prose :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(:not(pre) > code) {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--tile);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  .prose :global(blockquote) {
+    margin: 28px 0 0;
+    padding: 2px 0 2px 20px;
+    border-left: 3px solid var(--line);
+    color: var(--fg-secondary);
+  }
+
+  .prose :global(blockquote p:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(hr) {
+    margin: 40px 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose :global(.code-block) {
+    margin-top: 22px;
+  }
+
+  .more {
+    padding-top: 104px;
+  }
+
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+    gap: 12px;
+  }
+</style>

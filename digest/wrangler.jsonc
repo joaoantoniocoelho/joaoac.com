@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tech-digest",
+  "compatibility_date": "2026-10-01",
+  // Pages are rendered on demand and cached at the edge by their Cache-Control and Cache-Tag headers;
+  // POST /api/revalidate purges the affected tags after each daily send.
+  "cache": { "enabled": true },
+  "observability": { "enabled": true },
+  "routes": [{ "pattern": "digest.joaoac.com", "custom_domain": true }],
+  "vars": {
+    "DIGEST_API_URL": "https://api.digest.joaoac.com",
+  },
+  // Set with `npx wrangler secret put DIGEST_REVALIDATE_TOKEN`; the same value Railway sends as a Bearer token.
+  "secrets": { "required": ["DIGEST_REVALIDATE_TOKEN"] },
+}

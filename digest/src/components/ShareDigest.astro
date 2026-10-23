@@ -1,0 +1,108 @@
+---
+import { copy, type Locale } from '../lib/copy.ts';
+import { linkedInShareUrl, sharedEditionUrl, xShareUrl } from '../lib/share.ts';
+
+type Props = { locale: Locale; editionUrl: string; day: string };
+
+const { locale, editionUrl, day } = Astro.props;
+const t = copy[locale];
+const copyUrl = sharedEditionUrl(editionUrl, 'copy');
+---
+
+<section class="share" aria-labelledby="share-title" data-share>
+  <div class="intro">
+    <h2 id="share-title">{t.shareTitle}</h2>
+    <p>{t.shareText}</p>
+  </div>
+  <div class="actions-row">
+    <button
+      type="button"
+      class="pill-soft"
+      data-copy-url={copyUrl}
+      data-copied={t.linkCopied}
+      data-failed={t.copyFailed}
+    >
+      {t.copyLink}
+    </button>
+    <a
+      class="pill-soft"
+      href={xShareUrl(t.sharePost(day), sharedEditionUrl(editionUrl, 'x'))}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${t.shareOnX} ${t.opensInNewTab}`}
+    >
+      x
+    </a>
+    <a
+      class="pill-soft"
+      href={linkedInShareUrl(sharedEditionUrl(editionUrl, 'linkedin'))}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${t.shareOnLinkedIn} ${t.opensInNewTab}`}
+    >
+      linkedin
+    </a>
+  </div>
+  <p class="message" role="status" aria-live="polite" data-share-message></p>
+  <input
+    class="manual"
+    type="text"
+    readonly
+    value={copyUrl}
+    aria-label={t.shareLink}
+    hidden
+    data-share-manual
+  />
+</section>
+
+<script>
+  import { startShare } from '../scripts/share.ts';
+
+  startShare();
+</script>
+
+<style>
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .intro p {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .message {
+    flex-basis: 100%;
+    min-height: 20px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .manual {
+    flex-basis: 100%;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 15px;
+  }
+
+  .manual[hidden] {
+    display: none;
+  }
+</style>

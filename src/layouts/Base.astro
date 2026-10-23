@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import IchiroChat from '../components/IchiroChat.astro';
+import { pathForLocale, type Locale } from '../lib/locale.ts';
+import { absoluteUrl, languageAlternates, ogLocale, pageTitle } from '../lib/seo.ts';
+import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_URL } from '../lib/site.ts';
+
+type Props = {
+  locale: Locale;
+  // Path of the English version of this page; the Portuguese one is derived from it.
+  path: string;
+  title: string;
+  description: string;
+  ogType?: 'website' | 'profile' | 'article';
+  article?: { publishedTime: string; modifiedTime: string; tags: string[] };
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
+};
+
+const {
+  locale,
+  path,
+  title,
+  description,
+  ogType = 'website',
+  article,
+  noindex,
+  jsonLd,
+} = Astro.props;
+const canonical = absoluteUrl(pathForLocale(path, locale));
+const og = ogLocale(locale);
+const fullTitle = pageTitle(title);
+const ogImage = absoluteUrl('/og.png');
+const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
+
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#person`,
+      name: SITE_AUTHOR,
+      alternateName: SITE_NAME,
+      jobTitle: 'Senior Software Engineer',
+      worksFor: { '@type': 'Organization', name: 'ADP' },
+      url: SITE_URL,
+      image: `${SITE_URL}/avatar.png`,
+      email: CONTACT_EMAIL,
+      sameAs: [
+        'https://linkedin.com/in/joaoac',
+        'https://github.com/joaoantoniocoelho',
+        'https://x.com/joaoac_',
+      ],
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'PUCRS' },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'porto alegre',
+        addressRegion: 'RS',
+        addressCountry: 'BR',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      author: { '@id': `${SITE_URL}/#person` },
+      inLanguage: ['en-US', 'pt-BR'],
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {languageAlternates(path).map((alternate) => (
+      <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+    ))}
+    <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href="/feed.xml" />
+    <link rel="icon" href="/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="author" content={SITE_AUTHOR} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content={og.locale} />
+    <meta property="og:locale:alternate" content={og.alternate} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {article && (
+      <>
+        <meta property="article:published_time" content={article.publishedTime} />
+        <meta property="article:modified_time" content={article.modifiedTime} />
+        <meta property="article:author" content={SITE_AUTHOR} />
+        {article.tags.map((tag) => (
+          <meta property="article:tag" content={tag} />
+        ))}
+      </>
+    )}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@joaoac_" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {analyticsToken && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+      />
+    )}
+  </head>
+  <body>
+    <Nav locale={locale} path={path} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <IchiroChat locale={locale} />
+  </body>
+</html>

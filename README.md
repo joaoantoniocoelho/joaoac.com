@@ -1,67 +1,35 @@
 # joaoac.com
 
-Personal website for João Coelho, a software engineer focused on backend systems, cloud products, AI experiments, and thoughtful digital experiences.
+personal site and tech digest.
 
-[Visit the website](https://joaoac.com)
+- `/` — [www.joaoac.com](https://www.joaoac.com). static astro site, mdx posts in english and portuguese.
+- `digest/` — [digest.joaoac.com](https://digest.joaoac.com). astro rendered on demand, edge-cached, reads the tech digest api.
+- `workers/` — redirects `joaoac.com` and `www.digest` to their canonical hosts.
 
-## Overview
+## stack
 
-The site brings together professional experience, selected writing, technical interests, and contact information in a focused, interactive portfolio.
+astro · mdx · typescript · plain css · cloudflare workers · node test runner
 
-It is designed to feel expressive without becoming distracting: motion supports the content, ambient colors respond to each section, and every interaction has a reduced-motion alternative.
-
-## Highlights
-
-- Responsive, dark-first interface with ambient scroll-based color transitions
-- Animated professional timeline with a dedicated experience page
-- MDX blog at `/blog`, with RSS at `/feed.xml`
-- Active-section navigation and keyboard command menu (`/` or `⌘ K`)
-- Ichiro, João's real Shiba Inu, as an animated pixel-art guide with a predefined conversational flow
-- Accessible motion through `prefers-reduced-motion`
-- Responsive interactions designed for keyboard, pointer, and touch
-
-## Stack
-
-- [Next.js](https://nextjs.org/) with the App Router
-- [React](https://react.dev/) and [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [React Icons](https://react-icons.github.io/react-icons/)
-
-## Local development
+## run
 
 ```bash
-git clone git@github.com:joaoantoniocoelho/joaoac.com.git
-cd joaoac.com
-npm install
-npm run dev
+npm ci && npm run dev
+cd digest && npm ci && npm run dev   # needs .dev.vars, see .dev.vars.example
+scripts/check                        # format, lint, types, tests and build
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## write
 
-No environment variables are required for local development.
+- posts: `src/content/posts/<slug>.mdx` and `<slug>.pt-BR.mdx`
+- projects, experience, ichiro: `src/data/`
+- interface copy: `src/lib/ui.ts`, `digest/src/lib/copy.ts`
 
-## Commands
+## deploy
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Create an optimized production build |
-| `npm start` | Run the production build |
-| `npm run lint` | Run the Next.js linter |
-
-## Structure
-
-```text
-app/          Routes, metadata, and global styles
-components/   Page sections, interactions, and shared UI
-content/      Blog posts (MDX) and Ichiro prompts
-data/         Professional experience content
-public/       Static images and Ichiro sprites
-lib/          Shared utilities
-digest/       Independent Tech Digest landing for digest.joaoac.com
+```bash
+npm run deploy             # site
+npm run deploy:redirect    # redirects
+cd digest && npm run deploy
 ```
 
-Professional experience is maintained in `data/experiences.json`. Blog posts live in `content/posts` as MDX.
-
-The Tech Digest landing is a separate Next.js project in [`digest/`](digest/README.md). Its Vercel project uses `digest` as the Root Directory and calls the public Railway API through `NEXT_PUBLIC_DIGEST_API_URL`.
+the digest needs `DIGEST_REVALIDATE_TOKEN` (`npx wrangler secret put`), the same token railway sends to `/api/revalidate` after each daily send.

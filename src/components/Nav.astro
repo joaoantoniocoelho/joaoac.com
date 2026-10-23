@@ -1,0 +1,92 @@
+---
+import { localizedPath, type Locale } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale; path: string };
+
+const { locale, path } = Astro.props;
+const t = ui[locale];
+const otherLocale: Locale = locale === 'en' ? 'pt-BR' : 'en';
+
+const links = [
+  { href: '/blog', label: t.nav.writing },
+  { href: '/projects', label: t.nav.projects },
+  { href: '/experiences', label: t.nav.about },
+].map((link) => ({
+  ...link,
+  href: localizedPath(link.href, locale),
+  current: path === link.href || path.startsWith(`${link.href}/`),
+}));
+---
+
+<header class="nav">
+  <nav class="nav-inner" aria-label={t.nav.label}>
+    <a class="brand" href={localizedPath('/', locale)} aria-label={`joão coelho, ${t.nav.home}`}>
+      jc
+    </a>
+    <div class="links">
+      {links.map((link) => (
+        <a href={link.href} aria-current={link.current ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <a
+      class="language"
+      href={localizedPath(path, otherLocale)}
+      hreflang={otherLocale}
+      lang={otherLocale}
+      aria-label={t.switchLanguage}
+    >
+      {t.switchLanguageShort}
+    </a>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: var(--page);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  .brand {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .links {
+    display: flex;
+    gap: clamp(18px, 4vw, 32px);
+  }
+
+  .links a,
+  .language {
+    color: var(--fg-secondary);
+    transition: color 0.2s;
+  }
+
+  .links a:hover,
+  .language:hover {
+    color: var(--fg);
+  }
+
+  .links a[aria-current='page'] {
+    color: var(--fg);
+    font-weight: 600;
+  }
+</style>

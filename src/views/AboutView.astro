@@ -1,0 +1,186 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import avatar from '../assets/avatar.png';
+import experiencesEn from '../data/experiences.en.json';
+import experiencesPt from '../data/experiences.pt-BR.json';
+import type { Locale } from '../lib/locale.ts';
+import { CONTACT_EMAIL } from '../lib/site.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].about;
+const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
+---
+
+<Base
+  locale={locale}
+  path="/experiences"
+  title={ui[locale].nav.about}
+  description={t.metaDescription}
+>
+  <section class="hero">
+    <Image
+      src={avatar}
+      alt={
+        locale === 'pt-BR'
+          ? 'avatar de joão coelho em pixel art'
+          : 'pixel art avatar of joão coelho'
+      }
+      width={240}
+      height={240}
+      format="webp"
+      class="portrait"
+    />
+    <h1 class="display">{t.title}</h1>
+    <div class="actions">
+      <a class="pill" href={`mailto:${CONTACT_EMAIL}`}>
+        {t.email}
+      </a>
+    </div>
+  </section>
+
+  <section class="page journey" aria-labelledby="journey">
+    <h2 id="journey">{t.journey}</h2>
+    <ol>
+      {experiences.map((experience) => (
+        <li>
+          <span class="period">{experience.period}</span>
+          <div class="role">
+            {experience.companyUrl ? (
+              <a
+                class="company underline-hover"
+                href={experience.companyUrl}
+                rel="noopener noreferrer"
+              >
+                {experience.company}
+              </a>
+            ) : (
+              <span class="company">{experience.company}</span>
+            )}
+            <span class="title">{experience.title}</span>
+            <ul>
+              {experience.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+            <p class="technologies">{experience.technologies.join(' · ')}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="page-wide tile-row toolkit">
+    <div class="tile box">
+      <h3>{t.dayToDay}</h3>
+      <p>{t.dayToDayText}</p>
+    </div>
+    <div class="tile tile-dark box">
+      <h3>{t.exploring}</h3>
+      <p>{t.exploringText}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero :global(.portrait) {
+    width: 104px;
+    height: 104px;
+    margin-bottom: 24px;
+    border-radius: 50%;
+    image-rendering: pixelated;
+  }
+
+  .actions {
+    margin-top: 32px;
+  }
+
+  .journey {
+    padding-top: 104px;
+  }
+
+  h2 {
+    margin-bottom: 32px;
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  ol > li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 40px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .period {
+    flex: 0 0 200px;
+    padding-top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .role {
+    flex: 1 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .company {
+    align-self: flex-start;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .title {
+    color: var(--muted);
+  }
+
+  .role ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    line-height: 1.5;
+  }
+
+  .role ul li + li {
+    margin-top: 8px;
+  }
+
+  .technologies {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .toolkit {
+    padding-top: 96px;
+  }
+
+  .box {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+</style>

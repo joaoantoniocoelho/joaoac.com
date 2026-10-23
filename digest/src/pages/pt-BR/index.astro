@@ -1,0 +1,14 @@
+---
+import { env } from 'cloudflare:workers';
+import Landing from '../../views/Landing.astro';
+import { edgeCacheHeaders } from '../../lib/cache-headers.ts';
+import { loadLatestEdition } from '../../lib/editions.ts';
+import { EDITIONS_TAG } from '../../lib/revalidate.ts';
+
+const latestEdition = await loadLatestEdition(env.DIGEST_API_URL);
+for (const [name, value] of Object.entries(edgeCacheHeaders([EDITIONS_TAG]))) {
+  Astro.response.headers.set(name, value);
+}
+---
+
+<Landing locale="pt-BR" latestEdition={latestEdition} />

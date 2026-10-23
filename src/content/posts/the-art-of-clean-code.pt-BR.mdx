@@ -1,0 +1,248 @@
+---
+title: "cinco princípios de Clean Code que ainda fazem diferença"
+description: "cinco práticas que ajudam a escrever código mais fácil de entender, mudar e revisar."
+date: "2024-01-24"
+tags:
+  - engineering
+---
+
+cinco princípios de Clean Code para melhorar a qualidade do seu código.
+
+esta semana tive a oportunidade de palestrar num evento de tech chamado Tech Circle, organizado pela empresa em que trabalho e pensado para envolver o time de tecnologia em discussões sobre desenvolvimento de software.
+
+a palestra foi sobre Clean Code e cinco princípios que podem ajudar quem desenvolve.
+
+## o que é Clean Code?
+Clean Code é elegante, simples, legível e orientado a propósito. ele nunca deixa a pessoa desenvolvedora confusa sobre o que o código faz. há duas definições de que gosto especialmente. a primeira é de Bjarne Stroustrup, criador do C++:
+
+> "I like my code to be elegant and efficient. The logic should be straightforward to make it hard for bugs to hide, the dependencies minimal to ease maintenance, error handling complete according to an articulated strategy, and performance close to optimal so as not to tempt people to make the code messy with unprincipled optimizations. Clean code does one thing well." - Bjarne Stroustrup
+
+a segunda é de Grady Booch, autor de *Object Oriented Analysis and Design with Applications*:
+
+> "Clean code is simple and direct. Clean code reads like well-written prose. Clean code never obscures the designer's intent but rather is full of crisp abstractions and straightforward lines of control." - Grady Booch
+
+## princípios-chave de Clean Code
+existem muitos princípios que ajudam a escrever Clean Code. estes cinco são fáceis de entender e fizeram diferença real na qualidade do código:
+
+1. nomes com significado
+2. funções: pequenas e com uma única responsabilidade
+3. uso de logs
+4. testes unitários e TDD
+5. tratamento de erros
+
+## 1. nomes com significado
+nomear as coisas é mais difícil do que parece, mas bons nomes levam a bom código. nomes com significado são essenciais para o código ser legível.
+
+algumas boas práticas:
+
+1. nomes devem revelar o propósito de métodos, variáveis e classes. eles devem mostrar a intenção.
+2. nomes devem ser pronunciáveis e pesquisáveis.
+3. o projeto precisa de um padrão de nomenclatura.
+4. evite abreviações. elas podem fazer sentido para quem escreveu o código, mas confundem o resto do time.
+
+exemplo de nomes ruins:
+
+```java
+public class DataManager {
+  public void calculate() {
+    // Calculate what?
+  }
+
+  public void genRpt() {
+    // What is 'Gen'? And 'Rpt'?
+  }
+
+  public void handleError1() {
+    // What type of error is 'Error1'?
+  }
+
+  public void fetchData() {
+    // Which data? Where does it come from?
+  }
+}
+```
+
+exemplo de bons nomes:
+
+```java
+public class DataManager {
+  public void calculateMonthlyRevenue() {
+    // Now we know this method calculates monthly revenue
+  }
+
+  public void generateReport() {
+    // Without abbreviations, we know this generates a report
+  }
+
+  public void handleNetworkError() {
+    // Now we know it handles network errors
+  }
+
+  public void fetchUserDataFromDataBase() {
+    // Now we know it fetches user data from the database
+  }
+}
+```
+
+## 2. funções: pequenas e com uma única responsabilidade
+uma função deve expressar o propósito de forma clara e concisa, executando uma única tarefa específica.
+
+funções pequenas com propósito claro são fáceis de ler e entender. também tornam os testes mais simples de escrever e aumentam a manutenibilidade.
+
+uma função deve ter uma única responsabilidade. uma função bem desenhada faz uma coisa e faz bem. isso facilita reuso, adaptação e refatoração.
+
+exemplo de uma função fazendo demais:
+
+```java
+public class UserService {
+  public void deleteUserRelatedItems(Long userId) {
+    User user = userRepository.findUserById(userId);
+    List<UserRelatedItem> userRelatedItems = userItemsRepository.findUserRelatedItems(user);
+
+    for (UserRelatedItem item : userRelatedItems) {
+      item.setStatus(ItemStatus.EXCLUDED);
+      item.setDeletedAt(LocalDateTime.now());
+      item.setDeletedBy("system");
+    }
+  }
+}
+```
+
+exemplo com funções menores:
+
+```java
+public class UserService {
+  public void deleteUserRelatedItems(Long userId) {
+    User user = getUserFromDataBase(userId);
+    List<UserRelatedItem> userRelatedItems = findUserRelatedItems(user);
+    markUserRelatedItemsAsDeleted(userRelatedItems);
+  }
+
+  private User getUserFromDataBase(Long userId) {
+    // Implementation
+  }
+
+  private List<UserRelatedItem> findUserRelatedItems(User user) {
+    // Implementation
+  }
+
+  private void markUserRelatedItemsAsDeleted(List<UserRelatedItem> userRelatedItems) {
+    // Implementation
+  }
+}
+```
+
+o exemplo acima é simples, mas imagine se a lógica fosse mais complexa. a função principal ficaria grande e difícil de acompanhar. funções menores com uma única responsabilidade mantêm o código legível, testável e reutilizável.
+
+## 3. uso de logs
+logs são essenciais para manutenção e qualidade. eles ajudam a entender o comportamento do software, rastrear erros, identificar problemas ou simplesmente seguir o fluxo do código.
+
+algumas bibliotecas:
+
+1. log4j / Logback para Java
+2. serilog para C#
+3. winston para Node.js
+
+mensagens de log devem dar contexto. níveis comuns:
+
+1. **INFO** - informação geral sobre operação e status de rotina
+2. **WARN** - um problema potencial que ainda não está causando erro
+3. **ERROR** - um problema sério que interrompe um processo ou o fluxo da aplicação
+4. **DEBUG** - informação detalhada para diagnosticar problemas, geralmente em desenvolvimento
+5. **TRACE** - o registro mais detalhado do comportamento da aplicação
+
+exemplo com Log4j (`@Slf4j` na classe):
+
+```java
+@Slf4j
+public class OrderService {
+  public void processOrder(int orderId) {
+    log.info("Starting order processing for order with id {}", orderId);
+
+    try {
+      // Algorithm to process order
+      log.info("Order {} processed successfully", orderId);
+    } catch (DataBaseException e) {
+      log.error("Error accessing database for order {}, reason: {}", orderId, e);
+    } catch (OrderException e) {
+      log.warn("Problem processing order {}, reason: {}", orderId, e);
+    } catch (Exception e) {
+      log.error("Unexpected error processing order {}: {}", orderId, e);
+    }
+  }
+}
+```
+
+## 4. testes unitários
+testes unitários verificam a menor parte testável de uma aplicação.
+
+código de teste é tão importante quanto código de produção. testes ruins viram um problema para desenvolvimento e refatoração - se os testes degradam, o código também degrada.
+
+o que torna um teste limpo? legibilidade, clareza e simplicidade. um bom teste deve avaliar só um conceito.
+
+três razões para aplicar testes unitários:
+
+1. **Detecção precoce de erros**
+2. **Documentação do código** - testes ilustram como o código deve ser usado
+3. **Código menos acoplado e mais modular** - escrever testes costuma empurrar o design nessa direção
+
+### TDD (Test-Driven Development)
+TDD é uma abordagem de desenvolvimento em que os testes são escritos antes do código de produção.
+
+o ciclo:
+
+1. escreva o teste
+2. escreva o mínimo de código necessário para o teste passar
+3. refatore o código
+
+o TDD traz vários benefícios:
+
+1. incentivar código mais modular, focado em funcionalidades
+2. reduzir a quantidade de bugs
+3. facilitar a refatoração - com uma base sólida de testes, o time fica mais confiante para mudar
+4. forçar quem desenvolve a pensar nos requisitos antes da implementação
+5. facilitar a melhoria contínua
+
+no *Clean Code*, o autor diz que testes limpos seguem FIRST:
+
+1. **Fast** - os testes precisam executar rápido
+2. **Independent** - testes não devem depender uns dos outros
+3. **Repeatable** - em qualquer ambiente
+4. **Self-validating** - um resultado booleano: passou ou falhou
+5. **Timely** - escritos logo antes do código de produção que testam
+
+## 5. tratamento de erros
+coisas vão dar errado. quando derem, o código ainda precisa se comportar como o esperado. trate erros do jeito mais simples e legível.
+
+boas práticas:
+
+1. separe o tratamento de erro da lógica principal para o happy path continuar legível.
+2. mensagens de erro devem dar contexto. crie mensagens informativas e passe-as junto com a exception.
+3. prefira exceptions a códigos de erro.
+4. teste como o código se comporta em situações de erro.
+
+```java
+public class OrderService {
+  public void processOrder(int orderId) {
+    try {
+      validateOrder(orderId);
+      confirmStock(orderId);
+      processPayment(orderId);
+    } catch (DataBaseException e) {
+      throw new DataBaseException("Failed to access the DB for order " + orderId, e);
+    } catch (PaymentException e) {
+      throw new PaymentException("Failed to process payment for order " + orderId, e);
+    }
+  }
+}
+```
+
+neste exemplo, o tratamento de erro fica separado da lógica principal, o que mantém o código legível.
+
+## conclusão
+adotar essas práticas não só melhora qualidade e manutenibilidade, como também fortalece a capacidade de se adaptar a mudanças futuras. se você aplicá-las, não vai se arrepender.
+
+## referências
+
+1. Martin, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship.*
+2. imagem M104 (a referência original da capa): [Hubble - Sombrero Galaxy](https://hubblesite.org/contents/media/images/2003/28/1415-Image.html)

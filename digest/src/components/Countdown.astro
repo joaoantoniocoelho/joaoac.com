@@ -1,0 +1,92 @@
+---
+import { copy, type Locale } from '../lib/copy.ts';
+
+type Props = { locale: Locale };
+
+const t = copy[Astro.props.locale];
+const units = [
+  { key: 'hours', label: t.hours },
+  { key: 'minutes', label: t.minutes },
+  { key: 'seconds', label: t.seconds },
+];
+---
+
+<section class="tile tile-dark countdown" aria-label={t.nextEdition}>
+  <span class="label">{t.nextEditionIn}</span>
+  <div class="digits" role="timer" aria-label={t.countdown} aria-live="off" data-countdown>
+    {units.map((unit, index) => (
+      <>
+        {index > 0 && (
+          <span class="colon" aria-hidden="true">
+            :
+          </span>
+        )}
+        <span class="unit">
+          <span class="value" data-unit={unit.key}>
+            --
+          </span>
+          <span class="unit-label">{unit.label}</span>
+        </span>
+      </>
+    ))}
+  </div>
+  <span class="schedule">{t.everyDay}.</span>
+</section>
+
+<script>
+  import { startCountdown } from '../scripts/countdown.ts';
+
+  startCountdown();
+</script>
+
+<style>
+  .countdown {
+    padding: 64px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .label {
+    font-weight: 600;
+    color: var(--on-dark-muted);
+  }
+
+  .digits {
+    margin-top: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(12px, 3vw, 32px);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .value,
+  .colon {
+    font-size: clamp(56px, 9vw, 112px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .colon {
+    font-weight: 300;
+    color: var(--fg-secondary);
+  }
+
+  .unit-label {
+    font-size: 13px;
+    color: var(--on-dark-muted);
+  }
+
+  .schedule {
+    margin-top: 20px;
+  }
+</style>

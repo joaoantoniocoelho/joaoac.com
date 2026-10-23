@@ -1,0 +1,222 @@
+---
+import Base from '../layouts/Base.astro';
+import AvatarCard from '../components/AvatarCard.astro';
+import PostCover from '../components/PostCover.astro';
+import { projects } from '../data/projects.ts';
+import { postsFor } from '../lib/content.ts';
+import { localizedPath, type Locale } from '../lib/locale.ts';
+import { HOME_DESCRIPTION, HOME_TITLE } from '../lib/seo.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale];
+const [featured, ...others] = await postsFor(locale);
+const morePosts = others.slice(0, 2);
+const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
+---
+
+<Base
+  locale={locale}
+  path="/"
+  title={HOME_TITLE[locale]}
+  description={HOME_DESCRIPTION[locale]}
+  ogType="profile"
+>
+  <section class="hero intro">
+    <h1 class="name rise">joão coelho.</h1>
+    <p class="lead rise">
+      {t.home.lead}
+      <br />
+      <span>{t.home.leadMuted}</span>
+    </p>
+    <div class="actions rise cta">
+      <a class="pill" href={localizedPath('/blog', locale)}>
+        {t.home.readWriting}
+      </a>
+      <a class="chevron-link" href={localizedPath('/projects', locale)}>
+        {t.home.viewProjects}
+      </a>
+    </div>
+    <AvatarCard locale={locale} />
+  </section>
+
+  <section class="page-wide writing" aria-labelledby="home-writing">
+    <h2 class="section-title" id="home-writing">
+      {t.home.writingTitle}
+    </h2>
+    {featured && (
+      <a class="tile lift featured" href={postHref(featured.slug)}>
+        <span class="featured-title">{featured.title}</span>
+        <span class="featured-description">{featured.description}</span>
+        <span class="chevron-link">{t.home.readPost}</span>
+        <div class="featured-cover">
+          <PostCover topic={featured.topic} size="large" />
+        </div>
+      </a>
+    )}
+    <div class="tile-row">
+      {morePosts.map((post) => (
+        <a
+          class:list={['tile', 'lift', 'secondary', { 'tile-dark': post.topic === 'ai' }]}
+          href={postHref(post.slug)}
+        >
+          <span class="secondary-title">{post.title}</span>
+          <span class="chevron-link">{t.home.readPost}</span>
+          <div class="secondary-cover">
+            <PostCover topic={post.topic} />
+          </div>
+        </a>
+      ))}
+    </div>
+    <a class="chevron-link all" href={localizedPath('/blog', locale)}>
+      {t.home.allWriting}
+    </a>
+  </section>
+
+  <section class="page-wide projects" aria-labelledby="home-projects">
+    <h2 class="section-title" id="home-projects">
+      {t.home.projectsTitle}
+    </h2>
+    <div class="tile-row">
+      {projects.map((project) => (
+        <a class="tile lift project" href={`${localizedPath('/projects', locale)}#${project.slug}`}>
+          <span class="project-name">{project.name}</span>
+          <span class="project-tagline">{project.tagline[locale]}</span>
+          <span class="chevron-link">{t.home.learnMore}</span>
+          <span class="project-status" aria-hidden={project.status !== 'coming-soon'}>
+            {project.status === 'coming-soon' ? t.home.comingSoon : ''}
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .name {
+    margin-top: 0;
+    font-size: clamp(56px, 7vw, 88px);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    animation-delay: 0.08s;
+  }
+
+  .lead {
+    margin-top: 18px;
+    max-width: 580px;
+    font-size: clamp(21px, 2vw, 24px);
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    animation-delay: 0.16s;
+  }
+
+  .lead span {
+    color: var(--muted);
+  }
+
+  .cta {
+    margin-top: 32px;
+    animation-delay: 0.24s;
+  }
+
+  .writing {
+    padding-top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .featured,
+  .secondary,
+  .project {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .featured {
+    padding: 44px 24px 0;
+  }
+
+  .featured-title {
+    margin-top: 0;
+    max-width: 760px;
+    font-size: clamp(32px, 3.5vw, 42px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .featured-description {
+    margin-top: 10px;
+    max-width: 560px;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+
+  .featured .chevron-link,
+  .secondary .chevron-link {
+    margin-top: 8px;
+  }
+
+  .featured-cover {
+    width: min(720px, 100%);
+    height: clamp(180px, 23vw, 240px);
+  }
+
+  .secondary {
+    padding: 44px 24px 0;
+  }
+
+  .secondary-title {
+    margin-top: 0;
+    max-width: 420px;
+    font-size: clamp(28px, 3vw, 34px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .secondary-cover {
+    width: 100%;
+    height: 190px;
+  }
+
+  .all {
+    align-self: center;
+    margin-top: 20px;
+  }
+
+  .projects {
+    padding-top: 96px;
+  }
+
+  .project {
+    padding: 36px 24px 34px;
+    gap: 8px;
+  }
+
+  .project-name {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .project-tagline {
+    max-width: 380px;
+    line-height: 1.4;
+  }
+
+  .project-status {
+    min-height: 1.5em;
+    margin-top: auto;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>

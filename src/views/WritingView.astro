@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import PostTile from '../components/PostTile.astro';
+import { postsFor } from '../lib/content.ts';
+import type { Locale } from '../lib/locale.ts';
+import { topicsOf } from '../lib/posts.ts';
+import { topicLabel, ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const { locale } = Astro.props;
+const t = ui[locale].writing;
+const posts = await postsFor(locale);
+const filters = [
+  { id: 'all', label: t.all },
+  ...topicsOf(posts).map((topic) => ({ id: topic, label: topicLabel(topic, locale) })),
+];
+---
+
+<Base locale={locale} path="/blog" title="blog" description={t.metaDescription}>
+  <section class="hero">
+    <h1 class="display">{t.title}</h1>
+    {filters.length > 2 && (
+      <div class="filters" role="group" aria-label={t.filterLabel} data-topic-filters>
+        {filters.map((filter) => (
+          <button
+            type="button"
+            data-topic={filter.id}
+            aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section class="page-wide grid" aria-label={t.title}>
+    {posts.map((post) => (
+      <PostTile post={post} locale={locale} />
+    ))}
+  </section>
+
+  <div class="rss">
+    <a class="chevron-link" href="/feed.xml">
+      {t.rss}
+    </a>
+  </div>
+</Base>
+
+<script>
+  import { startTopicFilter } from '../scripts/topic-filter.ts';
+
+  startTopicFilter();
+</script>
+
+<style>
+  .filters {
+    margin-top: 32px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--tile);
+  }
+
+  .filters button {
+    min-height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+      background 0.25s,
+      box-shadow 0.25s;
+  }
+
+  .filters button[aria-pressed='true'] {
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 10%);
+    font-weight: 500;
+  }
+
+  .grid {
+    padding-top: 44px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+    gap: 12px;
+  }
+
+  .rss {
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+  }
+</style>

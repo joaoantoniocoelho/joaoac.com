@@ -1,0 +1,48 @@
+---
+// Replaces <pre> in posts so every code block gets a copy button; the highlighting comes from Shiki at build time.
+import { localeFromPathname } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+const t = ui[localeFromPathname(Astro.url.pathname)].post;
+const attributes = Astro.props;
+---
+
+<div class="code-block">
+  <button type="button" class="copy" data-copy-code data-copied-label={t.codeCopied}>
+    {t.copyCode}
+  </button>
+  <pre {...attributes}><slot /></pre>
+</div>
+
+<style>
+  .code-block {
+    position: relative;
+    margin: 8px 0;
+    border-radius: 18px;
+    background: var(--tile);
+    overflow: hidden;
+  }
+
+  .code-block pre {
+    margin: 0;
+    padding: 48px 20px 22px;
+    overflow-x: auto;
+    background: var(--tile) !important;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .copy {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    min-height: 32px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: #ffffff;
+    font-size: 12px;
+    cursor: pointer;
+  }
+</style>
