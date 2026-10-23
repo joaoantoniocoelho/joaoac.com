@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Single verification entry point (agent-harness): the site at the root and the digest in digest/.
+# Single verification entry point (agent-harness): the site at the root, the digest in digest/ and the app landing in porque/.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -13,7 +13,7 @@ step() {
   fi
 }
 
-for project in . digest; do
+for project in . digest porque; do
   # Generates Astro's virtual module types (astro:content, env) that lint and typecheck rely on.
   step "$project" sync 'npx astro sync'
   step "$project" format 'npx prettier --check .'

@@ -1,0 +1,18 @@
+---
+import { moonDots } from '../lib/dots.ts';
+
+type Props = { cols?: number; rows?: number; class?: string };
+const { cols = 30, rows = 14, class: className } = Astro.props;
+const dots = moonDots(cols, rows);
+---
+
+<svg
+  class:list={['dots', className]}
+  viewBox={`0 0 ${cols * 10} ${rows * 10}`}
+  role="img"
+  aria-label="a Lua desenhada em pontos"
+>
+  {dots.map((d) => (
+    <circle cx={d.cx} cy={d.cy} r={[1.7, 3.2, 3.8][d.tone]} class={`d${d.tone}`} />
+  ))}
+</svg>
