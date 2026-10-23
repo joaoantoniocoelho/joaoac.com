@@ -39,6 +39,11 @@ const year = new Date().getFullYear();
     justify-content: center;
   }
 
+  /* The home page ends on full tiles, which already read as a block, so they sit closer. */
+  :global(main:has(> section.outside:last-of-type)) + .footer {
+    margin-top: 48px;
+  }
+
   .footer-inner {
     width: 100%;
     max-width: var(--page);
