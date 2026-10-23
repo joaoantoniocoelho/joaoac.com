@@ -4,7 +4,6 @@ export const copy = {
   en: {
     language: 'language',
     home: 'home',
-    eyebrow: 'a daily selection of tech articles',
     title: 'good tech reads, without the search',
     intro:
       'there is good writing out there every day. finding time to look for it is the hard part.',
@@ -156,7 +155,6 @@ export const copy = {
   'pt-BR': {
     language: 'idioma',
     home: 'início',
-    eyebrow: 'uma seleção diária de tecnologia',
     title: 'bons textos de tecnologia, sem precisar garimpar',
     intro: 'tem texto bom saindo todo dia. o difícil é encontrar tempo para procurar.',
     detail:

@@ -15,7 +15,7 @@ const [current] = experiences;
 
 const facts = [
   { label: t.now, value: current ? `${current.title}, ${current.company.toLowerCase()}` : '' },
-  { label: t.before, value: 'sap' },
+  { label: t.before, value: t.beforeValue },
   { label: t.writingAbout, value: t.writingAboutValue },
   { label: t.building, value: t.buildingValue },
 ].filter((fact) => fact.value);
