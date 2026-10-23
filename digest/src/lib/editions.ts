@@ -89,10 +89,15 @@ async function load<T>(
   try {
     const response = await fetcher(url);
     if (response.status === 404) return { ok: false, error: 'missing' };
-    if (!response.ok) return { ok: false, error: 'unavailable' };
+    if (!response.ok) {
+      console.error('Digest API error', url, response.status);
+      return { ok: false, error: 'unavailable' };
+    }
     const value = parse(await response.json());
+    if (!value) console.error('Digest API returned an unexpected payload', url);
     return value ? { ok: true, value } : { ok: false, error: 'unavailable' };
-  } catch {
+  } catch (error) {
+    console.error('Digest API request failed', url, error);
     return { ok: false, error: 'unavailable' };
   }
 }
