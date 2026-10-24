@@ -104,6 +104,15 @@ const facts = [
         </dl>
 
         <div class="links">
+          <a href="https://linkedin.com/in/joaoac" rel="me">
+            linkedin
+          </a>
+          <a href="https://github.com/joaoantoniocoelho" rel="me">
+            github
+          </a>
+          <a href="https://x.com/joaoac_" rel="me">
+            x
+          </a>
           <button
             type="button"
             class="primary copy-email"
@@ -153,15 +162,6 @@ const facts = [
             </svg>
             <span data-email-copy-label>{t.copyEmail}</span>
           </button>
-          <a href="https://linkedin.com/in/joaoac" rel="me">
-            linkedin
-          </a>
-          <a href="https://github.com/joaoantoniocoelho" rel="me">
-            github
-          </a>
-          <a href="https://x.com/joaoac_" rel="me">
-            x
-          </a>
         </div>
         <span class="visually-hidden" role="status" data-email-feedback></span>
       </div>
@@ -450,6 +450,26 @@ const facts = [
     margin-top: 22px;
     font-size: 12px;
     color: var(--muted);
+  }
+
+  @media (max-width: 504px) {
+    .links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .links .primary {
+      grid-column: 1 / -1;
+      justify-content: center;
+    }
+
+    .links a {
+      justify-content: center;
+      padding-inline: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

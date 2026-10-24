@@ -234,6 +234,12 @@ h3,
   margin-left: 0.3em;
 }
 
+@media (max-width: 640px) {
+  .chevron-link::after {
+    content: none;
+  }
+}
+
 .chevron-link:hover,
 .underline-hover:hover {
   text-decoration: underline;

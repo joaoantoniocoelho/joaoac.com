@@ -17,7 +17,7 @@ export const favoriteAlbums: Album[] = [
     spotifyUrl: 'https://open.spotify.com/album/3OmnatFgQ8o1DlYLp9EpNJ',
     favoriteTrack: {
       title: 'the wizard',
-      spotifyUrl: 'https://open.spotify.com/track/0CHJMgNilqjPPFXtUuc9gQ',
+      spotifyUrl: 'https://open.spotify.com/track/02VKxjok07ypt3oFlGRjmH',
     },
   },
   {

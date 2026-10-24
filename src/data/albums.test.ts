@@ -11,6 +11,10 @@ test('favorite albums have unique covers, tracks, and Spotify destinations', () 
     favoriteAlbums.map(({ favoriteTrack }) => favoriteTrack.title),
     ['the wizard', 'nowhere man', 'break stuff'],
   );
+  assert.equal(
+    favoriteAlbums[0]?.favoriteTrack.spotifyUrl,
+    'https://open.spotify.com/track/02VKxjok07ypt3oFlGRjmH',
+  );
   for (const album of favoriteAlbums) {
     assert.match(album.spotifyUrl, /^https:\/\/open\.spotify\.com\/album\/[\w]+$/);
     assert.match(album.favoriteTrack.spotifyUrl, /^https:\/\/open\.spotify\.com\/track\/[\w]+$/);
