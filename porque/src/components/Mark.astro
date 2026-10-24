@@ -1,0 +1,15 @@
+---
+type Props = { size?: string };
+const { size = '1em' } = Astro.props;
+---
+
+<svg class="mark" viewBox="0 0 100 100" width={size} height={size} aria-hidden="true">
+  <path
+    d="M30 36C30 20 42 11 53 11C66 11 75 20 75 32C75 45 64 50 57 55C52 59 50 63 50 69"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="12"
+    stroke-linecap="round"
+  ></path>
+  <circle cx="50" cy="87" r="8" class="mark-dot"></circle>
+</svg>

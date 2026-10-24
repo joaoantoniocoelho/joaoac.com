@@ -58,6 +58,43 @@ export const projects: Project[] = [
     stack: 'python · jev / typesafe · railway · resend',
   },
   {
+    slug: 'porque',
+    status: 'coming-soon',
+    name: 'por quê?',
+    url: 'https://porque.joaoac.com',
+    urlLabel: 'porque.joaoac.com',
+    tagline: {
+      en: 'one interesting question a day.',
+      'pt-BR': 'uma pergunta interessante por dia.',
+    },
+    oneLiner: {
+      en: 'por quê? is an iphone app that sends one interesting question a day: a one-line answer, a minute of reading, and the rest of the day to think about it.',
+      'pt-BR':
+        'o por quê? é um app para iphone com uma pergunta interessante por dia: uma frase de resposta, um minuto de leitura e o resto do dia para pensar nela.',
+    },
+    whatItDoes: {
+      en: [
+        'one notification a day, at the time you pick. tap to flip the card and see the short answer.',
+        'a short read follows, with a drawing and one highlighted line. past questions live in an archive by theme.',
+      ],
+      'pt-BR': [
+        'um aviso por dia, no horário que você escolher. toque para virar o cartão e ver a resposta curta.',
+        'depois vem uma leitura curta, com um desenho e uma frase grifada. as perguntas antigas ficam num arquivo por tema.',
+      ],
+    },
+    decisions: {
+      en: [
+        'no streaks and no ads. missing a day costs nothing, and the only number on screen is the issue number.',
+        'a subscription pays for the research and writing of each issue.',
+      ],
+      'pt-BR': [
+        'sem sequência de dias e sem anúncios. faltar um dia não custa nada, e o único número na tela é o da edição.',
+        'uma assinatura paga a pesquisa e a escrita de cada edição.',
+      ],
+    },
+    stack: 'swift · swiftui · astro · cloudflare workers',
+  },
+  {
     slug: 'alturo',
     status: 'coming-soon',
     name: 'alturo',
