@@ -67,6 +67,8 @@ export function startIchiroChat(): void {
   };
 
   const scrollToEnd = () => {
+    // Reading scrollHeight on the hidden panel at load would force a layout of the whole page.
+    if (parts.panel.hidden) return;
     parts.transcript.scrollTo({
       top: parts.transcript.scrollHeight,
       behavior: prefersReducedMotion() ? 'auto' : 'smooth',
@@ -183,6 +185,7 @@ export function startIchiroChat(): void {
       (open ? parts.launcher.dataset.labelClose : parts.launcher.dataset.labelOpen) ?? '',
     );
     if (open) {
+      scrollToEnd();
       setMood('greeting', MOOD_RESET_MS);
       parts.close.focus();
       return;

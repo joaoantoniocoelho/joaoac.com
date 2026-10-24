@@ -26,13 +26,13 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
   ogType="profile"
 >
   <section class="hero intro">
-    <h1 class="name rise">joão coelho.</h1>
-    <p class="lead rise">
+    <h1 class="name">joão coelho.</h1>
+    <p class="lead">
       {t.home.lead}
       <br />
       <span>{t.home.leadMuted}</span>
     </p>
-    <div class="actions rise cta">
+    <div class="actions cta">
       <a class="pill" href={localizedPath('/blog', locale)}>
         {t.home.readWriting}
       </a>
@@ -104,7 +104,6 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     line-height: 1.02;
     font-weight: 700;
     letter-spacing: -0.015em;
-    animation-delay: 0.08s;
   }
 
   .lead {
@@ -114,7 +113,6 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     line-height: 1.25;
     font-weight: 500;
     letter-spacing: -0.02em;
-    animation-delay: 0.16s;
   }
 
   .lead span {
@@ -123,7 +121,6 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
 
   .cta {
     margin-top: 32px;
-    animation-delay: 0.24s;
   }
 
   .writing {
