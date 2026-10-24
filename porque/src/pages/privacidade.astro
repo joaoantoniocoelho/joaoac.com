@@ -1,0 +1,48 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { CONTACT_EMAIL } from '../lib/site.ts';
+---
+
+<Doc
+  title="privacidade"
+  path="/privacidade"
+  description="o por quê? não coleta dados pessoais: sem cadastro, anúncios, rastreamento ou ferramentas de análise."
+>
+  <p class="updated">última atualização: 24 de outubro de 2026.</p>
+  <p class="lead">
+    O por quê? não coleta dados pessoais. Não há cadastro, login, anúncios, rastreamento nem
+    ferramentas de análise.
+  </p>
+
+  <h2>o que fica no seu iPhone</h2>
+  <p>
+    As descobertas salvas, as que você já leu, os temas escolhidos e o horário do aviso ficam
+    guardados só no seu aparelho. Ao apagar o app, esses dados são apagados.
+  </p>
+
+  <h2>assinatura</h2>
+  <p>
+    A compra e a renovação são feitas pela Apple. Não recebemos seu nome, e-mail nem dados de
+    pagamento.
+  </p>
+  <p>
+    Para liberar o conteúdo, o app envia ao nosso servidor o comprovante da assinatura, assinado
+    pela Apple. Ele contém apenas o identificador da compra, o plano e as datas de validade. O
+    servidor confere o comprovante e responde na hora, sem guardá-lo.
+  </p>
+
+  <h2>notificações</h2>
+  <p>O aviso diário é agendado no próprio aparelho. Não usamos notificações remotas.</p>
+
+  <h2>infraestrutura</h2>
+  <p>
+    O servidor roda na Cloudflare, que processa dados técnicos das conexões, como o endereço IP,
+    para entregar o serviço, conforme a{' '}
+    <a href="https://www.cloudflare.com/pt-br/privacypolicy/">política de privacidade dela</a>.
+  </p>
+
+  <h2>contato</h2>
+  <p>
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+</Doc>
