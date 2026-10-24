@@ -1,0 +1,38 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { CONTACT_EMAIL } from '../lib/site.ts';
+
+const faq = [
+  ['como cancelo a assinatura?', 'em Ajustes › [seu nome] › Assinaturas › por quê?, no iPhone.'],
+  [
+    'troquei de iPhone. como recupero a assinatura?',
+    'abra o app com o mesmo Apple ID e toque em “já assino · restaurar compra”, na primeira tela, ou em “restaurar”, na tela de planos.',
+  ],
+  [
+    'a pergunta do dia não apareceu.',
+    'o app precisa de internet para baixar a pergunta nova. sem conexão, ele mostra a última que já tinha baixado.',
+  ],
+  [
+    'que horas chega a pergunta?',
+    'uma nova é publicada à meia-noite, no horário de Brasília. o aviso chega no horário que você escolheu.',
+  ],
+] as const;
+---
+
+<Doc
+  title="suporte"
+  path="/suporte"
+  description="ajuda com o por quê?: assinatura, restauração de compra e a pergunta do dia."
+>
+  <p class="lead">
+    dúvidas, problemas ou sugestões: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+  </p>
+  <div class="faq">
+    {faq.map(([q, a]) => (
+      <details>
+        <summary>{q}</summary>
+        <p>{a}</p>
+      </details>
+    ))}
+  </div>
+</Doc>

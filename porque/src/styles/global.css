@@ -914,6 +914,50 @@ svg {
 .foot a:hover {
   color: var(--fg);
 }
+.foot-links {
+  display: flex;
+  gap: 16px;
+}
+
+/* ---------- privacidade, suporte ---------- */
+.doc {
+  max-width: 720px;
+  padding-block: 48px 96px;
+}
+.doc h1 {
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.04;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.doc h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 8px;
+}
+.doc p {
+  font-size: 17px;
+  line-height: 1.6;
+  margin-top: 12px;
+  text-wrap: pretty;
+}
+.doc .lead {
+  font-size: 20px;
+  line-height: 1.45;
+}
+.doc .updated {
+  font-size: 14px;
+  color: var(--muted);
+}
+.doc a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.doc .faq {
+  margin-top: 32px;
+}
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {

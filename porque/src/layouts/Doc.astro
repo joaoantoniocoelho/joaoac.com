@@ -1,0 +1,32 @@
+---
+import Base from './Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { AUTHOR_URL } from '../lib/site.ts';
+
+type Props = { title: string; description: string; path: string };
+const { title, description, path } = Astro.props;
+---
+
+<Base title={`${title} · por quê?`} description={description} path={path}>
+  <header class="wrap top">
+    <a href="/" aria-label="por quê? início">
+      <Wordmark />
+    </a>
+  </header>
+  <main class="wrap doc">
+    <h1 class="display-font">
+      {title}
+      <span class="pt">.</span>
+    </h1>
+    <slot />
+  </main>
+  <footer class="wrap foot">
+    <span>
+      feito por <a href={AUTHOR_URL}>joão coelho</a>
+    </span>
+    <span class="foot-links">
+      <a href="/suporte">suporte</a>
+      <a href="/privacidade">privacidade</a>
+    </span>
+  </footer>
+</Base>

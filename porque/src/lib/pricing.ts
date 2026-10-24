@@ -1,6 +1,6 @@
 export const PLANS = {
-  anual: { nome: 'anual', cents: 6990, trial: '7 dias grátis' },
-  mensal: { nome: 'mensal', cents: 990, trial: 'sem período de teste' },
+  anual: { nome: 'anual', cents: 6990, renova: 'renova todo ano' },
+  mensal: { nome: 'mensal', cents: 990, renova: 'renova todo mês' },
 } as const;
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });

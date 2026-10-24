@@ -7,7 +7,7 @@ import Widgets from '../components/Widgets.astro';
 import Dots from '../components/Dots.astro';
 import { splitHighlight } from '../lib/highlight.ts';
 import { PLANS, formatBRL, perMonthCents, yearlyDiscountPercent } from '../lib/pricing.ts';
-import { APP_STORE_URL, AUTHOR_URL, CONTACT_EMAIL, TAGLINE } from '../lib/site.ts';
+import { APP_STORE_URL, AUTHOR_URL, TAGLINE } from '../lib/site.ts';
 
 const description =
   'o por quê? é um app com uma pergunta interessante por dia: uma frase de resposta, um minuto de leitura e o resto do dia para pensar nela.';
@@ -85,7 +85,7 @@ const discount = yearlyDiscountPercent(anual.cents, mensal.cents);
 const faq = [
   [
     'tem versão grátis?',
-    'não. o plano anual começa com 7 dias grátis para você experimentar; o mensal não tem período de teste. dentro do app, o primeiro dia é uma descoberta inteira.',
+    'não. antes de assinar, o app mostra uma descoberta inteira: você dá um palpite, lê a explicação e decide.',
   ],
   [
     'dá para cancelar?',
@@ -339,18 +339,17 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
             </p>
             <p class="price display-font">{formatBRL(anual.cents)}</p>
             <p class="per">
-              {formatBRL(perMonthCents(anual.cents))} por mês · {anual.trial}
+              {formatBRL(perMonthCents(anual.cents))} por mês · {anual.renova}
             </p>
           </div>
           <div class="plan">
             <p class="name">mensal</p>
             <p class="price display-font">{formatBRL(mensal.cents)}</p>
-            <p class="per">por mês · {mensal.trial}</p>
+            <p class="per">por mês · {mensal.renova}</p>
           </div>
         </div>
         <p class="fine">
-          o anual é grátis por 7 dias, depois {formatBRL(anual.cents)} por ano. o mensal renova todo
-          mês. cancele quando quiser.
+          a assinatura renova automaticamente. cancele quando quiser nos Ajustes do iPhone.
         </p>
       </div>
     </section>
@@ -393,7 +392,10 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
     <span>
       feito por <a href={AUTHOR_URL}>joão coelho</a>
     </span>
-    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+    <span class="foot-links">
+      <a href="/suporte">suporte</a>
+      <a href="/privacidade">privacidade</a>
+    </span>
   </footer>
 
   <script>
