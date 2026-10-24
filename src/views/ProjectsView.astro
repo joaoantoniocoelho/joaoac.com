@@ -10,6 +10,7 @@ const { locale } = Astro.props;
 const t = ui[locale].projects;
 const RANKED_BARS = [92, 80, 72, 61, 52, 43, 34, 25];
 const STAGES = [28, 52, 76, 100];
+const ANSWER_LINES = [100, 88, 94, 56];
 ---
 
 <Base
@@ -27,7 +28,11 @@ const STAGES = [28, 52, 76, 100];
       const dark = index % 2 === 1;
       const live = project.status === 'live';
       return (
-        <section class="project" id={project.slug} aria-labelledby={`${project.slug}-title`}>
+        <section
+          class:list={['project', index === 0 ? 'lead' : 'compact']}
+          id={project.slug}
+          aria-labelledby={`${project.slug}-title`}
+        >
           <div class:list={['tile', 'showcase', { 'tile-dark': dark }]}>
             <span class="eyebrow">{live ? t.live : t.comingSoon}</span>
             <h2 id={`${project.slug}-title`}>{project.name}</h2>
@@ -59,21 +64,29 @@ const STAGES = [28, 52, 76, 100];
                 ))}
               </div>
             )}
-          </div>
-          <div class="tile-row">
-            <div class="tile detail">
-              <h3>{t.whatItDoes}</h3>
-              {project.whatItDoes[locale].map((line) => (
-                <p>{line}</p>
-              ))}
-            </div>
-            <div class="tile detail">
-              <h3>{t.decisions}</h3>
-              {project.decisions[locale].map((line) => (
-                <p>{line}</p>
-              ))}
-              <p class="stack">{project.stack}</p>
-            </div>
+            {project.slug === 'porque' && (
+              <div class="flip" aria-hidden="true">
+                <div class="flip-card">
+                  <span class="face front">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <path
+                        d="M30 36C30 20 42 11 53 11C66 11 75 20 75 32C75 45 64 50 57 55C52 59 50 63 50 69"
+                        fill="none"
+                        stroke="#000"
+                        stroke-width="12"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="50" cy="87" r="8" fill="#f2b705" />
+                    </svg>
+                  </span>
+                  <span class="face back">
+                    {ANSWER_LINES.map((width) => (
+                      <i style={`width: ${width}%`} />
+                    ))}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       );
@@ -94,6 +107,50 @@ const STAGES = [28, 52, 76, 100];
     flex-direction: column;
     gap: 12px;
     scroll-margin-top: 24px;
+  }
+
+  .project > .showcase {
+    flex: 1;
+  }
+
+  /* Animations sit at the bottom of the card, so a stretched card grows empty space above them. */
+  .bars,
+  .stages,
+  .flip {
+    margin-top: auto;
+  }
+
+  .compact .stages {
+    height: 160px;
+  }
+
+  .compact .flip {
+    padding-top: 28px;
+  }
+
+  .compact .flip-card {
+    height: 150px;
+  }
+
+  .compact .front svg {
+    height: 84px;
+  }
+
+  .compact .back {
+    padding: 30px 28px;
+  }
+
+  @media (min-width: 900px) {
+    .list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 12px;
+      row-gap: 12px;
+    }
+
+    .lead {
+      grid-row: span 2;
+    }
   }
 
   .showcase {
@@ -181,6 +238,69 @@ const STAGES = [28, 52, 76, 100];
     background: var(--on-dark);
   }
 
+  .flip {
+    margin-top: 44px;
+    width: min(620px, 100%);
+    padding: 40px 0 0;
+    perspective: 900px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .flip-card {
+    position: relative;
+    width: min(320px, 80%);
+    height: 220px;
+    transform-style: preserve-3d;
+    animation: flip 6s var(--ease-out) infinite;
+  }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px 24px 0 0;
+    background: var(--bg);
+    backface-visibility: hidden;
+  }
+
+  .front {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .front svg {
+    height: 110px;
+  }
+
+  .back {
+    transform: rotateY(180deg);
+    padding: 44px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .back i {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--fg);
+  }
+
+  @keyframes flip {
+    0%,
+    35% {
+      transform: rotateY(0deg);
+    }
+    50%,
+    85% {
+      transform: rotateY(180deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+
   @keyframes pulse {
     0%,
     100% {
@@ -198,28 +318,5 @@ const STAGES = [28, 52, 76, 100];
     to {
       transform: scaleY(1);
     }
-  }
-
-  .detail {
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  h3 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  .detail p {
-    line-height: 1.5;
-  }
-
-  .detail .stack {
-    margin-top: 8px;
-    font-size: 14px;
-    color: var(--muted);
   }
 </style>
