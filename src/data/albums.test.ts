@@ -5,15 +5,19 @@ import { favoriteAlbums } from './albums.ts';
 test('favorite albums have unique covers, tracks, and Spotify destinations', () => {
   assert.deepEqual(
     favoriteAlbums.map(({ slug }) => slug),
-    ['black-sabbath', 'rubber-soul', 'significant-other'],
+    ['black-sabbath', 'appetite-for-destruction', 'rubber-soul'],
   );
   assert.deepEqual(
     favoriteAlbums.map(({ favoriteTrack }) => favoriteTrack.title),
-    ['the wizard', 'nowhere man', 'break stuff'],
+    ['the wizard', 'nightrain', 'nowhere man'],
   );
   assert.equal(
     favoriteAlbums[0]?.favoriteTrack.spotifyUrl,
     'https://open.spotify.com/track/02VKxjok07ypt3oFlGRjmH',
+  );
+  assert.equal(
+    favoriteAlbums[1]?.favoriteTrack.spotifyUrl,
+    'https://open.spotify.com/track/2REDzWYPZu53tRPRyoelKi',
   );
   for (const album of favoriteAlbums) {
     assert.match(album.spotifyUrl, /^https:\/\/open\.spotify\.com\/album\/[\w]+$/);

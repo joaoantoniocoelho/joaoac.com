@@ -131,14 +131,10 @@ const films = favoriteFilms.map((film) => ({
                   )}
                   <button
                     type="button"
-                    class="album-close"
+                    class="album-unflip"
                     aria-label={`${t.flipAlbumBack}: ${album.title}`}
                     data-album-unflip
-                  >
-                    <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
-                      <path d="M5 5 19 19M19 5 5 19" />
-                    </svg>
-                  </button>
+                  ></button>
                   <div class="album-actions">
                     <span class="favorite-label">{t.favoriteTrack}</span>
                     <strong>{album.favoriteTrack.title}</strong>
@@ -241,34 +237,22 @@ const films = favoriteFilms.map((film) => ({
                         </svg>
                       </span>
                     </button>
-                    <div class="face back" id={noteId} inert data-book-back>
-                      <div class="back-head">
+                    <button
+                      type="button"
+                      class="face back"
+                      id={noteId}
+                      aria-label={`${book.title}. ${t.flipBack}`}
+                      inert
+                      data-book-back
+                    >
+                      <span class="back-head">
                         <span class="back-status">{book.statusLabel}</span>
-                        <button
-                          type="button"
-                          class="close"
-                          aria-label={t.flipBack}
-                          data-book-unflip
-                        >
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            aria-hidden="true"
-                          >
-                            <path d="M2 2l10 10M12 2L2 12" />
-                          </svg>
-                        </button>
-                      </div>
+                      </span>
                       <span class="back-title">{book.title}.</span>
                       <span class="back-author">{book.author}</span>
                       <span class="back-rule" aria-hidden="true" />
-                      <p class="back-note">“{book.note}”</p>
-                    </div>
+                      <span class="back-note">“{book.note}”</span>
+                    </button>
                   </div>
                 ) : (
                   <div class="static-cover">{cover}</div>
@@ -418,12 +402,7 @@ const films = favoriteFilms.map((film) => ({
   }
 
   .compact-shelf .back-head {
-    margin: -3px -3px 0 0;
-  }
-
-  .compact-shelf .close {
-    width: 34px;
-    height: 34px;
+    margin: 0;
   }
 
   .compact-shelf .back-status,
@@ -680,8 +659,10 @@ const films = favoriteFilms.map((film) => ({
     display: flex;
     flex-direction: column;
     gap: 4px;
+    border: 0;
     background: var(--tile-dark);
     color: var(--on-dark);
+    font: inherit;
     text-align: left;
     border-radius: 8px 4px 4px 8px;
     cursor: pointer;
@@ -694,9 +675,7 @@ const films = favoriteFilms.map((film) => ({
   .back-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin: -6px -8px 4px 0;
+    margin-bottom: 4px;
   }
 
   .back-status,
@@ -722,19 +701,6 @@ const films = favoriteFilms.map((film) => ({
   .back-note {
     font-size: 15px;
     line-height: 1.45;
-  }
-
-  .close {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    border: 1px solid rgb(255 255 255 / 18%);
-    background: rgb(255 255 255 / 12%);
-    color: #ffffff;
-    cursor: pointer;
   }
 
   /* The note settles in line by line once the cover has turned. */
@@ -838,8 +804,7 @@ const films = favoriteFilms.map((film) => ({
     background: rgb(0 0 0 / 6%);
   }
 
-  .carousel-controls svg,
-  .album-close svg {
+  .carousel-controls svg {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
@@ -932,20 +897,19 @@ const films = favoriteFilms.map((film) => ({
     object-position: left center;
   }
 
-  .album-close {
+  .album-unflip {
     position: absolute;
-    z-index: 4;
-    top: 8px;
-    right: 8px;
-    width: 36px;
-    height: 36px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgb(255 255 255 / 50%);
-    border-radius: 50%;
-    background: rgb(0 0 0 / 60%);
-    color: #ffffff;
+    z-index: 2;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: pointer;
+  }
+
+  .album-unflip:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -6px;
   }
 
   .album-actions {
@@ -957,6 +921,7 @@ const films = favoriteFilms.map((film) => ({
     flex-direction: column;
     gap: 2px;
     background: linear-gradient(transparent, rgb(0 0 0 / 88%) 36%);
+    pointer-events: none;
   }
 
   .favorite-label {
@@ -983,6 +948,7 @@ const films = favoriteFilms.map((film) => ({
     border-bottom: 1px solid rgb(255 255 255 / 70%);
     font-size: 11px;
     font-weight: 600;
+    pointer-events: auto;
   }
 
   .album-links a:hover {
