@@ -31,13 +31,13 @@ export const favoriteAlbums: Album[] = [
     },
   },
   {
-    slug: 'significant-other',
-    title: 'significant other',
-    artist: 'limp bizkit',
-    spotifyUrl: 'https://open.spotify.com/album/3HCCUaRSjHSFOe4fqE0BiP',
+    slug: 'appetite-for-destruction',
+    title: 'appetite for destruction',
+    artist: "guns n' roses",
+    spotifyUrl: 'https://open.spotify.com/album/28yHV3Gdg30AiB8h8em1eW',
     favoriteTrack: {
-      title: 'break stuff',
-      spotifyUrl: 'https://open.spotify.com/track/5cZqsjVs6MevCnAkasbEOX',
+      title: 'nightrain',
+      spotifyUrl: 'https://open.spotify.com/track/7CBFRsUz1pz1cS12soVhih',
     },
   },
 ];
