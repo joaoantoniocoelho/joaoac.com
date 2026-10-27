@@ -89,6 +89,15 @@ button {
   cursor: pointer;
 }
 
+/* Everything clickable shows the pointer, including the "em breve" pill (it still jumps to the price). */
+a[href],
+button,
+summary,
+.pill,
+.p-scrim {
+  cursor: pointer;
+}
+
 svg {
   display: block;
   max-width: 100%;
@@ -234,9 +243,6 @@ svg {
   background: transparent;
   color: var(--fg);
   box-shadow: inset 0 0 0 1px var(--line);
-}
-.pill[aria-disabled='true'] {
-  cursor: default;
 }
 
 /* ---------- hero ---------- */
