@@ -38,11 +38,9 @@ const ANSWER_LINES = [100, 88, 94, 56];
             <h2 id={`${project.slug}-title`}>{project.name}</h2>
             <p class="one-liner">{project.oneLiner[locale]}</p>
             <div class="actions">
-              {live && (
-                <a class="pill" href={project.url}>
-                  {t.visit}
-                </a>
-              )}
+              <a class="pill" href={project.url}>
+                {t.visit}
+              </a>
             </div>
             {project.slug === 'tech-digest' && (
               <div class="bars" aria-hidden="true">
