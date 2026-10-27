@@ -21,11 +21,7 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
 >
   <section class="hero">
     <h1 class="display">{t.title}</h1>
-    <div class="intro">
-      {t.intro.map((paragraph) => (
-        <p>{paragraph}</p>
-      ))}
-    </div>
+    <p class="intro">{t.intro}</p>
   </section>
 
   <section class="page journey" aria-labelledby="journey">
@@ -59,19 +55,9 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
     </ol>
   </section>
 
-  <section class="page-wide tile-row toolkit">
-    <div class="tile box">
-      <h3>{t.dayToDay}</h3>
-      <p>{t.dayToDayText}</p>
-    </div>
-    <div class="tile tile-dark box">
-      <h3>{t.exploring}</h3>
-      <p>{t.exploringText}</p>
-    </div>
-  </section>
-
   <section class="page contact" aria-labelledby="contact">
     <h2 id="contact">{t.contact}</h2>
+    <p class="contact-text">{t.contactText}</p>
     <div class="links">
       <a class="pill-soft" href="https://linkedin.com/in/joaoac" rel="me">
         linkedin
@@ -106,10 +92,6 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
     margin-top: 32px;
     font-size: clamp(19px, 1.8vw, 21px);
     line-height: 1.5;
-  }
-
-  .intro p + p {
-    margin-top: 16px;
   }
 
   .journey {
@@ -181,30 +163,18 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
     color: var(--muted);
   }
 
-  .toolkit {
-    padding-top: 96px;
-  }
-
-  .box {
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
   .contact {
     padding-top: 96px;
+  }
+
+  .contact-text {
+    margin: -16px 0 24px;
+    color: var(--muted);
   }
 
   .links {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  }
-
-  h3 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
   }
 </style>

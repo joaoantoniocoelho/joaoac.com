@@ -113,18 +113,11 @@ export const ui = {
     },
     about: {
       title: 'about.',
-      intro: [
-        "i've always been curious about how things work and why they're the way they are.",
-        'software engineering gives me a way to explore that curiosity, solve problems, and create things from scratch.',
-        "i enjoy learning, questioning ideas, and building things that might make someone's day a little better.",
-      ],
+      intro:
+        'the more i learn about the world, the more i realize how much there is left to question.',
       journey: 'journey.',
-      dayToDay: 'day to day',
-      dayToDayText:
-        'mostly node.js, typescript, java, and spring boot on aws, with postgresql and mongodb.',
-      exploring: 'exploring',
-      exploringText: 'ai agents, how to evaluate them, and cybersecurity.',
       contact: 'contact.',
+      contactText: 'good conversations often start with a simple hello.',
       copyEmail: 'copy email',
       emailCopied: 'email copied',
       metaDescription: 'where joão coelho has worked and the problems he has helped solve.',
@@ -244,18 +237,11 @@ export const ui = {
     },
     about: {
       title: 'sobre mim.',
-      intro: [
-        'sempre tive curiosidade sobre como as coisas funcionam e por que elas são do jeito que são.',
-        'a engenharia de software me permite explorar essa curiosidade, resolver problemas e criar coisas do zero.',
-        'gosto de aprender, questionar ideias e construir coisas que possam deixar o dia de alguém um pouco melhor.',
-      ],
+      intro:
+        'quanto mais eu aprendo sobre o mundo, mais percebo o quanto ainda há para questionar.',
       journey: 'por onde passei.',
-      dayToDay: 'no dia a dia',
-      dayToDayText:
-        'trabalho principalmente com node.js, typescript, java e spring boot na aws, além de postgresql e mongodb.',
-      exploring: 'estudando agora',
-      exploringText: 'agentes de ia, formas de avaliá-los e cibersegurança.',
       contact: 'contato.',
+      contactText: 'boas conversas costumam começar com um simples olá.',
       copyEmail: 'copiar e-mail',
       emailCopied: 'e-mail copiado',
       metaDescription: 'onde joão coelho trabalhou e os problemas que ajudou a resolver.',
