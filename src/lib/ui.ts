@@ -113,7 +113,6 @@ export const ui = {
     },
     about: {
       title: 'about.',
-      email: 'send an email',
       intro: [
         "i've always been curious about how things work and why they're the way they are.",
         'software engineering gives me a way to explore that curiosity, solve problems, and create things from scratch.',
@@ -125,6 +124,9 @@ export const ui = {
         'mostly node.js, typescript, java, and spring boot on aws, with postgresql and mongodb.',
       exploring: 'exploring',
       exploringText: 'ai agents, how to evaluate them, and cybersecurity.',
+      contact: 'contact.',
+      copyEmail: 'copy email',
+      emailCopied: 'email copied',
       metaDescription: 'where joão coelho has worked and the problems he has helped solve.',
     },
     notFound: {
@@ -242,7 +244,6 @@ export const ui = {
     },
     about: {
       title: 'sobre mim.',
-      email: 'mandar um e-mail',
       intro: [
         'sempre tive curiosidade sobre como as coisas funcionam e por que elas são do jeito que são.',
         'a engenharia de software me permite explorar essa curiosidade, resolver problemas e criar coisas do zero.',
@@ -254,6 +255,9 @@ export const ui = {
         'trabalho principalmente com node.js, typescript, java e spring boot na aws, além de postgresql e mongodb.',
       exploring: 'estudando agora',
       exploringText: 'agentes de ia, formas de avaliá-los e cibersegurança.',
+      contact: 'contato.',
+      copyEmail: 'copiar e-mail',
+      emailCopied: 'e-mail copiado',
       metaDescription: 'onde joão coelho trabalhou e os problemas que ajudou a resolver.',
     },
     notFound: {

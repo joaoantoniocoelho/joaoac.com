@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import avatar from '../assets/avatar.png';
 import experiencesEn from '../data/experiences.en.json';
 import experiencesPt from '../data/experiences.pt-BR.json';
 import type { Locale } from '../lib/locale.ts';
@@ -22,32 +20,15 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
   description={t.metaDescription}
 >
   <section class="hero">
-    <Image
-      src={avatar}
-      alt={
-        locale === 'pt-BR'
-          ? 'avatar de joão coelho em pixel art'
-          : 'pixel art avatar of joão coelho'
-      }
-      width={240}
-      height={240}
-      format="webp"
-      class="portrait"
-    />
     <h1 class="display">{t.title}</h1>
-    <div class="actions">
-      <a class="pill" href={`mailto:${CONTACT_EMAIL}`}>
-        {t.email}
-      </a>
-    </div>
-  </section>
-
-  <section class="page journey" aria-labelledby="journey">
     <div class="intro">
       {t.intro.map((paragraph) => (
         <p>{paragraph}</p>
       ))}
     </div>
+  </section>
+
+  <section class="page journey" aria-labelledby="journey">
     <h2 id="journey">{t.journey}</h2>
     <ol>
       {experiences.map((experience) => (
@@ -88,33 +69,51 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
       <p>{t.exploringText}</p>
     </div>
   </section>
+
+  <section class="page contact" aria-labelledby="contact">
+    <h2 id="contact">{t.contact}</h2>
+    <div class="links">
+      <a class="pill-soft" href="https://linkedin.com/in/joaoac" rel="me">
+        linkedin
+      </a>
+      <a class="pill-soft" href="https://github.com/joaoantoniocoelho" rel="me">
+        github
+      </a>
+      <a class="pill-soft" href="https://x.com/joaoac_" rel="me">
+        x
+      </a>
+      <button
+        type="button"
+        class="pill-soft"
+        data-copy-url={CONTACT_EMAIL}
+        data-copied-label={t.emailCopied}
+      >
+        {t.copyEmail}
+      </button>
+    </div>
+  </section>
 </Base>
 
+<script>
+  import { startCopyButtons } from '../scripts/copy-buttons.ts';
+
+  startCopyButtons();
+</script>
+
 <style>
-  .hero :global(.portrait) {
-    width: 104px;
-    height: 104px;
-    margin-bottom: 24px;
-    border-radius: 50%;
-    image-rendering: pixelated;
-  }
-
-  .actions {
-    margin-top: 32px;
-  }
-
-  .journey {
-    padding-top: 104px;
-  }
-
   .intro {
-    margin-bottom: 72px;
+    max-width: 640px;
+    margin-top: 32px;
     font-size: clamp(19px, 1.8vw, 21px);
     line-height: 1.5;
   }
 
   .intro p + p {
     margin-top: 16px;
+  }
+
+  .journey {
+    padding-top: 104px;
   }
 
   h2 {
@@ -191,6 +190,16 @@ const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+
+  .contact {
+    padding-top: 96px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   h3 {
