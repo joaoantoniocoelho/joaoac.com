@@ -3,7 +3,7 @@ import { postsFor } from '../lib/content.ts';
 import { sitemapXml } from '../lib/feeds.ts';
 import { SITE_LAST_UPDATED, SITE_URL } from '../lib/site.ts';
 
-const PAGES = ['/', '/experiences', '/projects', '/blog'];
+const PAGES = ['/', '/experiences', '/projects', '/blog', '/links'];
 
 export const GET: APIRoute = async () => {
   const posts = await postsFor('en');

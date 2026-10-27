@@ -18,6 +18,8 @@ type Props = {
   ogType?: 'website' | 'profile' | 'article';
   article?: { publishedTime: string; modifiedTime: string; tags: string[] };
   noindex?: boolean;
+  // Standalone pages (like /links) drop the site chrome: nav, footer and the Ichiro chat.
+  minimal?: boolean;
   jsonLd?: Record<string, unknown>;
 };
 
@@ -29,6 +31,7 @@ const {
   ogType = 'website',
   article,
   noindex,
+  minimal = false,
   jsonLd,
 } = Astro.props;
 const canonical = absoluteUrl(pathForLocale(path, locale));
@@ -132,11 +135,11 @@ const siteJsonLd = {
     )}
   </head>
   <body>
-    <Nav locale={locale} path={path} />
+    {!minimal && <Nav locale={locale} path={path} />}
     <main>
       <slot />
     </main>
-    <Footer locale={locale} />
-    <IchiroChat locale={locale} />
+    {!minimal && <Footer locale={locale} />}
+    {!minimal && <IchiroChat locale={locale} />}
   </body>
 </html>

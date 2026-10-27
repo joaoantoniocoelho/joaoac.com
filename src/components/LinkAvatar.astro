@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.png';
+---
+
+<div class="stage" data-link-avatar>
+  <div class="card">
+    <Image
+      src={avatar}
+      alt=""
+      widths={[176, 352]}
+      sizes="176px"
+      format="webp"
+      quality={80}
+      loading="eager"
+      fetchpriority="high"
+      class="portrait mono"
+    />
+    <Image
+      src={avatar}
+      alt=""
+      widths={[176, 352]}
+      sizes="176px"
+      format="webp"
+      quality={80}
+      loading="eager"
+      class="portrait color"
+    />
+    <span class="glare" aria-hidden="true"></span>
+  </div>
+</div>
+
+<script>
+  import { startLinkAvatar } from '../scripts/link-avatar.ts';
+
+  startLinkAvatar();
+</script>
+
+<style>
+  .stage {
+    --rotate-x: 0deg;
+    --rotate-y: 0deg;
+    --glare-x: 50%;
+    --glare-y: 50%;
+
+    width: 176px;
+    aspect-ratio: 1;
+    perspective: 900px;
+  }
+
+  .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 48px;
+    overflow: hidden;
+    background: #000000;
+    box-shadow: 0 28px 60px rgb(0 0 0 / 22%);
+    transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .card :global(.portrait) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+  }
+
+  .card :global(.mono) {
+    filter: grayscale(1) contrast(1.08);
+  }
+
+  /* The color layer paints in from the top in steps, like rows of pixels filling in (same as the home). */
+  .card :global(.color) {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.3s steps(8);
+  }
+
+  .stage:hover :global(.color) {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Touch screens have no hover to reveal the color, so it shows from the start. */
+  @media (hover: none) {
+    .card :global(.color) {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--glare-x) var(--glare-y),
+      rgb(255 255 255 / 22%),
+      rgb(255 255 255 / 0%) 55%
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>

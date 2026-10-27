@@ -122,6 +122,17 @@ export const ui = {
       emailCopied: 'email copied',
       metaDescription: 'where joão coelho has worked and the problems he has helped solve.',
     },
+    links: {
+      tagline: 'a bit of me, around the internet.',
+      site: 'visit my site',
+      projects: 'see my projects',
+      social: 'find me elsewhere',
+      github: 'github',
+      linkedin: 'linkedin',
+      email: 'email',
+      metaDescription:
+        'joão coelho, around the internet: his site, projects, github, linkedin and email.',
+    },
     notFound: {
       eyebrow: 'error 404',
       title: "this page doesn't exist.",
@@ -245,6 +256,16 @@ export const ui = {
       copyEmail: 'copiar e-mail',
       emailCopied: 'e-mail copiado',
       metaDescription: 'onde joão coelho trabalhou e os problemas que ajudou a resolver.',
+    },
+    links: {
+      tagline: 'um pouco de mim, pela internet.',
+      site: 'visitar meu site',
+      projects: 'ver meus projetos',
+      social: 'me encontre por aí',
+      github: 'github',
+      linkedin: 'linkedin',
+      email: 'e-mail',
+      metaDescription: 'joão coelho pela internet: site, projetos, github, linkedin e e-mail.',
     },
     notFound: {
       eyebrow: 'erro 404',
