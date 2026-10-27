@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import LinkAvatar from '../components/LinkAvatar.astro';
 import experiencesEn from '../data/experiences.en.json';
 import experiencesPt from '../data/experiences.pt-BR.json';
-import { projects } from '../data/projects.ts';
 import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
@@ -18,16 +17,10 @@ const otherLocale: Locale = locale === 'en' ? 'pt-BR' : 'en';
 
 const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
 const [current] = experiences;
-const identity = [current ? `${current.title}, ${current.company.toLowerCase()}` : '', t.place]
-  .filter(Boolean)
-  .join(' · ');
+const identity = [current?.title ?? '', t.place].filter(Boolean).join(' · ');
 
 const [latestPost] = await postsFor(locale);
-const project = (slug: string) => projects.find((candidate) => candidate.slug === slug);
-const porque = project('porque');
-const digest = project('tech-digest');
-
-type Card = { title: string; text: string; href: string; external?: boolean };
+type Card = { title: string; text: string; href: string };
 const cards: Card[] = [
   { title: t.site, text: t.siteText, href: localizedPath('/', locale) },
   {
@@ -35,9 +28,6 @@ const cards: Card[] = [
     text: latestPost ? `${t.latest}: ${latestPost.title}` : '',
     href: localizedPath('/blog', locale),
   },
-  ...[porque, digest].flatMap((item) =>
-    item ? [{ title: item.name, text: item.tagline[locale], href: item.url, external: true }] : [],
-  ),
   { title: t.projects, text: t.projectsText, href: localizedPath('/projects', locale) },
 ];
 
@@ -53,25 +43,17 @@ const email = `mailto:${CONTACT_EMAIL}`;
     <h1>joão coelho.</h1>
     <p class="identity">{identity}</p>
     <p class="tagline">{t.tagline}</p>
-    <p class="now">
-      <span>{t.now}</span> {t.nowText}
-    </p>
 
     <ul class="cards">
       {cards.map((card) => (
         <li>
-          <a
-            class="card"
-            href={card.href}
-            target={card.external ? '_blank' : undefined}
-            rel={card.external ? 'noopener' : undefined}
-          >
+          <a class="card" href={card.href}>
             <span class="card-text">
               <span class="card-title">{card.title}</span>
               {card.text && <span class="card-desc">{card.text}</span>}
             </span>
             <span class="card-arrow" aria-hidden="true">
-              {card.external ? '↗' : '›'}
+              ›
             </span>
           </a>
         </li>
@@ -186,22 +168,6 @@ const email = `mailto:${CONTACT_EMAIL}`;
     font-weight: 500;
     letter-spacing: -0.015em;
     color: var(--muted);
-  }
-
-  .now {
-    margin-top: 18px;
-    font-size: 14px;
-    color: var(--muted);
-  }
-
-  .now span {
-    margin-right: 6px;
-    padding: 2px 9px;
-    border-radius: var(--radius-pill);
-    background: var(--tile);
-    color: var(--fg);
-    font-size: 12px;
-    font-weight: 500;
   }
 
   .cards,
