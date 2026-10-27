@@ -26,3 +26,22 @@ export function tiltFor(clientX: number, clientY: number, box: Box): Tilt {
     glareY: y * 100,
   };
 }
+
+// How far the idle sway leans (the pointer tops out at half of the maximum) and how long one lap takes.
+const IDLE_STRENGTH = 0.4;
+const IDLE_PERIOD_Y_MS = 7000;
+const IDLE_PERIOD_X_MS = 9000;
+const IDLE_GLARE_TRAVEL = 30;
+
+// A slow drift around the resting pose, used while nobody is touching the card. The two axes
+// run on different periods so the path never settles into a visible loop.
+export function idleTilt(timeMs: number): Tilt {
+  const y = Math.sin((timeMs / IDLE_PERIOD_Y_MS) * 2 * Math.PI);
+  const x = Math.cos((timeMs / IDLE_PERIOD_X_MS) * 2 * Math.PI);
+  return {
+    rotateX: x * MAX_TILT_X_DEG * IDLE_STRENGTH,
+    rotateY: y * MAX_TILT_Y_DEG * IDLE_STRENGTH,
+    glareX: 50 + y * IDLE_GLARE_TRAVEL,
+    glareY: 50 - x * IDLE_GLARE_TRAVEL,
+  };
+}

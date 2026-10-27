@@ -14,17 +14,7 @@ import avatar from '../assets/avatar.png';
       quality={80}
       loading="eager"
       fetchpriority="high"
-      class="portrait mono"
-    />
-    <Image
-      src={avatar}
-      alt=""
-      widths={[176, 352]}
-      sizes="176px"
-      format="webp"
-      quality={80}
-      loading="eager"
-      class="portrait color"
+      class="portrait"
     />
     <span class="glare" aria-hidden="true"></span>
   </div>
@@ -52,7 +42,8 @@ import avatar from '../assets/avatar.png';
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 48px;
+    /* Same proportion as the home card (40px on 460px), so the corners look identical at this size. */
+    border-radius: 8.7%;
     overflow: hidden;
     background: #000000;
     box-shadow: 0 28px 60px rgb(0 0 0 / 22%);
@@ -67,27 +58,6 @@ import avatar from '../assets/avatar.png';
     height: 100%;
     object-fit: cover;
     image-rendering: pixelated;
-  }
-
-  .card :global(.mono) {
-    filter: grayscale(1) contrast(1.08);
-  }
-
-  /* The color layer paints in from the top in steps, like rows of pixels filling in (same as the home). */
-  .card :global(.color) {
-    clip-path: inset(100% 0 0 0);
-    transition: clip-path 0.3s steps(8);
-  }
-
-  .stage:hover :global(.color) {
-    clip-path: inset(0 0 0 0);
-  }
-
-  /* Touch screens have no hover to reveal the color, so it shows from the start. */
-  @media (hover: none) {
-    .card :global(.color) {
-      clip-path: inset(0 0 0 0);
-    }
   }
 
   .glare {

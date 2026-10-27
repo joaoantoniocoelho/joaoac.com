@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { MAX_TILT_X_DEG, MAX_TILT_Y_DEG, RESTING_TILT, tiltFor } from './tilt.ts';
+import { MAX_TILT_X_DEG, MAX_TILT_Y_DEG, RESTING_TILT, idleTilt, tiltFor } from './tilt.ts';
 
 const box = { left: 100, top: 200, width: 400, height: 400 };
 
@@ -23,5 +23,26 @@ describe('tiltFor', () => {
 
   it('stays at rest for a card with no size yet', () => {
     assert.deepEqual(tiltFor(10, 10, { left: 0, top: 0, width: 0, height: 0 }), RESTING_TILT);
+  });
+});
+
+describe('idleTilt', () => {
+  it('never leans past the pointer tilt', () => {
+    for (let time = 0; time < 70_000; time += 250) {
+      const tilt = idleTilt(time);
+      assert.ok(Math.abs(tilt.rotateX) <= MAX_TILT_X_DEG / 2);
+      assert.ok(Math.abs(tilt.rotateY) <= MAX_TILT_Y_DEG / 2);
+      assert.ok(tilt.glareX >= 0 && tilt.glareX <= 100);
+      assert.ok(tilt.glareY >= 0 && tilt.glareY <= 100);
+    }
+  });
+
+  it('keeps moving over time', () => {
+    assert.notDeepEqual(idleTilt(0), idleTilt(1750));
+  });
+
+  it('leans the glare the same way as the pointer tilt does', () => {
+    const tilt = idleTilt(1750);
+    assert.ok(tilt.rotateY > 0 && tilt.glareX > 50);
   });
 });

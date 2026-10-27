@@ -1,4 +1,4 @@
-import { RESTING_TILT, tiltFor, type Tilt } from '../lib/tilt.ts';
+import { RESTING_TILT, idleTilt, tiltFor, type Tilt } from '../lib/tilt.ts';
 import { copyText } from '../lib/clipboard.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
 import { find, prefersReducedMotion } from './dom.ts';
@@ -24,7 +24,12 @@ export function startAvatarCard(): void {
   const hint = find(document, '[data-avatar-hint]', HTMLElement);
   if (!front || !back || !unflip) return;
 
-  const setFlipped = (flipped: boolean) => {
+  let flipped = false;
+  // Replaced below once we know motion is allowed; flipping must work either way.
+  let onStateChange = () => {};
+
+  const setFlipped = (nextFlipped: boolean) => {
+    flipped = nextFlipped;
     stage.style.setProperty('--flip', flipped ? '180deg' : '0deg');
     front.setAttribute('aria-expanded', String(flipped));
     // Only the visible face is reachable by keyboard and screen readers.
@@ -32,6 +37,7 @@ export function startAvatarCard(): void {
     front.inert = flipped;
     if (hint) hint.textContent = (flipped ? hint.dataset.hintBack : hint.dataset.hintFront) ?? '';
     (flipped ? unflip : front).focus({ preventScroll: true });
+    onStateChange();
   };
 
   front.addEventListener('click', () => {
@@ -61,18 +67,57 @@ export function startAvatarCard(): void {
     });
   }
 
-  // Tilting only makes sense with a hovering pointer; touch screens just flip.
-  if (prefersReducedMotion() || !window.matchMedia('(hover: hover)').matches) return;
+  if (prefersReducedMotion()) return;
 
-  let frame = 0;
-  stage.addEventListener('pointermove', (event) => {
-    window.cancelAnimationFrame(frame);
-    frame = window.requestAnimationFrame(() => {
-      applyTilt(stage, tiltFor(event.clientX, event.clientY, stage.getBoundingClientRect()));
+  // Nobody touching the card: it drifts slowly with the same lean the hover gives. A hovering
+  // pointer, a flipped card, a hidden tab or an off-screen card all stop the drift.
+  const canHover = window.matchMedia('(hover: hover)').matches;
+  let pointerInside = false;
+  let onScreen = true;
+  let idleFrame = 0;
+  let pointerFrame = 0;
+
+  const drift = (time: number) => {
+    applyTilt(stage, idleTilt(time));
+    idleFrame = window.requestAnimationFrame(drift);
+  };
+
+  const syncIdle = () => {
+    window.cancelAnimationFrame(idleFrame);
+    idleFrame = 0;
+    if (pointerInside) return;
+    if (flipped || !onScreen || document.hidden) {
+      applyTilt(stage, RESTING_TILT);
+      return;
+    }
+    idleFrame = window.requestAnimationFrame(drift);
+  };
+  onStateChange = syncIdle;
+
+  new IntersectionObserver((entries) => {
+    onScreen = entries.some((entry) => entry.isIntersecting);
+    syncIdle();
+  }).observe(stage);
+  document.addEventListener('visibilitychange', syncIdle);
+
+  // Touch screens have no hover, so they only get the drift.
+  if (canHover) {
+    stage.addEventListener('pointerenter', () => {
+      pointerInside = true;
+      syncIdle();
     });
-  });
-  stage.addEventListener('pointerleave', () => {
-    window.cancelAnimationFrame(frame);
-    applyTilt(stage, RESTING_TILT);
-  });
+    stage.addEventListener('pointermove', (event) => {
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = window.requestAnimationFrame(() => {
+        applyTilt(stage, tiltFor(event.clientX, event.clientY, stage.getBoundingClientRect()));
+      });
+    });
+    stage.addEventListener('pointerleave', () => {
+      window.cancelAnimationFrame(pointerFrame);
+      pointerInside = false;
+      syncIdle();
+    });
+  }
+
+  syncIdle();
 }

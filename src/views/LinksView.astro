@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import LinkAvatar from '../components/LinkAvatar.astro';
+import experiencesEn from '../data/experiences.en.json';
+import experiencesPt from '../data/experiences.pt-BR.json';
+import { projects } from '../data/projects.ts';
+import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
 import { ui } from '../lib/ui.ts';
@@ -9,10 +13,37 @@ type Props = { locale: Locale };
 
 const { locale } = Astro.props;
 const t = ui[locale].links;
+const about = ui[locale].about;
 const otherLocale: Locale = locale === 'en' ? 'pt-BR' : 'en';
+
+const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
+const [current] = experiences;
+const identity = [current ? `${current.title}, ${current.company.toLowerCase()}` : '', t.place]
+  .filter(Boolean)
+  .join(' · ');
+
+const [latestPost] = await postsFor(locale);
+const project = (slug: string) => projects.find((candidate) => candidate.slug === slug);
+const porque = project('porque');
+const digest = project('tech-digest');
+
+type Card = { title: string; text: string; href: string; external?: boolean };
+const cards: Card[] = [
+  { title: t.site, text: t.siteText, href: localizedPath('/', locale) },
+  {
+    title: t.writing,
+    text: latestPost ? `${t.latest}: ${latestPost.title}` : '',
+    href: localizedPath('/blog', locale),
+  },
+  ...[porque, digest].flatMap((item) =>
+    item ? [{ title: item.name, text: item.tagline[locale], href: item.url, external: true }] : [],
+  ),
+  { title: t.projects, text: t.projectsText, href: localizedPath('/projects', locale) },
+];
 
 const github = 'https://github.com/joaoantoniocoelho';
 const linkedin = 'https://linkedin.com/in/joaoac';
+const x = 'https://x.com/joaoac_';
 const email = `mailto:${CONTACT_EMAIL}`;
 ---
 
@@ -20,16 +51,32 @@ const email = `mailto:${CONTACT_EMAIL}`;
   <section class="links-page">
     <LinkAvatar />
     <h1>joão coelho.</h1>
+    <p class="identity">{identity}</p>
     <p class="tagline">{t.tagline}</p>
+    <p class="now">
+      <span>{t.now}</span> {t.nowText}
+    </p>
 
-    <div class="buttons">
-      <a class="pill" href={localizedPath('/', locale)}>
-        {t.site}
-      </a>
-      <a class="pill outline" href={localizedPath('/projects', locale)}>
-        {t.projects}
-      </a>
-    </div>
+    <ul class="cards">
+      {cards.map((card) => (
+        <li>
+          <a
+            class="card"
+            href={card.href}
+            target={card.external ? '_blank' : undefined}
+            rel={card.external ? 'noopener' : undefined}
+          >
+            <span class="card-text">
+              <span class="card-title">{card.title}</span>
+              {card.text && <span class="card-desc">{card.text}</span>}
+            </span>
+            <span class="card-arrow" aria-hidden="true">
+              {card.external ? '↗' : '›'}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
 
     <ul class="socials" aria-label={t.social}>
       <li>
@@ -43,6 +90,13 @@ const email = `mailto:${CONTACT_EMAIL}`;
         <a href={linkedin} rel="me" aria-label={t.linkedin}>
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
             <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"></path>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href={x} rel="me" aria-label={t.x}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
           </svg>
         </a>
       </li>
@@ -66,6 +120,22 @@ const email = `mailto:${CONTACT_EMAIL}`;
       </li>
     </ul>
 
+    <div class="contact">
+      <h2>{t.contactTitle}</h2>
+      <p>{about.contactText}</p>
+      <button
+        type="button"
+        class="pill-soft copy-email"
+        data-copy-email
+        data-label={about.copyEmail}
+        data-copied-label={about.emailCopied}
+        data-failed-label={ui[locale].card.emailCopyFailed}
+      >
+        <span data-email-copy-label>{about.copyEmail}</span>
+      </button>
+      <span class="visually-hidden" role="status" data-email-feedback></span>
+    </div>
+
     <a
       class="language"
       href={localizedPath('/links', otherLocale)}
@@ -76,6 +146,12 @@ const email = `mailto:${CONTACT_EMAIL}`;
     </a>
   </section>
 </Base>
+
+<script>
+  import { startLinkContact } from '../scripts/link-contact.ts';
+
+  startLinkContact();
+</script>
 
 <style>
   .links-page {
@@ -97,8 +173,14 @@ const email = `mailto:${CONTACT_EMAIL}`;
     letter-spacing: -0.015em;
   }
 
-  .tagline {
+  .identity {
     margin-top: 10px;
+    font-size: 15px;
+    color: var(--fg-secondary);
+  }
+
+  .tagline {
+    margin-top: 6px;
     font-size: 19px;
     line-height: 1.3;
     font-weight: 500;
@@ -106,35 +188,84 @@ const email = `mailto:${CONTACT_EMAIL}`;
     color: var(--muted);
   }
 
-  .buttons {
-    margin-top: 36px;
+  .now {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .now span {
+    margin-right: 6px;
+    padding: 2px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--tile);
+    color: var(--fg);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .cards,
+  .socials {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cards {
+    margin-top: 32px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
-  .buttons .pill {
-    min-height: 52px;
-  }
-
-  .pill.outline {
-    background: transparent;
-    color: var(--fg);
-    box-shadow: inset 0 0 0 1px var(--line);
-    transition: background 0.25s;
-  }
-
-  .pill.outline:hover {
+  .card {
+    min-height: 64px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-radius: 20px;
     background: var(--tile);
+    text-align: left;
+    transition:
+      background 0.2s,
+      transform 0.7s var(--ease-out);
+  }
+
+  .card:hover {
+    background: #e8e8ed;
+    transform: scale(1.012);
+  }
+
+  .card-text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .card-arrow {
+    flex-shrink: 0;
+    font-size: 18px;
+    color: var(--faint);
   }
 
   .socials {
-    margin: 28px 0 0;
-    padding: 0;
-    list-style: none;
+    margin-top: 24px;
     display: flex;
-    gap: 8px;
+    gap: 6px;
   }
 
   .socials a {
@@ -154,8 +285,35 @@ const email = `mailto:${CONTACT_EMAIL}`;
     background: var(--tile);
   }
 
+  .contact {
+    margin-top: 32px;
+    padding-top: 28px;
+    width: 100%;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .contact h2 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .contact p {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .copy-email[data-state='failed'] {
+    color: var(--error);
+  }
+
   .language {
-    margin-top: 36px;
+    margin-top: 28px;
     padding: 12px;
     font-size: 12px;
     color: var(--faint);
@@ -163,5 +321,15 @@ const email = `mailto:${CONTACT_EMAIL}`;
 
   .language:hover {
     text-decoration: underline;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: background 0.2s;
+    }
+
+    .card:hover {
+      transform: none;
+    }
   }
 </style>
