@@ -325,10 +325,6 @@ svg {
   transform: translateX(-50%);
 }
 
-.p-eyebrow {
-  font-size: 12px;
-  color: #6e6e73;
-}
 .p-title {
   margin-top: 2px;
   font-size: 32px;
@@ -451,6 +447,182 @@ svg {
   text-align: right;
 }
 
+.kv .one {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kv-next {
+  margin-top: 0;
+  border-top: 1px solid #e3e3e8;
+}
+.kv-next small {
+  display: block;
+  color: #6e6e73;
+  font-size: 11px;
+}
+.kv-next span:last-child {
+  min-width: 0;
+}
+.kv:not(.kv-next) {
+  margin-top: 14px;
+}
+.front-bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: #6e6e73;
+}
+.verd {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.verd + .back-note {
+  margin-top: 6px;
+}
+
+/* the progress block and the guess sheet inside the phone */
+.p-prog {
+  margin-top: 16px;
+}
+.p-prog > p {
+  font-size: 17px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+.p-prog-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+  border-block: 1px solid #e3e3e8;
+}
+.p-prog-row > div {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+}
+.p-prog-row > div + div {
+  padding-left: 14px;
+  border-left: 1px solid #e3e3e8;
+}
+.p-prog-row b {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+.p-prog-row span {
+  font-size: 11px;
+  color: #6e6e73;
+}
+.p-week {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.p-week .rd {
+  width: 8px;
+  height: 8px;
+}
+.p-week .rd.hoje {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--mark-dot);
+}
+
+.p-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+}
+.p-sheet[hidden] {
+  display: none;
+}
+.p-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+}
+.p-sheet-body {
+  position: relative;
+  width: 100%;
+  padding: 10px 14px 22px;
+  border-radius: 28px 28px 0 0;
+  background: #fff;
+  box-shadow: 0 -10px 30px -12px rgba(0, 0, 0, 0.25);
+  animation: sheet-up 0.38s var(--ease) both;
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+.p-grab {
+  display: block;
+  width: 36px;
+  height: 5px;
+  margin: 0 auto 12px;
+  border-radius: 3px;
+  background: #d6d6db;
+}
+.p-num {
+  font-size: 11px;
+  color: #6e6e73;
+}
+.p-q {
+  margin-top: 4px;
+  font-size: 21px;
+  line-height: 1.08;
+  font-weight: 700;
+  text-wrap: balance;
+}
+.p-ask {
+  margin: 14px 0 8px;
+  font-size: 12px;
+  color: #6e6e73;
+}
+.p-opts {
+  display: grid;
+  gap: 6px;
+}
+.p-opts button {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: 16px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: left;
+}
+.p-opts button:hover {
+  background: #ebebf0;
+}
+.p-opts .gl {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ebebf0;
+  color: #6e6e73;
+  font-size: 12px;
+}
+.p-skip {
+  display: block;
+  margin: 12px auto 0;
+  color: #6e6e73;
+  font-size: 12px;
+}
+
 /* ---------- sections ---------- */
 .sec {
   padding-block: 96px;
@@ -505,6 +677,11 @@ svg {
   margin-top: 8px;
   color: var(--muted);
   max-width: 52ch;
+}
+.step b .pt {
+  display: inline;
+  margin-top: 0;
+  color: var(--mark-dot);
 }
 
 /* ---------- article preview ---------- */
@@ -719,6 +896,151 @@ svg {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 56px;
   align-items: center;
+}
+
+/* ---------- progress (palpite, dias de curiosidade, mapa de temas) ---------- */
+.progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.pcard {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 28px;
+  background: var(--tile);
+}
+.pcard h3 {
+  margin-top: 14px;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+.pcard > p {
+  color: var(--muted);
+}
+.pviz {
+  min-height: 236px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.guess {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.guess li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: var(--tile);
+  font-size: 14px;
+  line-height: 1.25;
+  opacity: 0.45;
+}
+.guess li.right {
+  opacity: 1;
+}
+.guess .gl {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--chip);
+  color: var(--muted);
+  font-size: 12px;
+}
+.guess .right .gl {
+  background: var(--fg);
+  color: var(--bg);
+}
+.pviz .big {
+  margin: 0;
+  font-size: 56px;
+  line-height: 1;
+}
+.pviz .cap {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.week {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 22px;
+}
+.week > div {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+.week small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.rd {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+.rd.lido {
+  background: var(--fg);
+}
+.rd.descanso {
+  box-shadow: inset 0 0 0 2px var(--muted);
+}
+.rd.hoje {
+  background: var(--mark-dot);
+}
+.tprog {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tprog li {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+.tprog .tn {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.tprog .tc {
+  font-size: 12px;
+  color: var(--muted);
+}
+.bar {
+  display: block;
+  height: 3px;
+  margin-top: 8px;
+  border-radius: 2px;
+  background: var(--dot-faint);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--fg);
 }
 
 /* ---------- principles, themes ---------- */
@@ -975,6 +1297,7 @@ svg {
   }
   .read,
   .widgets,
+  .progress,
   .principles {
     grid-template-columns: minmax(0, 1fr);
   }

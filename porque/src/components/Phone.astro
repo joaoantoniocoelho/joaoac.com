@@ -1,11 +1,21 @@
 ---
 import Dots from './Dots.astro';
+
+// The same three guesses as the app's card for the day (the second one is right).
+const options = [
+  'a atmosfera funciona como uma lente de aumento.',
+  'o cérebro interpreta o horizonte como mais distante.',
+  'a Lua está fisicamente mais perto da Terra no horizonte.',
+];
+const right = 1;
+
+// Six days before today, oldest first; today is still pending.
+const week = ['lido', 'lido', 'descanso', 'lido', 'lido', 'lido', 'hoje'] as const;
 ---
 
 <div class="phone">
-  <div class="phone-screen">
+  <div class="phone-screen" data-phone>
     <div class="island"></div>
-    <p class="p-eyebrow">sexta, 23 de outubro</p>
     <p class="p-title display-font">
       hoje<span class="pt">.</span>
     </p>
@@ -14,15 +24,16 @@ import Dots from './Dots.astro';
       <div class="flipper" data-flipper>
         <div class="face front">
           <div class="face-top">
-            <span>nº 296 · ciência</span>
-            <span class="mono">1 min</span>
+            <span>a pergunta de hoje</span>
+            <span class="mono">nº 296</span>
           </div>
           <p class="fq display-font">por que a Lua parece maior no horizonte?</p>
           <Dots class="face-dots" />
-          <div class="face-bot">
+          <div class="face-bot front-bot">
             <button class="pill" type="button" data-flip-open>
               descobrir →
             </button>
+            <span>1 min de leitura</span>
           </div>
         </div>
         <div class="face back" aria-hidden="true" data-back>
@@ -39,6 +50,7 @@ import Dots from './Dots.astro';
             </button>
           </div>
           <p class="bl display-font">Ela não cresce. Quem exagera é o seu cérebro.</p>
+          <p class="verd" data-verdict hidden></p>
           <p class="back-note">o resto da explicação cabe em um minuto.</p>
           <div class="face-bot">
             <a class="pill pill-mark" href="#descoberta" tabindex="-1">
@@ -50,8 +62,59 @@ import Dots from './Dots.astro';
     </div>
 
     <div class="kv">
+      <span>ontem</span>
+      <span class="one">por que a tela do celular não funciona de luva?</span>
+    </div>
+    <div class="kv kv-next">
       <span>amanhã</span>
-      <span>por que bocejar é contagioso?</span>
+      <span>
+        <span class="one">por que bocejar é contagioso?</span>
+        <small>chega às 7h</small>
+      </span>
+    </div>
+
+    <div class="p-prog">
+      <p class="display-font">
+        seu progresso<span class="pt">.</span>
+      </p>
+      <div class="p-prog-row">
+        <div>
+          <b class="mono">5</b>
+          <span>dias de curiosidade</span>
+          <div class="p-week" aria-hidden="true">
+            {week.map((day) => (
+              <i class={`rd ${day}`} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <b class="mono" data-tally>
+            3 de 5
+          </b>
+          <span>respostas certas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-sheet" data-sheet hidden>
+      <div class="p-scrim" data-sheet-close></div>
+      <div class="p-sheet-body" role="dialog" aria-label="seu palpite">
+        <span class="p-grab"></span>
+        <span class="mono p-num">nº 296</span>
+        <p class="p-q display-font">por que a Lua parece maior no horizonte?</p>
+        <p class="p-ask">qual é o seu palpite?</p>
+        <div class="p-opts">
+          {options.map((text, i) => (
+            <button type="button" data-guess={i} data-right={i === right}>
+              <span class="gl">{'abc'[i]}</span>
+              <span>{text}</span>
+            </button>
+          ))}
+        </div>
+        <button class="p-skip" type="button" data-guess-skip>
+          pular o palpite
+        </button>
+      </div>
     </div>
   </div>
 </div>

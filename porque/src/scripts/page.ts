@@ -15,8 +15,52 @@ function setFlipped(on: boolean): void {
 }
 
 setFlipped(false);
-document.querySelector('[data-flip-open]')?.addEventListener('click', () => {
+
+// "descobrir" first offers the guess, once; after that it just turns the card, like the app.
+const phone = document.querySelector<HTMLElement>('[data-phone]');
+const sheet = phone?.querySelector<HTMLElement>('[data-sheet]');
+const verdict = phone?.querySelector<HTMLElement>('[data-verdict]');
+const tally = phone?.querySelector<HTMLElement>('[data-tally]');
+let guessed = false;
+// Starting tally shown in the card: 3 right out of 5.
+const tallyStart = { right: 3, total: 5 };
+
+function closeSheet(): void {
+  if (sheet) sheet.hidden = true;
+  document.querySelector<HTMLElement>('[data-flip-open]')?.focus({ preventScroll: true });
+}
+
+function finishGuess(choice: HTMLElement | null): void {
+  guessed = true;
+  if (sheet) sheet.hidden = true;
+  if (choice && verdict && tally) {
+    const ok = choice.dataset.right === 'true';
+    verdict.hidden = false;
+    verdict.textContent = ok ? '✓ acertou.' : 'boa aposta, mas não.';
+    tally.textContent = `${String(tallyStart.right + (ok ? 1 : 0))} de ${String(tallyStart.total + 1)}`;
+  }
   setFlipped(true);
+}
+
+document.querySelector('[data-flip-open]')?.addEventListener('click', () => {
+  if (guessed || !sheet) {
+    setFlipped(true);
+    return;
+  }
+  sheet.hidden = false;
+  sheet.querySelector<HTMLElement>('[data-guess]')?.focus({ preventScroll: true });
+});
+sheet?.querySelectorAll<HTMLElement>('[data-guess]').forEach((button) => {
+  button.addEventListener('click', () => {
+    finishGuess(button);
+  });
+});
+sheet?.querySelector('[data-guess-skip]')?.addEventListener('click', () => {
+  finishGuess(null);
+});
+sheet?.querySelector('[data-sheet-close]')?.addEventListener('click', closeSheet);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && sheet && !sheet.hidden) closeSheet();
 });
 document.querySelector('[data-flip-close]')?.addEventListener('click', () => {
   setFlipped(false);
