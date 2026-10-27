@@ -20,10 +20,7 @@ setFlipped(false);
 const phone = document.querySelector<HTMLElement>('[data-phone]');
 const sheet = phone?.querySelector<HTMLElement>('[data-sheet]');
 const verdict = phone?.querySelector<HTMLElement>('[data-verdict]');
-const tally = phone?.querySelector<HTMLElement>('[data-tally]');
 let guessed = false;
-// Starting tally shown in the card: 3 right out of 5.
-const tallyStart = { right: 3, total: 5 };
 
 function closeSheet(): void {
   if (sheet) sheet.hidden = true;
@@ -33,11 +30,10 @@ function closeSheet(): void {
 function finishGuess(choice: HTMLElement | null): void {
   guessed = true;
   if (sheet) sheet.hidden = true;
-  if (choice && verdict && tally) {
+  if (choice && verdict) {
     const ok = choice.dataset.right === 'true';
     verdict.hidden = false;
     verdict.textContent = ok ? '✓ acertou.' : 'boa aposta, mas não.';
-    tally.textContent = `${String(tallyStart.right + (ok ? 1 : 0))} de ${String(tallyStart.total + 1)}`;
   }
   setFlipped(true);
 }

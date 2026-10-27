@@ -8,9 +8,6 @@ const options = [
   'a Lua está fisicamente mais perto da Terra no horizonte.',
 ];
 const right = 1;
-
-// Six days before today, oldest first; today is still pending.
-const week = ['lido', 'lido', 'descanso', 'lido', 'lido', 'lido', 'hoje'] as const;
 ---
 
 <div class="phone">
@@ -62,38 +59,8 @@ const week = ['lido', 'lido', 'descanso', 'lido', 'lido', 'lido', 'hoje'] as con
     </div>
 
     <div class="kv">
-      <span>ontem</span>
-      <span class="one">por que a tela do celular não funciona de luva?</span>
-    </div>
-    <div class="kv kv-next">
       <span>amanhã</span>
-      <span>
-        <span class="one">por que bocejar é contagioso?</span>
-        <small>chega às 7h</small>
-      </span>
-    </div>
-
-    <div class="p-prog">
-      <p class="display-font">
-        seu progresso<span class="pt">.</span>
-      </p>
-      <div class="p-prog-row">
-        <div>
-          <b class="mono">5</b>
-          <span>dias de curiosidade</span>
-          <div class="p-week" aria-hidden="true">
-            {week.map((day) => (
-              <i class={`rd ${day}`} />
-            ))}
-          </div>
-        </div>
-        <div>
-          <b class="mono" data-tally>
-            3 de 5
-          </b>
-          <span>respostas certas</span>
-        </div>
-      </div>
+      <span>por que bocejar é contagioso?</span>
     </div>
 
     <div class="p-sheet" data-sheet hidden>
