@@ -10,7 +10,6 @@ export type Project = {
   status: ProjectStatus;
   name: string;
   url: string;
-  urlLabel: string;
   // Short line for the home page tiles; oneLiner carries the full pitch on the projects page.
   tagline: Localized<string>;
   oneLiner: Localized<string>;
@@ -25,7 +24,6 @@ export const projects: Project[] = [
     status: 'live',
     name: 'tech digest',
     url: 'https://digest.joaoac.com',
-    urlLabel: 'digest.joaoac.com',
     tagline: {
       en: 'a short list of tech links, every day.',
       'pt-BR': 'uma seleção diária de links de tecnologia.',
@@ -61,8 +59,7 @@ export const projects: Project[] = [
     slug: 'porque',
     status: 'coming-soon',
     name: 'por quê?',
-    url: 'https://porque.joaoac.com',
-    urlLabel: 'porque.joaoac.com',
+    url: 'https://porque.app',
     tagline: {
       en: 'one interesting question a day.',
       'pt-BR': 'uma pergunta interessante por dia.',
@@ -99,7 +96,6 @@ export const projects: Project[] = [
     status: 'coming-soon',
     name: 'alturo',
     url: 'https://usealturo.app',
-    urlLabel: 'usealturo.app',
     tagline: {
       en: 'a little more focus for your reading time.',
       'pt-BR': 'um pouco mais de foco na hora de ler.',
