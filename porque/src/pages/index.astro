@@ -7,26 +7,23 @@ import Widgets from '../components/Widgets.astro';
 import Dots from '../components/Dots.astro';
 import { splitHighlight } from '../lib/highlight.ts';
 import { PLANS, formatBRL, perMonthCents, yearlyDiscountPercent } from '../lib/pricing.ts';
-import { APP_STORE_URL, AUTHOR_URL, TAGLINE } from '../lib/site.ts';
-
-const description =
-  'o por quê? é um app com uma pergunta interessante por dia: uma frase de resposta, um minuto de leitura e o resto do dia para pensar nela.';
+import { APP_STORE_URL, AUTHOR_URL, META_DESCRIPTION, PAGE_TITLE } from '../lib/site.ts';
 
 const steps = [
   [
-    '07h',
-    'a pergunta chega.',
-    'um aviso por dia, no horário que você escolher. nada de lembrete de sequência.',
+    'no seu horário',
+    'uma pergunta te encontra.',
+    'Receba a pergunta do dia no horário que você escolher.',
   ],
   [
-    'uma frase',
-    'toque em descobrir.',
-    'dê um palpite entre três respostas, ou pule. o cartão vira e entrega a resposta curta. quem quiser mais segue para a explicação.',
+    'seu palpite',
+    'qual é o seu palpite?',
+    'Escolha uma resposta antes de descobrir. Ou vá direto à explicação.',
   ],
   [
     'um minuto',
-    'leia e pense.',
-    'três parágrafos curtos, um desenho e uma frase grifada. o resto do dia é para pensar nela.',
+    'entenda o porquê.',
+    'Leia uma explicação curta e ilustrada. Saia com algo novo para pensar — e contar por aí.',
   ],
 ] as const;
 
@@ -64,30 +61,30 @@ const streakLabels = ['s', 'd', 's', 't', 'q', 'q', 's'] as const;
 
 const principles = [
   [
-    'sem cobrança.',
-    'a sequência descansa em vez de zerar, e nenhum aviso fala do que você deixou de ler. cada dia é uma pergunta nova.',
+    'uma pausa que vale a pena.',
+    'Uma leitura curta para entender algo que antes passava despercebido.',
     false,
   ],
   [
-    'um aviso por dia.',
-    'no horário que você escolher, e só. nada de lembrete de sequência nem de número perdido.',
+    'um aviso, no seu horário.',
+    'Você escolhe quando receber a pergunta do dia. Os lembretes de sequência ficam de fora.',
     false,
   ],
   [
-    'sem anúncios.',
-    'a assinatura paga a pesquisa e a escrita de cada edição. nada além do necessário.',
+    'sem anúncios no caminho.',
+    'A assinatura dá acesso às descobertas e ao acervo. Sua leitura segue sem interrupções de anúncios.',
     true,
   ],
 ] as const;
 
 // 3x3 glyph per theme: which dots are lit.
 const themes = [
-  ['ciência', 'como as coisas funcionam.', 58, '010111010'],
-  ['natureza', 'o planeta, os bichos, o tempo lá fora.', 54, '101010111'],
-  ['mente', 'por que pensamos e sentimos assim.', 61, '111101111'],
-  ['tecnologia', 'o que existe por trás das telas.', 39, '101111101'],
-  ['história', 'a origem do que parece óbvio.', 44, '110011100'],
-  ['cotidiano', 'o mistério das coisas pequenas.', 40, '000010000'],
+  ['ciência', 'como as coisas funcionam.', '010111010'],
+  ['natureza', 'o planeta, os bichos, o tempo lá fora.', '101010111'],
+  ['mente', 'por que pensamos e sentimos assim.', '111101111'],
+  ['tecnologia', 'o que existe por trás das telas.', '101111101'],
+  ['história', 'a origem do que parece óbvio.', '110011100'],
+  ['cotidiano', 'o mistério das coisas pequenas.', '000010000'],
 ] as const;
 
 const { anual, mensal } = PLANS;
@@ -95,39 +92,37 @@ const discount = yearlyDiscountPercent(anual.cents, mensal.cents);
 
 const faq = [
   [
-    'tem versão grátis?',
-    'não. antes de assinar, o app mostra uma descoberta inteira: você dá um palpite, lê a explicação e decide.',
+    'posso conhecer antes de assinar?',
+    'Sim. O app apresenta uma descoberta completa antes da assinatura: você pode dar um palpite, ler a explicação e conhecer a experiência. Para continuar, escolha um dos planos.',
   ],
   [
-    'dá para cancelar?',
-    'quando quiser, pelos Ajustes do iPhone. o anual não renova se você cancelar antes do fim do período.',
+    'posso cancelar quando quiser?',
+    'Sim, pelos Ajustes do iPhone. Ao cancelar, você desativa a próxima renovação da assinatura.',
   ],
   [
-    'posso ler as perguntas antigas?',
-    'sim. todas ficam no arquivo, organizadas por tema, para ler quando quiser. a pergunta do dia segue igual para todo mundo.',
+    'posso ler as perguntas anteriores?',
+    'Sim. Elas ficam no acervo, organizadas por tema, para você explorar quando quiser.',
   ],
   [
-    'quando chega a pergunta?',
-    'às 7h, ou no horário que você escolher no início. dá para mudar depois.',
+    'quando chega a pergunta do dia?',
+    'O horário inicial é às 7h, mas você pode escolher outro e mudar depois nas configurações.',
   ],
   [
-    'preciso dar palpite?',
-    'não. o palpite aparece ao tocar em descobrir, e dá para pular. ele só alimenta um placar discreto de respostas certas, sem nota e sem aviso.',
+    'preciso dar um palpite?',
+    'Não. Você pode escolher uma das três respostas ou pular direto para a explicação.',
   ],
   [
-    'o que são os dias de curiosidade?',
-    'a conta dos dias em que você leu. um dia sem ler por semana vira descanso e a sequência segue; dois, e ela recomeça. fica só no seu iPhone.',
+    'como funcionam os dias de curiosidade?',
+    'Cada dia de leitura conta para sua sequência. Você pode ficar um dia sem ler por semana sem interrompê-la. Se ficar dois, a contagem recomeça.',
   ],
   [
     'tem widget?',
-    'tem, em três tamanhos e na tela bloqueada. ele mostra a pergunta de relance; depois de ler, mostra a resposta curta.',
+    'Sim. Há widgets para a tela de início e a tela bloqueada. Eles mostram a pergunta do dia e, depois da leitura, a resposta curta.',
   ],
 ];
-
-const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Store';
 ---
 
-<Base title="por quê? uma pergunta interessante por dia." description={description}>
+<Base title={PAGE_TITLE} description={META_DESCRIPTION}>
   <header class="wrap top">
     <a href="/" aria-label="por quê?">
       <Wordmark />
@@ -169,7 +164,7 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
         </svg>
       </button>
       <a class="pill pill-ghost" href="#preco">
-        preço
+        planos
       </a>
     </div>
   </header>
@@ -181,22 +176,34 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
         <h1 class="display-font">
           uma pergunta por dia<span class="pt">.</span>
         </h1>
-        <p class="sub">
-          <b>Uma pequena descoberta.</b> um minuto para ler, o resto do dia para pensar nela.
+        <p class="sub">para quem nunca para de perguntar.</p>
+        <p class="lede">
+          Descubra o porquê das coisas em explicações curtas, ilustradas e fáceis de entender. Um
+          minuto de leitura para sair com algo novo na cabeça.
         </p>
         <div class="actions">
-          <a
-            class="pill"
-            href={APP_STORE_URL ?? '#preco'}
-            aria-disabled={APP_STORE_URL ? undefined : 'true'}
-          >
-            {storeLabel}
-          </a>
-          <a class="pill pill-ghost" href="#descoberta">
-            ver uma descoberta
-          </a>
+          {APP_STORE_URL ? (
+            <>
+              <a class="pill" href={APP_STORE_URL}>
+                baixar na App Store
+              </a>
+              <a class="pill pill-ghost" href="#descoberta">
+                ler uma descoberta
+              </a>
+            </>
+          ) : (
+            <>
+              <a class="pill" href="#descoberta">
+                ler uma descoberta
+              </a>
+              <span class="status">em breve na App Store</span>
+            </>
+          )}
         </div>
-        <p class="hint">toque em descobrir no cartão ao lado.</p>
+        <p class="hint">
+          comece pela pergunta <span class="hint-wide">ao lado</span>
+          <span class="hint-narrow">abaixo</span>.
+        </p>
       </div>
       <Phone />
     </section>
@@ -205,9 +212,9 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap">
         <div class="sec-h">
           <h2 class="display-font">
-            como funciona<span class="pt">.</span>
+            da pergunta à descoberta<span class="pt">.</span>
           </h2>
-          <p>o ritual inteiro em três passos. nenhum deles pede mais de um minuto.</p>
+          <p>Um convite para olhar o mundo com mais curiosidade, todos os dias.</p>
         </div>
         <div class="steps">
           {steps.map(([k, title, text]) => (
@@ -230,11 +237,11 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap read">
         <div class="sec-h" style="margin-bottom:0">
           <h2 class="display-font">
-            uma descoberta<span class="pt">.</span>
+            um minuto de leitura. uma descoberta para levar<span class="pt">.</span>
           </h2>
           <p>
-            uma frase de resposta, um desenho, três parágrafos curtos e um bloco para guardar. a
-            frase principal é grifada enquanto você lê.
+            Cada pergunta vem com uma resposta direta e uma explicação ilustrada. Para você entender
+            o porquê e lembrar depois.
           </p>
         </div>
         <article class="article">
@@ -273,11 +280,11 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap widgets">
         <div class="sec-h" style="margin-bottom:0">
           <h2 class="display-font">
-            na tela de início<span class="pt">.</span>
+            a curiosidade começa na tela de início<span class="pt">.</span>
           </h2>
           <p>
-            o widget mostra a pergunta de relance. a resposta, só abrindo o app. depois de ler, ele
-            passa a mostrar a resposta curta e já anuncia a de amanhã.
+            Deixe a pergunta do dia à vista com o widget. Quando bater a curiosidade, toque para
+            descobrir. Depois da leitura, a resposta fica ali para você lembrar.
           </p>
         </div>
         <Widgets />
@@ -288,11 +295,11 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap">
         <div class="sec-h">
           <h2 class="display-font">
-            curiosidade tem ritmo<span class="pt">.</span>
+            cada descoberta conta<span class="pt">.</span>
           </h2>
           <p>
-            três sinais discretos acompanham o que você lê. nenhum vira nota, ranking ou aviso, e
-            tudo fica guardado só no seu iPhone.
+            Dê seus palpites, acompanhe seus dias de leitura e veja os temas que mais despertam sua
+            curiosidade.
           </p>
         </div>
         <div class="progress">
@@ -315,8 +322,8 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
               um palpite antes da resposta<span class="pt">.</span>
             </h3>
             <p>
-              ao tocar em descobrir, aposte entre três respostas. acertar não vale nada além do
-              prazer, e pular é sempre possível. o app só guarda quantas você acertou.
+              Será que você já sabe? Escolha entre três respostas e descubra. Se preferir, pule
+              direto para a explicação.
             </p>
           </article>
           <article class="pcard">
@@ -337,11 +344,11 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
               </div>
             </div>
             <h3 class="display-font">
-              dias de curiosidade<span class="pt">.</span>
+              um hábito do seu jeito<span class="pt">.</span>
             </h3>
             <p>
-              cada dia em que você lê conta. um dia sem ler por semana vira descanso, o anel vazio,
-              e a sequência segue. dois, e ela recomeça sem drama.
+              Veja seus dias de curiosidade se acumularem, uma leitura de cada vez. Um pequeno
+              espaço para aprender na sua rotina.
             </p>
           </article>
           <article class="pcard">
@@ -349,9 +356,9 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
               <ul class="tprog">
                 {(
                   [
-                    ['mente', '111101111', 21, 61],
-                    ['ciência', '010111010', 7, 58],
-                    ['história', '110011100', 9, 44],
+                    ['mente', '111101111', 5, 9],
+                    ['ciência', '010111010', 3, 9],
+                    ['história', '110011100', 4, 8],
                   ] as const
                 ).map(([name, pattern, read, total]) => (
                   <li>
@@ -379,11 +386,11 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
               </ul>
             </div>
             <h3 class="display-font">
-              o mapa dos temas<span class="pt">.</span>
+              siga sua curiosidade<span class="pt">.</span>
             </h3>
             <p>
-              cada tema mostra quanto do arquivo você já leu, com um visto nas perguntas lidas. é um
-              jeito de ver por onde a sua curiosidade anda.
+              Explore o acervo por tema, encontre perguntas que ainda não leu e revisite suas
+              descobertas favoritas.
             </p>
           </article>
         </div>
@@ -394,7 +401,7 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap">
         <div class="sec-h">
           <h2 class="display-font">
-            nada além do necessário<span class="pt">.</span>
+            feito para caber no seu dia<span class="pt">.</span>
           </h2>
         </div>
         <div class="principles">
@@ -414,16 +421,14 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
     <section class="sec" id="temas">
       <div class="wrap">
         <div class="sec-h">
-          <h2 class="display-font">
-            seis temas<span class="pt">.</span>
-          </h2>
+          <h2 class="display-font">o que desperta sua curiosidade?</h2>
           <p>
-            escolha o que te deixa curioso e o arquivo se organiza em volta. a pergunta do dia
-            continua sendo surpresa.
+            Do que acontece na sua cabeça à origem dos nossos costumes: explore seis temas e
+            encontre sua próxima pergunta.
           </p>
         </div>
         <ul class="themes">
-          {themes.map(([nome, desc, total, pattern]) => (
+          {themes.map(([nome, desc, pattern]) => (
             <li>
               <svg class="glyph" viewBox="0 0 30 30" aria-hidden="true">
                 {[...pattern].map((on, i) => (
@@ -439,7 +444,6 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
                 <p class="tn display-font">{nome}</p>
                 <p class="td">{desc}</p>
               </div>
-              <span class="tc mono">{total} perguntas</span>
             </li>
           ))}
         </ul>
@@ -450,31 +454,34 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
       <div class="wrap">
         <div class="sec-h">
           <h2 class="display-font">
-            continue descobrindo<span class="pt">.</span>
+            alimente sua curiosidade todos os dias<span class="pt">.</span>
           </h2>
           <p>
-            sem anúncios e sem versão grátis. a assinatura paga a pesquisa e a escrita de cada
-            edição.
+            Uma nova pergunta por dia, explicações ilustradas e acesso ao acervo para explorar
+            quando quiser. Tudo sem anúncios.
           </p>
         </div>
         <div class="plans">
           <div class="plan main">
-            <p class="name">
-              anual <span class="tag">{discount}% menos</span>
+            <p class="name">anual</p>
+            <p class="price display-font">
+              {formatBRL(anual.cents)} <span class="unit">por ano</span>
             </p>
-            <p class="price display-font">{formatBRL(anual.cents)}</p>
             <p class="per">
-              {formatBRL(perMonthCents(anual.cents))} por mês · {anual.renova}
+              equivale a {formatBRL(perMonthCents(anual.cents))} por mês · cobrado anualmente
             </p>
+            <p class="tag">economize {discount}% em relação ao mensal</p>
           </div>
           <div class="plan">
             <p class="name">mensal</p>
-            <p class="price display-font">{formatBRL(mensal.cents)}</p>
-            <p class="per">por mês · {mensal.renova}</p>
+            <p class="price display-font">
+              {formatBRL(mensal.cents)} <span class="unit">por mês</span>
+            </p>
+            <p class="per">cobrado mensalmente</p>
           </div>
         </div>
         <p class="fine">
-          a assinatura renova automaticamente. cancele quando quiser nos Ajustes do iPhone.
+          Assinatura com renovação automática. Cancele quando quiser nos Ajustes do iPhone.
         </p>
       </div>
     </section>
@@ -482,9 +489,7 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
     <section class="sec" id="perguntas">
       <div class="wrap">
         <div class="sec-h">
-          <h2 class="display-font">
-            perguntas<span class="pt">.</span>
-          </h2>
+          <h2 class="display-font">ficou alguma pergunta?</h2>
         </div>
         <div class="faq">
           {faq.map(([q, a]) => (
@@ -500,16 +505,20 @@ const storeLabel = APP_STORE_URL ? 'baixar na App Store' : 'em breve na App Stor
     <section class="wrap closing">
       <Mark size="56px" />
       <h2 class="display-font">
-        {TAGLINE.slice(0, -1)}
-        <span class="pt">.</span>
+        uma pergunta por dia<span class="pt">.</span>
       </h2>
-      <a
-        class="pill"
-        href={APP_STORE_URL ?? '#preco'}
-        aria-disabled={APP_STORE_URL ? undefined : 'true'}
-      >
-        {storeLabel}
-      </a>
+      <p class="sub">para quem nunca para de perguntar.</p>
+      <p class="lede">
+        Leve sua curiosidade com você.
+        <br />A próxima descoberta cabe em um minuto.
+      </p>
+      {APP_STORE_URL ? (
+        <a class="pill" href={APP_STORE_URL}>
+          baixar na App Store
+        </a>
+      ) : (
+        <span class="status">em breve na App Store</span>
+      )}
     </section>
   </main>
 

@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITE_NAME, SITE_URL, TAGLINE } from '../lib/site.ts';
+import { SITE_NAME, SITE_URL } from '../lib/site.ts';
 
 type Props = { title: string; description: string; path?: string };
 const { title, description, path = '/' } = Astro.props;
@@ -24,10 +24,12 @@ const ogImage = new URL('/og.png', SITE_URL).href;
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:url" content={url} />
-    <meta property="og:title" content={`${SITE_NAME} ${TAGLINE}`} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <script is:inline>
       document.documentElement.classList.add('js');
       // Runs before first paint so a saved or system dark preference never flashes light.
