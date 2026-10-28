@@ -22,7 +22,19 @@ const links = [
 <header class="nav">
   <nav class="nav-inner" aria-label={t.nav.label}>
     <a class="brand" href={localizedPath('/', locale)} aria-label={`joão coelho, ${t.nav.home}`}>
-      jc
+      <span class="brand-wordmark" aria-hidden="true">
+        jo
+        <span class="brand-accent">
+          a
+          <svg viewBox="0 0 40 12" focusable="false" aria-hidden="true">
+            <path
+              d="M1 10C6 0 11 0 20 4S32 9 39 2C35 13 29 13 20 9S8 5 1 10Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        o coelho.
+      </span>
     </a>
     <div class="links">
       {links.map((link) => (
@@ -64,9 +76,37 @@ const links = [
   }
 
   .brand {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: clamp(18px, 2.5vw, 23px);
+    font-weight: 700;
+    font-variation-settings:
+      'SOFT' 100,
+      'WONK' 1;
+    line-height: 1.2;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+  }
+
+  .brand-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .brand-accent {
+    position: relative;
+    display: inline-block;
+  }
+
+  .brand-accent svg {
+    position: absolute;
+    width: 1.05em;
+    max-width: none;
+    height: 0.32em;
+    left: 50%;
+    top: -0.02em;
+    transform: translateX(-50%);
+    pointer-events: none;
   }
 
   .links {
@@ -88,5 +128,31 @@ const links = [
   .links a[aria-current='page'] {
     color: var(--fg);
     font-weight: 600;
+  }
+  @media (max-width: 480px) {
+    .nav-inner {
+      gap: 12px;
+    }
+
+    .links {
+      gap: 14px;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .nav {
+      height: auto;
+      padding-block: 12px;
+    }
+
+    .nav-inner {
+      flex-wrap: wrap;
+    }
+
+    .links {
+      order: 3;
+      justify-content: center;
+      width: 100%;
+    }
   }
 </style>
