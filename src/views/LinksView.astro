@@ -2,8 +2,6 @@
 import Base from '../layouts/Base.astro';
 import LinkAvatar from '../components/LinkAvatar.astro';
 import SocialIcon from '../components/SocialIcon.astro';
-import experiencesEn from '../data/experiences.en.json';
-import experiencesPt from '../data/experiences.pt-BR.json';
 import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
@@ -17,9 +15,7 @@ const t = ui[locale].links;
 const about = ui[locale].about;
 const otherLocale: Locale = locale === 'en' ? 'pt-BR' : 'en';
 
-const { experiences } = locale === 'pt-BR' ? experiencesPt : experiencesEn;
-const [current] = experiences;
-const identity = [current?.title ?? '', t.place].filter(Boolean).join(' · ');
+const identity = `${t.areas} · ${t.place}`;
 
 const [latestPost] = await postsFor(locale);
 type Card = { title: string; text: string; href: string };
