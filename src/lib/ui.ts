@@ -123,7 +123,6 @@ export const ui = {
       metaDescription: 'where joão coelho has worked and the problems he has helped solve.',
     },
     links: {
-      tagline: 'a bit of me, around the internet.',
       areas: 'ai, backend, software architecture',
       place: 'porto alegre',
       site: 'my site',
@@ -263,7 +262,6 @@ export const ui = {
       metaDescription: 'onde joão coelho trabalhou e os problemas que ajudou a resolver.',
     },
     links: {
-      tagline: 'um pouco de mim, pela internet.',
       areas: 'ia, backend, arquitetura',
       place: 'porto alegre',
       site: 'meu site',
