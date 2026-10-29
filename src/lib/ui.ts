@@ -135,6 +135,7 @@ export const ui = {
       github: 'github',
       linkedin: 'linkedin',
       x: 'x',
+      instagram: 'instagram',
       email: 'email',
       contactTitle: 'say hello.',
       metaDescription:
@@ -277,6 +278,7 @@ export const ui = {
       github: 'github',
       linkedin: 'linkedin',
       x: 'x',
+      instagram: 'instagram',
       email: 'e-mail',
       contactTitle: 'diga olá.',
       metaDescription:
