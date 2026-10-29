@@ -124,7 +124,7 @@ export const ui = {
     },
     links: {
       tagline: 'a bit of me, around the internet.',
-      areas: 'ai, engineering, ios apps',
+      areas: 'ai, backend, software architecture',
       place: 'porto alegre',
       site: 'my site',
       siteText: 'home, writing, projects and a few things outside of code.',
@@ -264,7 +264,7 @@ export const ui = {
     },
     links: {
       tagline: 'um pouco de mim, pela internet.',
-      areas: 'ia, engenharia, apps ios',
+      areas: 'ia, backend, arquitetura de software',
       place: 'porto alegre',
       site: 'meu site',
       siteText: 'home, textos, projetos e algumas coisas fora do código.',
