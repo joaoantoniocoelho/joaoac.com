@@ -264,7 +264,7 @@ export const ui = {
     },
     links: {
       tagline: 'um pouco de mim, pela internet.',
-      areas: 'ia, backend, arquitetura de software',
+      areas: 'ia, backend, arquitetura',
       place: 'porto alegre',
       site: 'meu site',
       siteText: 'home, textos, projetos e algumas coisas fora do código.',
