@@ -132,10 +132,6 @@ export const ui = {
       projects: 'projects',
       projectsText: 'everything i am building outside work.',
       social: 'find me elsewhere',
-      github: 'github',
-      linkedin: 'linkedin',
-      x: 'x',
-      instagram: 'instagram',
       email: 'email',
       contactTitle: 'say hello.',
       metaDescription:
@@ -275,10 +271,6 @@ export const ui = {
       projects: 'projetos',
       projectsText: 'tudo o que construo fora do trabalho.',
       social: 'me encontre por aí',
-      github: 'github',
-      linkedin: 'linkedin',
-      x: 'x',
-      instagram: 'instagram',
       email: 'e-mail',
       contactTitle: 'diga olá.',
       metaDescription:

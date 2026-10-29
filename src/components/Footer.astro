@@ -1,6 +1,8 @@
 ---
+import SocialIcon from './SocialIcon.astro';
 import type { Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
+import { SOCIALS } from '../lib/socials.ts';
 import { ui } from '../lib/ui.ts';
 
 type Props = { locale: Locale };
@@ -15,20 +17,17 @@ const year = new Date().getFullYear();
       {t.footer.copyright} © {year} joão coelho.
     </span>
     <span class="links">
-      <a href={`mailto:${CONTACT_EMAIL}`}>{t.footer.email}</a>
-      <a href="https://github.com/joaoantoniocoelho" rel="me">
-        github
+      {SOCIALS.map((social) => (
+        <a href={social.href} rel="me" aria-label={social.label}>
+          <SocialIcon name={social.icon} size={16} />
+        </a>
+      ))}
+      <a href={`mailto:${CONTACT_EMAIL}`} aria-label={t.footer.email}>
+        <SocialIcon name="email" size={16} />
       </a>
-      <a href="https://linkedin.com/in/joaoac" rel="me">
-        linkedin
+      <a href="/feed.xml" aria-label="rss">
+        <SocialIcon name="rss" size={16} />
       </a>
-      <a href="https://x.com/joaoac_" rel="me">
-        x
-      </a>
-      <a href="https://instagram.com/joaoac_dev" rel="me">
-        instagram
-      </a>
-      <a href="/feed.xml">rss</a>
     </span>
   </div>
 </footer>
@@ -52,6 +51,7 @@ const year = new Date().getFullYear();
     max-width: var(--page);
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
     font-size: 12px;
@@ -61,14 +61,25 @@ const year = new Date().getFullYear();
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 20px;
+    gap: 2px;
+    /* Pulls the icons' hit areas out to the edge so the glyphs line up with the page. */
+    margin-inline: -8px;
   }
 
   .links a {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
     color: var(--fg-secondary);
+    transition:
+      color 0.2s,
+      background 0.2s;
   }
 
   .links a:hover {
-    text-decoration: underline;
+    color: var(--fg);
+    background: rgb(0 0 0 / 5%);
   }
 </style>

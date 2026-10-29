@@ -8,6 +8,7 @@ import IchiroChat from '../components/IchiroChat.astro';
 import { pathForLocale, type Locale } from '../lib/locale.ts';
 import { absoluteUrl, languageAlternates, ogLocale, pageTitle } from '../lib/seo.ts';
 import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_URL } from '../lib/site.ts';
+import { SOCIALS } from '../lib/socials.ts';
 
 type Props = {
   locale: Locale;
@@ -53,12 +54,7 @@ const siteJsonLd = {
       url: SITE_URL,
       image: `${SITE_URL}/avatar.png`,
       email: CONTACT_EMAIL,
-      sameAs: [
-        'https://linkedin.com/in/joaoac',
-        'https://github.com/joaoantoniocoelho',
-        'https://x.com/joaoac_',
-        'https://instagram.com/joaoac_dev',
-      ],
+      sameAs: SOCIALS.map((social) => social.href),
       alumniOf: { '@type': 'CollegeOrUniversity', name: 'PUCRS' },
       address: {
         '@type': 'PostalAddress',
