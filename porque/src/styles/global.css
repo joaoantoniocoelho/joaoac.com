@@ -1335,3 +1335,75 @@ svg {
     0 0 0 1px #3a3a3c,
     0 40px 80px -40px rgba(255, 255, 255, 0.12);
 }
+
+/* ---------- waitlist ---------- */
+.waitlist {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 28px;
+}
+.closing .waitlist {
+  margin-inline: auto;
+}
+.wl-label {
+  display: block;
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-wrap: balance;
+}
+.wl-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.wl-input {
+  flex: 1 1 220px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--line);
+  background: var(--tile);
+  color: var(--fg);
+  font: inherit;
+  font-size: 16px;
+}
+.wl-input::placeholder {
+  color: var(--muted);
+}
+.wl-input[aria-invalid='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--mark-dot);
+}
+.waitlist .pill:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.wl-msg {
+  min-height: 1.5em;
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.waitlist[data-state='subscribed'] .wl-msg,
+.waitlist[data-state='already'] .wl-msg {
+  color: var(--fg);
+}
+.waitlist[data-state='subscribed'] .wl-msg::before,
+.waitlist[data-state='already'] .wl-msg::before {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.5em;
+  border-radius: 50%;
+  background: var(--mark);
+  vertical-align: 0.05em;
+}
+.wl-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

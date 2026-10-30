@@ -5,6 +5,7 @@ import Mark from '../components/Mark.astro';
 import Phone from '../components/Phone.astro';
 import Widgets from '../components/Widgets.astro';
 import Dots from '../components/Dots.astro';
+import Waitlist from '../components/Waitlist.astro';
 import { splitHighlight } from '../lib/highlight.ts';
 import { PLANS, formatBRL, perMonthCents, yearlyDiscountPercent } from '../lib/pricing.ts';
 import { APP_STORE_URL, AUTHOR_URL, META_DESCRIPTION, PAGE_TITLE } from '../lib/site.ts';
@@ -196,7 +197,9 @@ const faq = [
               <a class="pill" href="#descoberta">
                 ler uma descoberta
               </a>
-              <span class="status">em breve na App Store</span>
+              <a class="pill pill-ghost" href="#lista">
+                entrar na lista de espera
+              </a>
             </>
           )}
         </div>
@@ -502,7 +505,7 @@ const faq = [
       </div>
     </section>
 
-    <section class="wrap closing">
+    <section class="wrap closing" id="lista">
       <Mark size="56px" />
       <h2 class="display-font">
         uma pergunta por dia<span class="pt">.</span>
@@ -517,7 +520,10 @@ const faq = [
           baixar na App Store
         </a>
       ) : (
-        <span class="status">em breve na App Store</span>
+        <>
+          <span class="status">em breve na App Store</span>
+          <Waitlist />
+        </>
       )}
     </section>
   </main>
@@ -534,5 +540,6 @@ const faq = [
 
   <script>
     import '../scripts/page.ts';
+    import '../scripts/waitlist.ts';
   </script>
 </Base>

@@ -1,0 +1,31 @@
+---
+// Waitlist signup. Posts to /api/waitlist (src/worker/index.ts); behaviour lives in scripts/waitlist.ts.
+---
+
+<form class="waitlist" data-waitlist novalidate action="/api/waitlist" method="post">
+  <label class="wl-label" for="wl-email">
+    entre na lista de espera e saiba primeiro quando o app chegar.
+  </label>
+  <div class="wl-row">
+    <input
+      id="wl-email"
+      class="wl-input"
+      type="email"
+      name="email"
+      inputmode="email"
+      autocomplete="email"
+      placeholder="seu@email.com"
+      required
+      maxlength="254"
+      aria-describedby="wl-msg"
+    />
+    <button class="pill" type="submit" data-wl-submit>
+      quero ser avisado
+    </button>
+  </div>
+  <div class="wl-hp" aria-hidden="true">
+    <label for="wl-site">não preencha este campo</label>
+    <input id="wl-site" type="text" name="site" tabindex="-1" autocomplete="off" />
+  </div>
+  <p id="wl-msg" class="wl-msg" role="status" aria-live="polite" data-wl-msg></p>
+</form>

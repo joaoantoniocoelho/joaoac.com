@@ -1,0 +1,4 @@
+# Copy to .dev.vars for `npm run preview` (wrangler dev). Never commit real values.
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxx
+# Optional: confirmation email sender on a Resend-verified domain. Unset = no email is sent.
+# WAITLIST_FROM_EMAIL="por quê <ola@digest.joaoac.com>"
