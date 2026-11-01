@@ -1,4 +1,5 @@
 // Worker entry: only /api/* reaches this script (run_worker_first); everything else is static assets.
+import { sanitizeUtm } from '../lib/utm.ts';
 import { joinWaitlist, type WaitlistEnv } from '../lib/waitlist.ts';
 
 interface Env extends WaitlistEnv {
@@ -27,7 +28,7 @@ async function handleWaitlist(request: Request, env: Env): Promise<Response> {
   // Honeypot: humans never see this field. Pretend it worked so bots learn nothing.
   if (typeof data.site === 'string' && data.site !== '') return json({ status: 'subscribed' }, 201);
   try {
-    const result = await joinWaitlist(data.email, env);
+    const result = await joinWaitlist(data.email, env, fetch, sanitizeUtm(data));
     return json(result, STATUS_CODE[result.status]);
   } catch {
     return json({ status: 'error' }, 502);

@@ -12,6 +12,8 @@ export interface WaitlistEnv {
 export type WaitlistResult =
   { status: 'subscribed' } | { status: 'already' } | { status: 'invalid' } | { status: 'error' };
 
+import type { Utm } from './utm.ts';
+
 const RESEND = 'https://api.resend.com';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -28,6 +30,7 @@ export async function joinWaitlist(
   rawEmail: unknown,
   env: WaitlistEnv,
   doFetch: Fetch = fetch,
+  utm: Utm = {},
 ): Promise<WaitlistResult> {
   const email = normalizeEmail(rawEmail);
   if (!email) return { status: 'invalid' };
@@ -42,11 +45,16 @@ export async function joinWaitlist(
 
   const body: Record<string, unknown> = { email, unsubscribed: false };
   if (env.RESEND_SEGMENT_ID) body.segments = [{ id: env.RESEND_SEGMENT_ID }];
-  const created = await doFetch(`${RESEND}/contacts`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  });
+  const create = (payload: Record<string, unknown>) =>
+    doFetch(`${RESEND}/contacts`, { method: 'POST', headers, body: JSON.stringify(payload) });
+  // UTMs go in as Resend contact properties (utm_source, utm_medium, utm_campaign), which must
+  // exist in Resend first (scripts/create-utm-properties.mjs). If Resend rejects them, the signup
+  // still counts: retry without properties rather than lose the email.
+  const hasUtm = Object.keys(utm).length > 0;
+  let created = await create(hasUtm ? { ...body, properties: utm } : body);
+  if (!created.ok && hasUtm && created.status >= 400 && created.status < 500) {
+    created = await create(body);
+  }
   if (!created.ok) return { status: 'error' };
 
   if (env.WAITLIST_FROM_EMAIL) {
