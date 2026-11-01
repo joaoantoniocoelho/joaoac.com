@@ -1,4 +1,5 @@
 import { normalizeEmail } from '../lib/waitlist.ts';
+import { readStoredUtm } from './utm.ts';
 
 const MESSAGES = {
   loading: 'enviando…',
@@ -39,7 +40,7 @@ for (const form of document.querySelectorAll<HTMLFormElement>('[data-waitlist]')
     fetch('/api/waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, site: site?.value ?? '' }),
+      body: JSON.stringify({ email, site: site?.value ?? '', ...readStoredUtm() }),
     })
       .then(async (res) => {
         const data: unknown = await res.json().catch(() => null);

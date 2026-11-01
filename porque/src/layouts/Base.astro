@@ -44,5 +44,8 @@ const ogImage = new URL('/og.png', SITE_URL).href;
   </head>
   <body>
     <slot />
+    <script>
+      import '../scripts/utm.ts';
+    </script>
   </body>
 </html>

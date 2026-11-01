@@ -20,4 +20,26 @@ falso e nada é gravado.
 | `RESEND_SEGMENT_ID`   | var            | `wrangler.jsonc` (segmento "General")                     |
 | `WAITLIST_FROM_EMAIL` | var (opcional) | remetente num domínio verificado; sem ele, nada é enviado |
 
+### Origem (UTM)
+
+Em qualquer página, `src/scripts/utm.ts` guarda no `localStorage` (`porque_utm`) os primeiros
+`utm_source`, `utm_medium` e `utm_campaign` da visita (minúsculas, `[a-z0-9._-]`, até 64
+caracteres; valores já guardados não são sobrescritos). Ao se inscrever, eles vão junto com o
+e-mail e o Worker grava como propriedades do contato no Resend.
+
+As propriedades precisam existir no Resend antes (uma vez só):
+
+```sh
+RESEND_API_KEY=... node scripts/create-utm-properties.mjs
+```
+
+Sem elas, o Resend recusa o contato com propriedades e o Worker repete a inscrição sem UTM (o
+e-mail nunca se perde, só a origem).
+
+Contagem por origem (somente leitura; quem chegou sem UTM aparece como `direto`):
+
+```sh
+RESEND_API_KEY=... node scripts/waitlist-stats.mjs
+```
+
 Local: copie `.dev.vars.example` para `.dev.vars` e rode `npm run preview`.
