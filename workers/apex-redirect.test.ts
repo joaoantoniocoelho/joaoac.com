@@ -17,6 +17,13 @@ describe('canonicalUrl', () => {
     );
   });
 
+  it('sends www.me to the me host, keeping the path and query', () => {
+    assert.equal(
+      canonicalUrl('https://www.me.joaoac.com/pt-BR?ref=x'),
+      'https://me.joaoac.com/pt-BR?ref=x',
+    );
+  });
+
   it('always lands on https', () => {
     assert.equal(canonicalUrl('http://joaoac.com/'), 'https://www.joaoac.com/');
   });

@@ -3,6 +3,7 @@
 const CANONICAL_HOSTS: Record<string, string> = {
   'joaoac.com': 'www.joaoac.com',
   'www.digest.joaoac.com': 'digest.joaoac.com',
+  'www.me.joaoac.com': 'me.joaoac.com',
 };
 const FALLBACK_HOST = 'www.joaoac.com';
 

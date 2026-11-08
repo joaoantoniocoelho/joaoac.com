@@ -7,5 +7,6 @@
   "routes": [
     { "pattern": "joaoac.com", "custom_domain": true },
     { "pattern": "www.digest.joaoac.com", "custom_domain": true },
+    { "pattern": "www.me.joaoac.com", "custom_domain": true },
   ],
 }

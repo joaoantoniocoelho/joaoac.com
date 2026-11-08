@@ -5,7 +5,7 @@ joão coelho's corner of the web: i build software and write about what i learn 
 - `/` — [www.joaoac.com](https://www.joaoac.com). home, writing (mdx posts in english and portuguese), projects, experience and a few things outside of code. static astro site.
 - `digest/` — [digest.joaoac.com](https://digest.joaoac.com). the tech digest: a short list of tech links, every day. astro rendered on demand, edge-cached, reads the tech digest api.
 - `porque/` — [porque.app](https://porque.app). landing page for por quê?, an iphone app with one interesting question a day. static astro.
-- `workers/` — redirects `joaoac.com` and `www.digest` to their canonical hosts, and serves the `/links` page at [me.joaoac.com](https://me.joaoac.com).
+- `workers/` — redirects `joaoac.com`, `www.digest` and `www.me` to their canonical hosts, and serves the `/links` page at [me.joaoac.com](https://me.joaoac.com).
 
 ## stack
 
