@@ -4,6 +4,7 @@ import LinkAvatar from '../components/LinkAvatar.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
+import { absoluteUrl } from '../lib/seo.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
 import { SOCIALS } from '../lib/socials.ts';
 import { ui } from '../lib/ui.ts';
@@ -18,15 +19,20 @@ const otherLocale: Locale = locale === 'en' ? 'pt-BR' : 'en';
 const identity = `${t.areas} · ${t.place}`;
 
 const [latestPost] = await postsFor(locale);
+// Absolute because this page is also served at me.joaoac.com, where / is the page itself.
 type Card = { title: string; text: string; href: string };
 const cards: Card[] = [
-  { title: t.site, text: t.siteText, href: localizedPath('/', locale) },
+  { title: t.site, text: t.siteText, href: absoluteUrl(localizedPath('/', locale)) },
   {
     title: t.writing,
     text: latestPost ? `${t.latest}: ${latestPost.title}` : '',
-    href: localizedPath('/blog', locale),
+    href: absoluteUrl(localizedPath('/blog', locale)),
   },
-  { title: t.projects, text: t.projectsText, href: localizedPath('/projects', locale) },
+  {
+    title: t.projects,
+    text: t.projectsText,
+    href: absoluteUrl(localizedPath('/projects', locale)),
+  },
 ];
 ---
 
