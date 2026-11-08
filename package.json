@@ -14,7 +14,8 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "test": "node --test \"src/**/*.test.ts\" \"workers/**/*.test.ts\"",
-    "deploy:redirect": "wrangler deploy -c workers/apex-redirect.jsonc"
+    "deploy:redirect": "wrangler deploy -c workers/apex-redirect.jsonc",
+    "deploy:me": "wrangler deploy -c workers/me-subdomain.jsonc"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.1",
