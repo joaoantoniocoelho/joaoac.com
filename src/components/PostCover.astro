@@ -1,9 +1,20 @@
 ---
 // Each topic gets a small typographic illustration instead of a stock image: no extra requests, crisp at any size.
-type Props = { topic: string; size?: 'small' | 'large' };
+import type { PostData } from '../lib/posts.ts';
 
-const { topic, size = 'small' } = Astro.props;
-const kind = topic === 'security' ? 'grid' : topic === 'ai' ? 'prompt' : 'lines';
+type Props = { topic: string; size?: 'small' | 'large'; cover?: PostData['cover'] };
+
+const { topic, size = 'small', cover } = Astro.props;
+const topicKind = topic === 'security' ? 'grid' : topic === 'ai' ? 'prompt' : 'lines';
+const kind = cover ?? topicKind;
+const mirrorBars = [
+  { start: 30, width: 69, tone: 'ink' },
+  { start: 48, width: 93, tone: 'ink' },
+  { start: 66, width: 60, tone: 'soft' },
+  { start: 66, width: 81, tone: 'accent' },
+  { start: 48, width: 45, tone: 'ink' },
+  { start: 30, width: 18, tone: 'ink' },
+];
 const columns = size === 'large' ? 14 : 10;
 const cells = Array.from({ length: columns * 4 }, (_, index) => index);
 const owned = columns + Math.floor(columns / 2) - 1;
@@ -22,6 +33,23 @@ const owned = columns + Math.floor(columns / 2) - 1;
       &gt;_
       <span class="caret" />
     </span>
+  )}
+  {kind === 'self-review' && (
+    <svg class="mirror" viewBox="0 0 400 200" fill="none">
+      <line class="mirror-axis" x1="200" y1="14" x2="200" y2="186" />
+      {mirrorBars.map((bar, row) => (
+        <g class={`tone-${bar.tone}`}>
+          <rect x={bar.start} y={30 + row * 25} width={bar.width} height="8" rx="4" />
+          <rect
+            x={400 - bar.start - bar.width}
+            y={30 + row * 25}
+            width={bar.width}
+            height="8"
+            rx="4"
+          />
+        </g>
+      ))}
+    </svg>
   )}
   {kind === 'lines' && (
     <div class="lines">
@@ -87,6 +115,31 @@ const owned = columns + Math.floor(columns / 2) - 1;
     50% {
       opacity: 0;
     }
+  }
+
+  .mirror {
+    width: auto;
+    height: 66%;
+    max-width: 80%;
+  }
+
+  .mirror-axis {
+    stroke: #3a3a3c;
+    stroke-width: 2;
+    stroke-dasharray: 2 8;
+    stroke-linecap: round;
+  }
+
+  .tone-ink {
+    fill: var(--on-dark);
+  }
+
+  .tone-soft {
+    fill: var(--faint);
+  }
+
+  .tone-accent {
+    fill: #fca052;
   }
 
   .lines {

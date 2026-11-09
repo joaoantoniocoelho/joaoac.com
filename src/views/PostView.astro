@@ -85,8 +85,8 @@ const jsonLd = {
     </header>
 
     <div class="page-wide">
-      <div class="tile cover">
-        <PostCover topic={post.topic} size="large" />
+      <div class:list={['tile', 'cover', { 'tile-dark': post.topic === 'ai' }]}>
+        <PostCover topic={post.topic} cover={post.cover} size="large" />
       </div>
     </div>
 
@@ -222,6 +222,12 @@ const jsonLd = {
     margin: 40px 0;
     border: 0;
     border-top: 1px solid var(--line);
+  }
+
+  .prose :global(img) {
+    width: 100%;
+    height: auto;
+    margin-block: 34px 12px;
   }
 
   .prose :global(.code-block) {

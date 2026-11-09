@@ -47,6 +47,14 @@ describe('localizedPosts', () => {
     assert.equal(posts[1]?.title, 'title old');
   });
 
+  it('keeps the English cover on the translation', () => {
+    const covered = [entry('post', { cover: 'self-review' }), entry('post.pt-BR')];
+    const [post] = localizedPosts(covered, 'pt-BR', false);
+    assert.ok(post);
+    assert.equal(post.cover, 'self-review');
+    assert.equal(post.title, 'title post.pt-BR');
+  });
+
   it('includes drafts when asked to', () => {
     const posts = localizedPosts(entries, 'en', true);
     assert.equal(posts[0]?.slug, 'draft');

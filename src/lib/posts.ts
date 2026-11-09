@@ -7,6 +7,7 @@ export type PostData = {
   updated?: string | undefined;
   tags: string[];
   draft: boolean;
+  cover?: 'self-review' | undefined;
 };
 
 export type PostEntry = { id: string; data: PostData };
@@ -24,7 +25,7 @@ function isTranslation(entry: PostEntry): boolean {
   return entry.id.endsWith(PORTUGUESE_SUFFIX);
 }
 
-// Translations reuse the English publication dates and draft flag, so both languages stay in sync.
+// Translations reuse the English publication dates, draft flag and cover, so both languages stay in sync.
 function localize<Entry extends PostEntry>(
   english: Entry,
   translation: Entry | undefined,
@@ -35,6 +36,7 @@ function localize<Entry extends PostEntry>(
     date: english.data.date,
     updated: english.data.updated,
     draft: english.data.draft,
+    cover: english.data.cover,
     slug: english.id,
     topic: source.data.tags[0] ?? DEFAULT_TOPIC,
     entry: source,

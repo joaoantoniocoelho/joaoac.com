@@ -48,12 +48,15 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
       {t.home.writingTitle}
     </h2>
     {featured && (
-      <a class="tile lift featured" href={postHref(featured.slug)}>
+      <a
+        class:list={['tile', 'lift', 'featured', { 'tile-dark': featured.topic === 'ai' }]}
+        href={postHref(featured.slug)}
+      >
         <span class="featured-title">{featured.title}</span>
         <span class="featured-description">{featured.description}</span>
         <span class="chevron-link">{t.home.readPost}</span>
         <div class="featured-cover">
-          <PostCover topic={featured.topic} size="large" />
+          <PostCover topic={featured.topic} cover={featured.cover} size="large" />
         </div>
       </a>
     )}
@@ -66,7 +69,7 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
           <span class="secondary-title">{post.title}</span>
           <span class="chevron-link">{t.home.readPost}</span>
           <div class="secondary-cover">
-            <PostCover topic={post.topic} />
+            <PostCover topic={post.topic} cover={post.cover} />
           </div>
         </a>
       ))}

@@ -16,6 +16,7 @@ const posts = defineCollection({
     updated: z.string().optional(),
     tags: z.array(z.string()),
     draft: z.boolean().default(false),
+    cover: z.enum(['self-review']).optional(),
   }),
 });
 
