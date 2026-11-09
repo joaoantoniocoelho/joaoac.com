@@ -54,6 +54,13 @@ body {
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Takes up the spare height so the footer stays at the bottom on short pages. */
+main {
+  flex: 1 0 auto;
 }
 
 img,

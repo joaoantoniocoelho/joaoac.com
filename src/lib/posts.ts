@@ -7,7 +7,7 @@ export type PostData = {
   updated?: string | undefined;
   tags: string[];
   draft: boolean;
-  cover?: 'self-review' | undefined;
+  cover?: 'self-review' | 'overflowing-hours' | undefined;
 };
 
 export type PostEntry = { id: string; data: PostData };

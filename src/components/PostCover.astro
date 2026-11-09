@@ -15,6 +15,21 @@ const mirrorBars = [
   { start: 48, width: 45, tone: 'ink' },
   { start: 30, width: 18, tone: 'ink' },
 ];
+const HOUR_SIZE = 30;
+const hourPosition = (column: number, row: number) => ({ x: 14 + column * 38, y: 28 + row * 38 });
+const hours = Array.from({ length: 24 }, (_, hour) => hourPosition(hour % 6, Math.floor(hour / 6)));
+const wantedHour = hourPosition(6, 1);
+const overflowHours = [
+  [6, 0],
+  [6, 2],
+  [6, 3],
+  [7, 0],
+  [7, 2],
+  [7, 3],
+  [8, 1],
+  [8, 3],
+  [9, 2],
+].map(([column = 0, row = 0]) => hourPosition(column, row));
 const columns = size === 'large' ? 14 : 10;
 const cells = Array.from({ length: columns * 4 }, (_, index) => index);
 const owned = columns + Math.floor(columns / 2) - 1;
@@ -48,6 +63,24 @@ const owned = columns + Math.floor(columns / 2) - 1;
             rx="4"
           />
         </g>
+      ))}
+    </svg>
+  )}
+  {kind === 'overflowing-hours' && (
+    <svg class="hours" viewBox="0 0 400 200" fill="none">
+      {hours.map(({ x, y }) => (
+        <rect class="tone-ink" x={x} y={y} width={HOUR_SIZE} height={HOUR_SIZE} rx="5" />
+      ))}
+      <rect
+        class="tone-accent"
+        x={wantedHour.x}
+        y={wantedHour.y}
+        width={HOUR_SIZE}
+        height={HOUR_SIZE}
+        rx="5"
+      />
+      {overflowHours.map(({ x, y }) => (
+        <rect class="hour-overflow" x={x} y={y} width={HOUR_SIZE} height={HOUR_SIZE} rx="5" />
       ))}
     </svg>
   )}
@@ -117,7 +150,14 @@ const owned = columns + Math.floor(columns / 2) - 1;
     }
   }
 
-  .mirror {
+  .hour-overflow {
+    stroke: var(--faint);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+  }
+
+  .mirror,
+  .hours {
     width: auto;
     height: 66%;
     max-width: 80%;
