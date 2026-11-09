@@ -102,6 +102,17 @@ export const ui = {
       copyCode: 'copy',
       codeCopied: 'copied',
     },
+    ambitionChart: {
+      title: 'the more i can do, the more i want',
+      want: 'what i want to do',
+      can: 'what i can do',
+      gap: ["what doesn't fit", 'in 24 hours'],
+      time: 'time',
+      yAxis: 'number of projects and ideas',
+      caption: 'conceptual illustration, no real data.',
+      description:
+        "illustrative chart with no numbers: over time, both what i can do and what i want to do rise a lot, with what i want gradually pulling away, and the space between the two lines is what doesn't fit in 24 hours.",
+    },
     projects: {
       title: 'projects.',
       live: 'live',
@@ -240,6 +251,17 @@ export const ui = {
       more: 'outros textos.',
       copyCode: 'copiar',
       codeCopied: 'copiado',
+    },
+    ambitionChart: {
+      title: 'quanto mais consigo, mais quero',
+      want: 'o que quero fazer',
+      can: 'o que consigo fazer',
+      gap: ['o que não cabe', 'nas 24 horas'],
+      time: 'tempo',
+      yAxis: 'quantidade de projetos e ideias',
+      caption: 'ilustração conceitual, sem dados reais.',
+      description:
+        'gráfico ilustrativo, sem números: com o tempo, o que consigo fazer e o que quero fazer sobem bastante, o que quero se afasta aos poucos, e o espaço entre as duas linhas é o que não cabe nas 24 horas.',
     },
     projects: {
       title: 'projetos.',

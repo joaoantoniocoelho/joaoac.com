@@ -1,0 +1,138 @@
+---
+import { CHART, curvePath, gapAreaPath } from '../lib/ambition-chart.ts';
+import type { Locale } from '../lib/locale.ts';
+import { ui } from '../lib/ui.ts';
+
+type Props = { locale: Locale };
+
+const t = ui[Astro.props.locale].ambitionChart;
+const labelX = CHART.endX + 26;
+const viewBox = [0, 0, CHART.width, CHART.height].join(' ');
+const yLabelCenter = String((CHART.topY + CHART.baseY) / 2);
+---
+
+<figure class="chart">
+  <div class="title">{t.title}</div>
+  <svg class="plot" viewBox={viewBox} role="img" aria-label={t.description} fill="none">
+    <text
+      class="axis-label"
+      text-anchor="middle"
+      transform={`translate(30 ${yLabelCenter}) rotate(-90)`}
+    >
+      {t.yAxis}
+    </text>
+    <line class="axis" x1={CHART.axisX} y1={CHART.topY} x2={CHART.axisX} y2={CHART.baseY} />
+    <line class="axis" x1={CHART.axisX} y1={CHART.baseY} x2={CHART.endX} y2={CHART.baseY} />
+    <text class="axis-label" text-anchor="end" x={CHART.endX} y="550">
+      {t.time}
+    </text>
+
+    <path class="gap-area" d={gapAreaPath()} />
+    <path class="line line-can" d={curvePath(CHART.canY)} />
+    <path class="line line-want" d={curvePath(CHART.wantY)} />
+    <circle class="fill-want" cx={CHART.startX} cy={CHART.startY} r="9" />
+    <circle class="fill-want" cx={CHART.endX} cy={CHART.wantY} r="9" />
+    <circle class="fill-can" cx={CHART.endX} cy={CHART.canY} r="9" />
+
+    <text class="label label-want" x={labelX} y={CHART.wantY + 11}>
+      {t.want}
+    </text>
+    <text class="label" x={labelX} y="96">
+      {t.gap[0]}
+    </text>
+    <text class="label" x={labelX} y="136">
+      {t.gap[1]}
+    </text>
+    <text class="label label-can" x={labelX} y={CHART.canY + 11}>
+      {t.can}
+    </text>
+  </svg>
+  <figcaption>{t.caption}</figcaption>
+</figure>
+
+<style>
+  .chart {
+    margin: 36px 0 12px;
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 5.2vw, 36px);
+    font-weight: 700;
+    font-variation-settings:
+      'SOFT' 20,
+      'WONK' 0;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    text-align: center;
+  }
+
+  .title::after {
+    content: '.';
+    color: #a8520e;
+  }
+
+  .plot {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+  }
+
+  .axis {
+    stroke: var(--line);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .axis-label {
+    fill: var(--muted);
+    font-size: 26px;
+  }
+
+  .gap-area {
+    fill: #fff1e5;
+  }
+
+  .line {
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+
+  .line-want {
+    stroke: var(--fg);
+  }
+
+  .line-can {
+    stroke: var(--muted);
+  }
+
+  .fill-want {
+    fill: var(--fg);
+  }
+
+  .fill-can {
+    fill: var(--muted);
+  }
+
+  .label {
+    fill: var(--fg);
+    font-size: 33px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .label-want {
+    font-weight: 600;
+  }
+
+  .label-can {
+    fill: var(--muted);
+  }
+
+  figcaption {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+</style>
