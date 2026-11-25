@@ -26,6 +26,25 @@ const count = edition.articles.length;
     <h1>{day}.</h1>
     <p class="lead">{t.editionLead(count)}</p>
 
+    {edition.note && (
+      <section class="note" aria-labelledby="note-title">
+        <p class="note-label">{t.noteLabel}</p>
+        <div lang="en">
+          <h2 id="note-title">
+            <a class="underline-hover" href={edition.note.url}>
+              {edition.note.title}
+            </a>
+          </h2>
+          {edition.note.paragraphs.map((paragraph) => (
+            <p class="note-text">{paragraph}</p>
+          ))}
+        </div>
+        <a class="chevron-link source" href={edition.note.url}>
+          {t.noteCta}
+        </a>
+      </section>
+    )}
+
     <ol class="articles">
       {edition.articles.map((article, index) => {
         const url = safeArticleUrl(article.url);
@@ -115,6 +134,25 @@ const count = edition.articles.length;
     margin-top: 16px;
     font-size: 21px;
     line-height: 1.4;
+    color: var(--fg-secondary);
+  }
+
+  .note {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .note-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .note-text {
+    margin-top: 12px;
+    line-height: 1.5;
     color: var(--fg-secondary);
   }
 

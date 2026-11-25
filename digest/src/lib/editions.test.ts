@@ -55,6 +55,42 @@ describe('parseEdition', () => {
   it('rejects a payload without a date', () => {
     assert.equal(parseEdition({ articles: [] }), null);
   });
+
+  it('has no note when the api sends none', () => {
+    assert.equal(parseEdition(edition)?.note, null);
+    assert.equal(parseEdition({ ...edition, note: null })?.note, null);
+  });
+
+  it('splits the note intro into paragraphs', () => {
+    const parsed = parseEdition({
+      ...edition,
+      note: {
+        title: 'My post',
+        url: 'https://www.joaoac.com/blog/my-post',
+        intro: 'First paragraph.\n\nSecond paragraph.\n',
+      },
+    });
+    assert.deepEqual(parsed?.note, {
+      title: 'My post',
+      url: 'https://www.joaoac.com/blog/my-post',
+      paragraphs: ['First paragraph.', 'Second paragraph.'],
+    });
+  });
+
+  it('drops a malformed note and keeps the edition', () => {
+    const notes = [
+      { title: 'My post', url: 'javascript:alert(1)', intro: 'Text.' },
+      { title: 'My post', url: 'https://www.joaoac.com/blog/my-post', intro: ' \n ' },
+      { title: 42, url: 'https://www.joaoac.com/blog/my-post', intro: 'Text.' },
+      'a note',
+    ];
+    for (const note of notes) {
+      const parsed = parseEdition({ ...edition, note });
+      assert.ok(parsed);
+      assert.equal(parsed.note, null);
+      assert.equal(parsed.articles.length, 1);
+    }
+  });
 });
 
 describe('loadEdition', () => {
