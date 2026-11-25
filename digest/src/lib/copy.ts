@@ -9,7 +9,10 @@ export const copy = {
       'there is good writing out there every day. finding time to look for it is the hard part.',
     detail:
       'tech digest brings together up to eight articles on software and technology and emails you the links each morning.',
-    heroNote: 'pick what interests you and read it at the original source.',
+    heroNote:
+      'pick what interests you and read it at the original source. now and then, i also share my own notes on building software.',
+    noteLabel: 'a note from joão',
+    noteCta: 'read the full article',
     readLatestEdition: 'read the latest edition',
     browseArchive: 'browse the archive',
     nextEdition: 'next edition',
@@ -159,7 +162,10 @@ export const copy = {
     intro: 'tem texto bom saindo todo dia. o difícil é encontrar tempo para procurar.',
     detail:
       'o tech digest reúne até oito artigos sobre software e tecnologia e manda os links para o seu e-mail toda manhã.',
-    heroNote: 'você escolhe o que abrir, sempre na fonte original.',
+    heroNote:
+      'você escolhe o que abrir, sempre na fonte original. de vez em quando, também compartilho minhas próprias reflexões sobre construir software.',
+    noteLabel: 'uma nota do joão',
+    noteCta: 'ler o artigo completo',
     readLatestEdition: 'ler a última edição',
     browseArchive: 'ver todas as edições',
     nextEdition: 'próxima edição',

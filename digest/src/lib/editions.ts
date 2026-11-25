@@ -7,9 +7,13 @@ export type PublicArticle = {
   topics: string[];
 };
 
+// Written by hand and always in English, whatever the page locale.
+export type EditionNote = { title: string; url: string; paragraphs: string[] };
+
 export type PublicEdition = {
   date: string;
   articles: PublicArticle[];
+  note: EditionNote | null;
   older_date: string | null;
   newer_date: string | null;
 };
@@ -56,6 +60,20 @@ function parseArticle(value: unknown): PublicArticle | null {
   };
 }
 
+// Older API versions send no note; a malformed one is dropped so the edition still renders.
+function parseNote(value: unknown): EditionNote | null {
+  if (!isRecord(value)) return null;
+  const { title, url, intro } = value;
+  if (typeof title !== 'string' || typeof url !== 'string' || typeof intro !== 'string')
+    return null;
+  const paragraphs = intro
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter((paragraph) => paragraph !== '');
+  if (!title.trim() || !safeArticleUrl(url) || paragraphs.length === 0) return null;
+  return { title, url, paragraphs };
+}
+
 // The API is ours, but its responses are still checked: a malformed article is dropped, not rendered.
 export function parseEdition(value: unknown): PublicEdition | null {
   if (!isRecord(value) || !isDate(value.date) || !Array.isArray(value.articles)) return null;
@@ -63,6 +81,7 @@ export function parseEdition(value: unknown): PublicEdition | null {
   return {
     date: value.date,
     articles,
+    note: parseNote(value.note),
     older_date: optionalDate(value.older_date),
     newer_date: optionalDate(value.newer_date),
   };

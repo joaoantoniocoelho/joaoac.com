@@ -10,6 +10,6 @@
   "vars": {
     "DIGEST_API_URL": "https://api.digest.joaoac.com",
   },
-  // Set with `npx wrangler secret put DIGEST_REVALIDATE_TOKEN`; the same value Railway sends as a Bearer token.
+  // Set with `npx wrangler secret put DIGEST_REVALIDATE_TOKEN`; the same value the Tech Digest API sends as a Bearer token.
   "secrets": { "required": ["DIGEST_REVALIDATE_TOKEN"] },
 }
