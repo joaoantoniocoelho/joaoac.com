@@ -10,4 +10,14 @@ describe('landing copy', () => {
       assert.ok(parts.every((part) => part.endsWith('.')));
     }
   });
+
+  it('keeps the home title and description within what search results show', () => {
+    for (const locale of ['en', 'pt-BR'] as const) {
+      assert.ok(copy[locale].homeTitle.length <= 60, `${locale} homeTitle is too long`);
+      assert.ok(
+        copy[locale].homeDescription.length <= 160,
+        `${locale} homeDescription is too long`,
+      );
+    }
+  });
 });

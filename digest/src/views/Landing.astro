@@ -25,6 +25,7 @@ const sampleArticles = [
 
 const preview = latestEdition
   ? {
+      heading: t.latestEditionTitle,
       stamp: latestEdition.date.slice(8),
       date: formatEditionDate(locale, latestEdition.date),
       count: t.articleCount(latestEdition.articles.length),
@@ -36,6 +37,7 @@ const preview = latestEdition
       })),
     }
   : {
+      heading: t.sampleEditionTitle,
       stamp: t.sampleStamp,
       date: t.sampleEditionDate,
       count: t.sampleEditionCount,
@@ -76,7 +78,7 @@ const [answerFirst, answerSecond] = t.answerTitle.split(/(?<=\.)\s/);
         <div class="mail-head">
           <div class="mail-title">
             <span class="mail-brand">tech digest</span>
-            <span class="mail-heading">{t.sampleEditionTitle}</span>
+            <span class="mail-heading">{preview.heading}</span>
             <span class="mail-date">
               {preview.date} · {preview.count}
             </span>
@@ -117,23 +119,6 @@ const [answerFirst, answerSecond] = t.answerTitle.split(/(?<=\.)\s/);
   <div class="page-wide block">
     <Countdown locale={locale} />
   </div>
-
-  <section class="page-wide block" aria-labelledby="pain">
-    <h2 class="section-title narrow-title" id="pain">
-      {t.painTitle}.
-    </h2>
-    <div class="tile-row three">
-      {t.painItems.map((item) => (
-        <article class="tile card">
-          <span class="card-number" aria-hidden="true">
-            {item.number}
-          </span>
-          <h3>{item.title}.</h3>
-          <p>{item.description}</p>
-        </article>
-      ))}
-    </div>
-  </section>
 
   <section class="hero statement">
     <h2>
@@ -342,11 +327,6 @@ const [answerFirst, answerSecond] = t.answerTitle.split(/(?<=\.)\s/);
     padding-top: 120px;
   }
 
-  .narrow-title {
-    max-width: 820px;
-    margin-inline: auto;
-  }
-
   .three > * {
     flex-basis: 300px;
   }
@@ -362,13 +342,6 @@ const [answerFirst, answerSecond] = t.answerTitle.split(/(?<=\.)\s/);
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
-
-  .card-number {
-    font-size: 48px;
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    color: var(--line);
   }
 
   .step {

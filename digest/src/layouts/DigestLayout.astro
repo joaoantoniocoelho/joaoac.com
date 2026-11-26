@@ -23,7 +23,7 @@ type Props = {
 const {
   locale,
   title,
-  description = copy[locale].detail,
+  description = copy[locale].homeDescription,
   paths,
   current,
   noindex = false,
@@ -31,7 +31,7 @@ const {
 } = Astro.props;
 const t = copy[locale];
 const other = otherLocale(locale);
-const fullTitle = title ? `${title} | tech digest` : 'tech digest | joão coelho';
+const fullTitle = title ? `${title} | tech digest` : t.homeTitle;
 const canonical = paths ? `${siteOrigin}${paths[locale]}` : undefined;
 const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 ---
@@ -57,7 +57,7 @@ const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="tech digest" />
-    <meta property="og:title" content={title ?? 'tech digest'} />
+    <meta property="og:title" content={title ?? t.homeTitle} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'pt_BR'} />
