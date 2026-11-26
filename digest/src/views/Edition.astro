@@ -31,17 +31,23 @@ const count = edition.articles.length;
         <p class="note-label">{t.noteLabel}</p>
         <div lang="en">
           <h2 id="note-title">
-            <a class="underline-hover" href={edition.note.url}>
-              {edition.note.title}
-            </a>
+            {edition.note.url ? (
+              <a class="underline-hover" href={edition.note.url}>
+                {edition.note.title}
+              </a>
+            ) : (
+              edition.note.title
+            )}
           </h2>
           {edition.note.paragraphs.map((paragraph) => (
             <p class="note-text">{paragraph}</p>
           ))}
         </div>
-        <a class="chevron-link source" href={edition.note.url}>
-          {t.noteCta}
-        </a>
+        {edition.note.url && (
+          <a class="chevron-link source" href={edition.note.url}>
+            {t.noteCta}
+          </a>
+        )}
       </section>
     )}
 
@@ -49,10 +55,13 @@ const count = edition.articles.length;
       {edition.articles.map((article, index) => {
         const url = safeArticleUrl(article.url);
         const meta = [article.source, ...article.topics].join(' · ');
+        // A lone article needs no "pick" label.
+        const featured = index === 0 && count > 1;
         return (
-          <li>
+          <li class:list={{ featured }}>
             <span class="number">{String(index + 1).padStart(2, '0')}</span>
             <div class="article">
+              {featured && <span class="pick">{t.featuredLabel}</span>}
               <span class="meta">{meta}</span>
               <h2>
                 {url ? (
@@ -194,6 +203,16 @@ const count = edition.articles.length;
     font-weight: 700;
     letter-spacing: -0.02em;
     overflow-wrap: anywhere;
+  }
+
+  .pick {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .featured h2 {
+    font-size: 32px;
   }
 
   .why {

@@ -77,11 +77,26 @@ describe('parseEdition', () => {
     });
   });
 
+  it('keeps a note without a link as a standalone comment', () => {
+    for (const url of [null, '', undefined]) {
+      const parsed = parseEdition({
+        ...edition,
+        note: { title: 'This week', url, intro: 'Two short sentences.' },
+      });
+      assert.deepEqual(parsed?.note, {
+        title: 'This week',
+        url: null,
+        paragraphs: ['Two short sentences.'],
+      });
+    }
+  });
+
   it('drops a malformed note and keeps the edition', () => {
     const notes = [
       { title: 'My post', url: 'javascript:alert(1)', intro: 'Text.' },
       { title: 'My post', url: 'https://www.joaoac.com/blog/my-post', intro: ' \n ' },
       { title: 42, url: 'https://www.joaoac.com/blog/my-post', intro: 'Text.' },
+      { title: 'My post', url: 42, intro: 'Text.' },
       'a note',
     ];
     for (const note of notes) {
