@@ -5,13 +5,14 @@ export const copy = {
     language: 'language',
     homeTitle: 'tech digest: daily software engineering and ai newsletter',
     homeDescription:
-      'a free daily email with up to eight articles on software engineering, ai and tech, picked from sources like hacker news and the pragmatic engineer.',
+      'a free daily email with up to five articles on software engineering, ai and tech, picked from sources like hacker news and the pragmatic engineer.',
     title: 'the best software and ai reads, every morning',
     detail:
-      'a free newsletter with up to eight articles on software engineering, ai and tech. open what interests you, at the original source.',
+      'a free newsletter with up to five articles on software engineering, ai and tech. open what interests you, at the original source.',
     heroNote: 'now and then, a note from me.',
     noteLabel: 'a note from joão',
     noteCta: 'read the full article',
+    featuredLabel: "today's pick",
     readLatestEdition: 'read the latest edition',
     browseArchive: 'browse the archive',
     nextEdition: 'next edition',
@@ -37,7 +38,7 @@ export const copy = {
     unsubscribeSuccess: 'you’re unsubscribed. you won’t receive the next tech digest.',
     invalidToken: 'this unsubscribe link is not valid.',
     back: 'back to tech digest',
-    answerTitle: 'up to eight links. you pick what to read.',
+    answerTitle: 'up to five links. you pick what to read.',
     answerDescription:
       'each one shows its source and topic, so you can tell in seconds whether it is worth opening.',
     sampleLabel: 'example email',
@@ -69,7 +70,7 @@ export const copy = {
       },
       {
         title: 'send',
-        description: 'the top ones, up to eight, arrive at 7:00 AM, Brasília time.',
+        description: 'the top ones, up to five, arrive at 7:00 AM, Brasília time.',
       },
     ],
     finalLabel: 'want the next one?',
@@ -129,13 +130,14 @@ export const copy = {
     language: 'idioma',
     homeTitle: 'tech digest: newsletter de engenharia de software e ia',
     homeDescription:
-      'newsletter diária e grátis com até oito artigos sobre engenharia de software, ia e tecnologia, de fontes como hacker news e the pragmatic engineer. em inglês.',
+      'newsletter diária e grátis com até cinco artigos sobre engenharia de software, ia e tecnologia, de fontes como hacker news e the pragmatic engineer. em inglês.',
     title: 'o melhor de software e ia, toda manhã',
     detail:
-      'uma newsletter grátis com até oito artigos sobre engenharia de software, ia e tecnologia. você abre o que interessar, direto na fonte original.',
+      'uma newsletter grátis com até cinco artigos sobre engenharia de software, ia e tecnologia. você abre o que interessar, direto na fonte original.',
     heroNote: 'e, de vez em quando, uma nota minha.',
     noteLabel: 'uma nota do joão',
     noteCta: 'ler o artigo completo',
+    featuredLabel: 'destaque do dia',
     readLatestEdition: 'ler a última edição',
     browseArchive: 'ver todas as edições',
     nextEdition: 'próxima edição',
@@ -162,7 +164,7 @@ export const copy = {
     unsubscribeSuccess: 'inscrição cancelada. você não receberá o próximo tech digest.',
     invalidToken: 'este link de cancelamento não é válido.',
     back: 'voltar ao tech digest',
-    answerTitle: 'até oito links. você escolhe o que ler.',
+    answerTitle: 'até cinco links. você escolhe o que ler.',
     answerDescription:
       'cada um mostra a fonte e o assunto, então dá para saber em segundos se vale abrir.',
     sampleLabel: 'exemplo de e-mail',
@@ -194,7 +196,7 @@ export const copy = {
       },
       {
         title: 'enviar',
-        description: 'os melhores, até oito, chegam às 7h, horário de Brasília.',
+        description: 'os melhores, até cinco, chegam às 7h, horário de Brasília.',
       },
     ],
     finalLabel: 'quer receber também?',

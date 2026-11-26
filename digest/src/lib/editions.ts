@@ -8,7 +8,8 @@ export type PublicArticle = {
 };
 
 // Written by hand and always in English, whatever the page locale.
-export type EditionNote = { title: string; url: string; paragraphs: string[] };
+// A note without a url is a short comment with no post behind it.
+export type EditionNote = { title: string; url: string | null; paragraphs: string[] };
 
 export type PublicEdition = {
   date: string;
@@ -63,14 +64,15 @@ function parseArticle(value: unknown): PublicArticle | null {
 // Older API versions send no note; a malformed one is dropped so the edition still renders.
 function parseNote(value: unknown): EditionNote | null {
   if (!isRecord(value)) return null;
-  const { title, url, intro } = value;
-  if (typeof title !== 'string' || typeof url !== 'string' || typeof intro !== 'string')
-    return null;
+  const { title, intro } = value;
+  const url = value.url === undefined || value.url === '' ? null : value.url;
+  if (typeof title !== 'string' || typeof intro !== 'string') return null;
+  if (url !== null && (typeof url !== 'string' || !safeArticleUrl(url))) return null;
   const paragraphs = intro
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
     .filter((paragraph) => paragraph !== '');
-  if (!title.trim() || !safeArticleUrl(url) || paragraphs.length === 0) return null;
+  if (!title.trim() || paragraphs.length === 0) return null;
   return { title, url, paragraphs };
 }
 
