@@ -50,6 +50,7 @@ export const ui = {
       digestLatest: 'read the latest edition',
       instaPitch: 'short videos on software and ai.',
       instaFollow: 'follow',
+      followTitle: 'follow along.',
     },
     outside: {
       title: 'outside of code.',
@@ -183,6 +184,9 @@ export const ui = {
       emailAnswer: 'you can email him at',
       copyEmail: 'copy email',
       copied: 'copied',
+      restart: 'start over',
+      you: 'you',
+      skip: 'show the whole answer',
     },
   },
   'pt-BR': {
@@ -212,6 +216,7 @@ export const ui = {
       digestLatest: 'ler a última edição',
       instaPitch: 'vídeos curtos sobre software e ia.',
       instaFollow: 'seguir',
+      followTitle: 'acompanhe.',
     },
     outside: {
       title: 'fora do código.',
@@ -344,6 +349,9 @@ export const ui = {
       emailAnswer: 'você pode escrever para ele em',
       copyEmail: 'copiar e-mail',
       copied: 'copiado',
+      restart: 'recomeçar',
+      you: 'você',
+      skip: 'mostrar a resposta inteira',
     },
   },
 } as const;

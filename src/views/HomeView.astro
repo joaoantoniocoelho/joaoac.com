@@ -90,7 +90,10 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     </a>
   </section>
 
-  <section class="page-wide digest" aria-labelledby="home-digest">
+  <section class="page-wide digest" aria-labelledby="home-follow">
+    <h2 class="section-title follow-title" id="home-follow">
+      {t.home.followTitle}
+    </h2>
     <div class="tile tile-dark digest-tile" data-tilt-card data-tilt-idle data-tilt-strength="0.3">
       <span class="digest-bars">
         <DigestBars width={84} thickness={7} gap={9} />
@@ -272,6 +275,11 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     gap: 22px;
     padding-top: 96px;
     perspective: 1400px;
+  }
+
+  /* The section gap already spaces the title from the tiles, so it drops its own margin. */
+  .follow-title {
+    margin-bottom: 6px;
   }
 
   /* Layers sit at different depths, so the idle sway shows the card as a little 3d object. */

@@ -17,8 +17,22 @@ const valid = {
   },
   initialPrompts: ['a'],
   discoveryOrder: ['b'],
-  strings: { emailAnswer: 'Email at', copyEmail: 'Copy', copied: 'Copied', done: 'Done' },
-  moods: { idle: '/idle.webp', thinking: '/thinking.webp', greeting: '/greeting.webp' },
+  strings: {
+    emailAnswer: 'Email at',
+    copyEmail: 'Copy',
+    copied: 'Copied',
+    done: 'Done',
+    restart: 'Again',
+    you: 'You',
+  },
+  moods: {
+    idle: '/idle.webp',
+    blink: '/blink.webp',
+    talking: '/talking.webp',
+    thinking: '/thinking.webp',
+    greeting: '/greeting.webp',
+    sleeping: '/sleeping.webp',
+  },
 };
 
 const withPrompts = (promptSet: unknown) => JSON.stringify({ ...valid, prompts: promptSet });
@@ -29,6 +43,13 @@ describe('parseChatData', () => {
     assert.ok(data);
     assert.equal(data.prompts.b?.links.length, 0);
     assert.equal(data.prompts.a?.links[0]?.action, 'reveal-email');
+  });
+
+  it('rejects data that is missing one of the moods', () => {
+    const moods = Object.fromEntries(
+      Object.entries(valid.moods).filter(([mood]) => mood !== 'sleeping'),
+    );
+    assert.equal(parseChatData(JSON.stringify({ ...valid, moods })), null);
   });
 
   it('rejects invalid JSON', () => {

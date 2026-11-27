@@ -10,9 +10,20 @@ export type ChatData = {
   initialPrompts: string[];
   discoveryOrder: string[];
   email: string;
-  strings: { emailAnswer: string; copyEmail: string; copied: string; done: string };
-  moods: { idle: string; thinking: string; greeting: string };
+  strings: {
+    emailAnswer: string;
+    copyEmail: string;
+    copied: string;
+    done: string;
+    restart: string;
+    you: string;
+  };
+  moods: Record<Mood, string>;
 };
+
+export const MOODS = ['idle', 'blink', 'talking', 'thinking', 'greeting', 'sleeping'] as const;
+
+export type Mood = (typeof MOODS)[number];
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -24,19 +35,22 @@ const isStringArray = (value: unknown): value is string[] =>
 
 function parseStrings(value: unknown): ChatData['strings'] | null {
   if (!isRecord(value)) return null;
-  const { emailAnswer, copyEmail, copied, done } = value;
+  const { emailAnswer, copyEmail, copied, done, restart, you } = value;
   if (typeof emailAnswer !== 'string' || typeof copyEmail !== 'string') return null;
   if (typeof copied !== 'string' || typeof done !== 'string') return null;
-  return { emailAnswer, copyEmail, copied, done };
+  if (typeof restart !== 'string' || typeof you !== 'string') return null;
+  return { emailAnswer, copyEmail, copied, done, restart, you };
 }
 
 function parseMoods(value: unknown): ChatData['moods'] | null {
   if (!isRecord(value)) return null;
-  const { idle, thinking, greeting } = value;
-  if (typeof idle !== 'string' || typeof thinking !== 'string' || typeof greeting !== 'string') {
+  const { idle, blink, talking, thinking, greeting, sleeping } = value;
+  if (typeof idle !== 'string' || typeof blink !== 'string' || typeof talking !== 'string') {
     return null;
   }
-  return { idle, thinking, greeting };
+  if (typeof thinking !== 'string' || typeof greeting !== 'string') return null;
+  if (typeof sleeping !== 'string') return null;
+  return { idle, blink, talking, thinking, greeting, sleeping };
 }
 
 function parseAction(value: unknown): ChatAction | undefined {

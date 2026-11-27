@@ -1,9 +1,14 @@
 ---
 import { getImage } from 'astro:assets';
 import idle from '../assets/ichiro/ichiro-idle.png';
+import blink from '../assets/ichiro/ichiro-blink.png';
+import talking from '../assets/ichiro/ichiro-talking.png';
 import thinking from '../assets/ichiro/ichiro-thinking.png';
 import greeting from '../assets/ichiro/ichiro-greeting.png';
+import sleeping from '../assets/ichiro/ichiro-sleeping.png';
+import peeking from '../assets/ichiro/ichiro-peeking.png';
 import { discoveryOrder, initialPrompts, prompts, promptsPtBr } from '../data/ichiro-prompts.ts';
+import type { Mood } from '../lib/chat-data.ts';
 import type { Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
 import { ui } from '../lib/ui.ts';
@@ -13,14 +18,28 @@ type Props = { locale: Locale };
 const { locale } = Astro.props;
 const t = ui[locale].chat;
 
-const sprite = (src: typeof idle, size: number) =>
-  getImage({ src, width: size, height: size, format: 'webp', quality: 90 });
-const [idleImage, thinkingImage, greetingImage, avatarImage] = await Promise.all([
-  sprite(idle, 96),
-  sprite(thinking, 96),
-  sprite(greeting, 96),
-  sprite(idle, 64),
-]);
+// Drawn at 96px wide on the dialog; twice that keeps the pixel art crisp on retina screens.
+const SPRITE_WIDTH = 192;
+const sprite = (src: typeof idle, width = SPRITE_WIDTH) =>
+  getImage({ src, width, format: 'webp', quality: 90 });
+const [idleImage, blinkImage, talkingImage, thinkingImage, greetingImage, sleepingImage] =
+  await Promise.all([
+    sprite(idle),
+    sprite(blink),
+    sprite(talking),
+    sprite(thinking),
+    sprite(greeting),
+    sprite(sleeping),
+  ]);
+const moods: Record<Mood, string> = {
+  idle: idleImage.src,
+  blink: blinkImage.src,
+  talking: talkingImage.src,
+  thinking: thinkingImage.src,
+  greeting: greetingImage.src,
+  sleeping: sleepingImage.src,
+};
+const peekImage = await sprite(peeking, 144);
 
 const chatData = {
   greeting: t.greeting,
@@ -28,74 +47,92 @@ const chatData = {
   initialPrompts,
   discoveryOrder,
   email: CONTACT_EMAIL,
-  strings: { emailAnswer: t.emailAnswer, copyEmail: t.copyEmail, copied: t.copied, done: t.done },
-  moods: { idle: idleImage.src, thinking: thinkingImage.src, greeting: greetingImage.src },
+  strings: {
+    emailAnswer: t.emailAnswer,
+    copyEmail: t.copyEmail,
+    copied: t.copied,
+    done: t.done,
+    restart: t.restart,
+    you: t.you,
+  },
+  moods,
 };
 ---
 
-<div class="ichiro" data-ichiro>
-  <section class="panel" role="dialog" aria-label={t.dialog} hidden data-ichiro-panel>
-    <header class="panel-header">
-      <span class="avatar">
-        <img src={avatarImage.src} alt="" width="48" height="48" />
-      </span>
-      <div class="who">
-        <h2>{t.name}</h2>
-        <p>{t.status}</p>
-      </div>
-      <button type="button" class="icon-button" aria-label={t.reset} data-ichiro-reset>
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9M2.5 2.5v3h3"></path>
-        </svg>
-      </button>
-      <button type="button" class="icon-button" aria-label={t.close} data-ichiro-close>
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 14 14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M1 1l12 12M13 1L1 13"></path>
-        </svg>
-      </button>
-    </header>
-    <div class="transcript" aria-live="polite" data-ichiro-transcript></div>
-    <div class="suggestions">
-      <p class="visually-hidden">{t.suggested}</p>
-      <div class="chips" data-ichiro-suggestions></div>
-    </div>
-    <template data-ichiro-typing>
-      <p class="bubble from-ichiro typing" aria-label={t.typing}>
-        <span></span>
-        <span></span>
-        <span></span>
+<div class="ichiro" data-ichiro data-open="false">
+  <section
+    class="dialog"
+    role="dialog"
+    aria-labelledby="ichiro-name"
+    tabindex="-1"
+    hidden
+    data-ichiro-panel
+  >
+    <img
+      class="sprite"
+      src={moods.idle}
+      alt=""
+      width="96"
+      height="105"
+      data-ichiro-mood
+      data-mood="idle"
+    />
+    <div class="box">
+      <header class="box-header">
+        <p class="eyebrow who" id="ichiro-name">
+          ichiro <span>· {t.status}</span>
+        </p>
+        <button type="button" class="icon-button" aria-label={t.reset} data-ichiro-reset>
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9M2.5 2.5v3h3"></path>
+          </svg>
+        </button>
+        <button type="button" class="icon-button" aria-label={t.close} data-ichiro-close>
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 14 14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M1 1l12 12M13 1L1 13"></path>
+          </svg>
+        </button>
+      </header>
+      <p class="asked" hidden data-ichiro-asked>
+        <span class="asked-label">{t.you}:</span> <span data-ichiro-asked-text></span>
       </p>
-    </template>
+      <p class="line" aria-hidden="true" title={t.skip}>
+        <span data-ichiro-typed></span>
+        <span class="rest" data-ichiro-rest></span>
+      </p>
+      <p class="visually-hidden" aria-live="polite" data-ichiro-live></p>
+      <div class="answer-links" data-ichiro-links></div>
+      <div class="choices" role="group" aria-label={t.suggested} data-ichiro-choices></div>
+    </div>
   </section>
 
   <button
     type="button"
-    class="launcher"
+    class="peek"
     aria-label={t.open}
     aria-expanded="false"
-    data-label-open={t.open}
-    data-label-close={t.close}
+    aria-haspopup="dialog"
     data-ichiro-launcher
   >
-    <img src={idleImage.src} alt="" width="58" height="58" data-ichiro-mood />
+    <img src={peekImage.src} alt="" width="72" height="78" />
   </button>
 
   <script type="application/json" data-ichiro-data set:html={JSON.stringify(chatData)} />
@@ -110,260 +147,274 @@ const chatData = {
 <style>
   .ichiro {
     position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .ichiro > * {
+    pointer-events: auto;
+  }
+
+  /* Ichiro peeks in from the right edge of the screen; hovering coaxes him out a little more. */
+  .peek {
+    position: fixed;
+    right: 0;
+    bottom: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.5s var(--ease-out);
+    animation: peek-in 0.9s var(--ease-out) 1.2s both;
+  }
+
+  .peek img {
+    display: block;
+    width: 72px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 10px 18px rgb(0 0 0 / 16%));
+  }
+
+  .peek:hover,
+  .peek:focus-visible {
+    transform: translateX(-6px) rotate(-4deg);
+  }
+
+  .peek:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 4px;
+    border-radius: 12px;
+  }
+
+  [data-open='true'] .peek {
+    transform: translateX(110%);
+    pointer-events: none;
+  }
+
+  @keyframes peek-in {
+    from {
+      transform: translateX(110%);
+    }
+  }
+
+  .dialog {
+    position: fixed;
     right: 20px;
     bottom: 20px;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
+    width: min(460px, calc(100vw - 32px));
+    /* Room above the box for ichiro to sit on its edge. */
+    padding-top: 88px;
+    outline: none;
+    animation: dialog-in 0.45s var(--ease-out) both;
   }
 
-  .launcher {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 1px solid rgb(0 0 0 / 6%);
-    padding: 0;
-    background: var(--tile);
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
-    transition: transform 0.4s var(--ease-out);
-  }
-
-  .launcher:hover {
-    transform: scale(1.06);
-  }
-
-  .launcher img {
-    width: 58px;
-    height: 58px;
-    transform: translate(-3px, 2px);
-    image-rendering: pixelated;
-  }
-
-  .panel {
-    width: min(360px, calc(100vw - 40px));
-    max-height: min(560px, calc(100dvh - 120px));
-    display: flex;
-    flex-direction: column;
-    border-radius: 22px;
-    overflow: hidden;
-    background: rgb(255 255 255 / 88%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    backdrop-filter: blur(30px) saturate(180%);
-    border: 1px solid rgb(0 0 0 / 6%);
-    box-shadow: 0 30px 80px rgb(0 0 0 / 14%);
-    animation: panel-in 0.35s var(--ease-out) both;
-  }
-
-  .panel[hidden] {
+  .dialog[hidden] {
     display: none;
   }
 
-  @keyframes panel-in {
+  @keyframes dialog-in {
     from {
       opacity: 0;
-      transform: translateY(10px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: none;
+      transform: translateY(16px);
     }
   }
 
-  .panel-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 6px 10px 16px;
-    border-bottom: 1px solid rgb(0 0 0 / 6%);
-  }
-
-  .avatar {
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    border-radius: 50%;
-    background: var(--tile);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .avatar img {
-    width: 48px;
-    height: 48px;
-    flex: none;
-    transform: translate(-3px, 2px);
+  .sprite {
+    position: absolute;
+    top: 0;
+    left: 22px;
+    z-index: 1;
+    width: 96px;
+    height: 105px;
+    object-fit: contain;
+    object-position: bottom;
     image-rendering: pixelated;
+    filter: drop-shadow(0 6px 8px rgb(0 0 0 / 18%));
+  }
+
+  .box {
+    position: relative;
+    max-height: calc(100dvh - 140px);
+    overflow-y: auto;
+    padding: 24px 22px 22px 24px;
+    border-radius: var(--radius-tile);
+    /* A faint edge keeps the box readable when it sits over one of the page's dark tiles. */
+    border: 1px solid rgb(255 255 255 / 12%);
+    background: var(--tile-dark);
+    color: var(--on-dark);
+    box-shadow: 0 30px 60px rgb(0 0 0 / 24%);
+  }
+
+  .box-header {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: -10px -12px 10px 0;
   }
 
   .who {
     flex: 1;
     min-width: 0;
+    color: var(--on-dark);
   }
 
-  .who h2 {
-    font-size: 15px;
-    font-weight: 600;
-  }
-
-  .who p {
-    font-size: 12px;
-    color: var(--muted);
+  .who span {
+    color: var(--on-dark-muted);
+    font-weight: 400;
   }
 
   .icon-button {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     display: grid;
     place-items: center;
     border: 0;
     border-radius: 50%;
     background: none;
-    color: var(--muted);
+    color: var(--on-dark-muted);
     cursor: pointer;
+    transition:
+      color 0.2s,
+      background 0.2s;
   }
 
   .icon-button:hover {
-    color: var(--fg);
-    background: rgb(0 0 0 / 4%);
+    color: var(--on-dark);
+    background: rgb(255 255 255 / 10%);
   }
 
-  .transcript {
-    flex: 1;
-    min-height: 220px;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .suggestions {
-    padding: 12px;
-    border-top: 1px solid rgb(0 0 0 / 6%);
-  }
-
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .ichiro :global(.bubble) {
-    max-width: 84%;
-    padding: 9px 14px;
-    border-radius: 18px;
-    font-size: 15px;
+  .asked {
+    margin-bottom: 8px;
+    font-size: 14px;
     line-height: 1.4;
-    animation: bubble-in 0.35s var(--ease-out) both;
+    color: var(--on-dark-muted);
   }
 
-  .ichiro :global(.from-ichiro) {
-    align-self: flex-start;
-    background: #e9e9eb;
+  .asked-label {
+    font-weight: 600;
   }
 
-  .ichiro :global(.from-visitor) {
-    align-self: flex-end;
-    max-width: 78%;
-    background: var(--fg);
-    color: #ffffff;
+  .line {
+    min-height: 2.7em;
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    cursor: default;
   }
 
-  .ichiro :global(.bubble-links) {
+  .rest {
+    visibility: hidden;
+  }
+
+  .answer-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .ichiro :global(.bubble-link),
-  .ichiro :global(.chip) {
-    display: inline-flex;
     align-items: center;
-    min-height: 36px;
-    padding: 6px 14px;
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: var(--tile);
-    font-size: 13px;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.2s;
+    column-gap: 18px;
   }
 
-  .ichiro :global(.bubble-link) {
-    background: #ffffff;
+  .answer-links:not(:empty) {
+    margin-top: 6px;
   }
 
-  .ichiro :global(.bubble-link:hover),
-  .ichiro :global(.chip:hover) {
-    background: #e2e2e7;
+  .ichiro :global(.answer-link) {
+    color: var(--accent);
+    font-size: 15px;
   }
 
   .ichiro :global(.done) {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 14px;
+    color: var(--on-dark-muted);
   }
 
-  .ichiro :global(.typing) {
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .choices:not(:empty) {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgb(255 255 255 / 12%);
+  }
+
+  .ichiro :global(.choice) {
     display: inline-flex;
-    gap: 4px;
-    padding: 14px 16px;
+    align-items: center;
+    min-height: 38px;
+    padding: 6px 16px;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--on-dark);
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: left;
+    cursor: pointer;
+    animation: choice-in 0.4s var(--ease-out) both;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
   }
 
-  .ichiro :global(.typing span) {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--faint);
-    animation: dot 0.9s ease-in-out infinite;
+  .ichiro :global(.choice:nth-child(2)) {
+    animation-delay: 0.05s;
   }
 
-  .ichiro :global(.typing span:nth-child(2)) {
+  .ichiro :global(.choice:nth-child(3)) {
+    animation-delay: 0.1s;
+  }
+
+  .ichiro :global(.choice:nth-child(4)) {
     animation-delay: 0.15s;
   }
 
-  .ichiro :global(.typing span:nth-child(3)) {
-    animation-delay: 0.3s;
+  .ichiro :global(.choice:hover) {
+    border-color: rgb(255 255 255 / 40%);
+    background: rgb(255 255 255 / 8%);
   }
 
-  @keyframes bubble-in {
+  @keyframes choice-in {
     from {
       opacity: 0;
-      transform: translateY(6px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @keyframes dot {
-    0%,
-    100% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 1;
+      transform: translateY(6px);
     }
   }
 
   @media (max-width: 480px) {
-    .ichiro {
+    .dialog {
       right: 12px;
       bottom: 12px;
+      width: calc(100vw - 24px);
+      padding-top: 74px;
     }
 
-    .panel {
-      width: calc(100vw - 24px);
+    .sprite {
+      width: 80px;
+      height: 88px;
+    }
+
+    .line {
+      font-size: 17px;
+    }
+
+    .peek {
+      bottom: 20px;
+    }
+
+    .peek img {
+      width: 64px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .peek {
+      animation: none;
     }
   }
 </style>

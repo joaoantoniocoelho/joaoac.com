@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { nextSuggestions } from './ichiro.ts';
+import {
+  MAX_TYPING_MS,
+  MS_PER_CHAR,
+  charsShown,
+  nextSuggestions,
+  typingDuration,
+} from './ichiro.ts';
 
 type Id = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'secret';
 
@@ -60,5 +66,25 @@ describe('nextSuggestions', () => {
       secretId: 'secret',
     });
     assert.deepEqual(ids, []);
+  });
+});
+
+describe('typing', () => {
+  it('shows nothing at the start and everything once the time is up', () => {
+    const text = 'hello there';
+    assert.equal(charsShown(text, 0), 0);
+    assert.equal(charsShown(text, typingDuration(text)), text.length);
+    assert.equal(charsShown(text, 999_999), text.length);
+  });
+
+  it('reveals the text gradually', () => {
+    const text = 'a'.repeat(40);
+    const halfway = charsShown(text, typingDuration(text) / 2);
+    assert.ok(halfway > 0 && halfway < text.length);
+  });
+
+  it('caps how long a long answer takes', () => {
+    assert.equal(typingDuration('a'.repeat(10_000)), MAX_TYPING_MS);
+    assert.equal(typingDuration('abc'), 3 * MS_PER_CHAR);
   });
 });
