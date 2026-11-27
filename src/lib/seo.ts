@@ -21,11 +21,11 @@ export function absoluteUrl(path: string): string {
 
 export type Alternate = { hreflang: string; href: string };
 
-export function languageAlternates(englishPath: string): Alternate[] {
+export function languageAlternates(path: string): Alternate[] {
   return [
-    { hreflang: 'en-US', href: absoluteUrl(englishPath) },
-    { hreflang: 'pt-BR', href: absoluteUrl(localizedPath(englishPath, 'pt-BR')) },
-    { hreflang: 'x-default', href: absoluteUrl(englishPath) },
+    { hreflang: 'pt-BR', href: absoluteUrl(localizedPath(path, 'pt-BR')) },
+    { hreflang: 'en-US', href: absoluteUrl(localizedPath(path, 'en')) },
+    { hreflang: 'x-default', href: absoluteUrl(localizedPath(path, 'pt-BR')) },
   ];
 }
 

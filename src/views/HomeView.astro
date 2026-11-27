@@ -2,11 +2,16 @@
 import Base from '../layouts/Base.astro';
 import AvatarCard from '../components/AvatarCard.astro';
 import OutsideOfCode from '../components/OutsideOfCode.astro';
+import DigestBars from '../components/DigestBars.astro';
 import PostCover from '../components/PostCover.astro';
+import ProjectMark from '../components/ProjectMark.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { projects } from '../data/projects.ts';
 import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { HOME_DESCRIPTION, HOME_TITLE } from '../lib/seo.ts';
+import { digestUrl } from '../lib/site.ts';
+import { INSTAGRAM_URL } from '../lib/socials.ts';
 import { ui } from '../lib/ui.ts';
 
 type Props = { locale: Locale };
@@ -49,8 +54,11 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     </h2>
     {featured && (
       <a
-        class:list={['tile', 'lift', 'featured', { 'tile-dark': featured.topic === 'ai' }]}
+        class:list={['tile', 'featured', { 'tile-dark': featured.topic === 'ai' }]}
         href={postHref(featured.slug)}
+        data-tilt-card
+        data-tilt-strength="0.25"
+        data-tilt-perspective="1400"
       >
         <span class="featured-title">{featured.title}</span>
         <span class="featured-description">{featured.description}</span>
@@ -63,8 +71,11 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     <div class="tile-row">
       {morePosts.map((post) => (
         <a
-          class:list={['tile', 'lift', 'secondary', { 'tile-dark': post.topic === 'ai' }]}
+          class:list={['tile', 'secondary', { 'tile-dark': post.topic === 'ai' }]}
           href={postHref(post.slug)}
+          data-tilt-card
+          data-tilt-strength="0.4"
+          data-tilt-perspective="1200"
         >
           <span class="secondary-title">{post.title}</span>
           <span class="chevron-link">{t.home.readPost}</span>
@@ -79,13 +90,57 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
     </a>
   </section>
 
+  <section class="page-wide digest" aria-labelledby="home-digest">
+    <div class="tile tile-dark digest-tile" data-tilt-card data-tilt-idle data-tilt-strength="0.3">
+      <span class="digest-bars">
+        <DigestBars width={84} thickness={7} gap={9} />
+      </span>
+      <span class="eyebrow digest-eyebrow">newsletter</span>
+      <h2 class="digest-name" id="home-digest">
+        tech digest
+      </h2>
+      <p class="digest-pitch">{t.home.digestPitch}</p>
+      <div class="actions digest-actions">
+        <a class="pill digest-subscribe" href={digestUrl(locale, 'home')}>
+          {t.home.digestSubscribe}
+        </a>
+        <a class="chevron-link" href={digestUrl(locale, 'home', '/digest')}>
+          {t.home.digestLatest}
+        </a>
+      </div>
+      <span class="tilt-glare-clip" aria-hidden="true">
+        <span class="tilt-glare" data-tilt-glare></span>
+      </span>
+    </div>
+    <a class="tile insta" href={INSTAGRAM_URL} rel="me">
+      <span class="insta-icon">
+        <SocialIcon name="instagram" size={30} />
+      </span>
+      <span class="insta-text">
+        <span class="insta-name">instagram</span>
+        <span class="insta-pitch">{t.home.instaPitch}</span>
+      </span>
+      <span class="pill insta-cta">{t.home.instaFollow}</span>
+    </a>
+  </section>
+
   <section class="page-wide projects" aria-labelledby="home-projects">
     <h2 class="section-title" id="home-projects">
       {t.home.projectsTitle}
     </h2>
     <div class="tile-row">
       {projects.map((project) => (
-        <a class="tile lift project" href={`${localizedPath('/projects', locale)}#${project.slug}`}>
+        <a
+          class="tile project"
+          href={`${localizedPath('/projects', locale)}#${project.slug}`}
+          style={project.tint ? `background: ${project.tint}` : undefined}
+          data-tilt-card
+          data-tilt-strength="0.5"
+          data-tilt-perspective="1000"
+        >
+          <span class="project-mark">
+            <ProjectMark slug={project.slug} size={64} />
+          </span>
           <span class="project-name">{project.name}</span>
           <span class="project-tagline">{project.tagline[locale]}</span>
           <span class="chevron-link">{t.home.learnMore}</span>
@@ -202,6 +257,127 @@ const postHref = (slug: string) => localizedPath(`/blog/${slug}`, locale);
   .project {
     padding: 36px 24px 34px;
     gap: 8px;
+    overflow: visible;
+    transform-style: preserve-3d;
+  }
+
+  .project-mark {
+    margin-bottom: 10px;
+    transform: translateZ(36px);
+  }
+
+  .digest {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-top: 96px;
+    perspective: 1400px;
+  }
+
+  /* Layers sit at different depths, so the idle sway shows the card as a little 3d object. */
+  .digest-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px 44px;
+    overflow: visible;
+    transform-style: preserve-3d;
+    will-change: transform;
+    box-shadow: 0 30px 60px rgb(0 0 0 / 22%);
+  }
+
+  .digest-bars {
+    transform-style: preserve-3d;
+  }
+
+  .digest-eyebrow {
+    margin-top: 22px;
+    transform: translateZ(16px);
+  }
+
+  .digest-name {
+    margin-top: 8px;
+    font-size: clamp(36px, 4.4vw, 52px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    transform: translateZ(44px);
+  }
+
+  .digest-pitch {
+    max-width: 460px;
+    margin-top: 12px;
+    font-size: 19px;
+    line-height: 1.35;
+    color: var(--on-dark-muted);
+    transform: translateZ(24px);
+  }
+
+  .digest-actions {
+    margin-top: 24px;
+    transform: translateZ(60px);
+  }
+
+  .digest-subscribe {
+    background: var(--on-dark);
+    color: var(--fg);
+  }
+
+  .digest-subscribe:hover {
+    background: #ffffff;
+  }
+
+  /* A gradient border: the tile's own background fills the padding box, the gradient shows at the edge. */
+  .insta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 28px;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--bg), var(--bg)) padding-box,
+      var(--insta-gradient) border-box;
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .insta:hover {
+    transform: scale(1.008);
+  }
+
+  .insta-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: var(--insta-gradient);
+    color: #ffffff;
+  }
+
+  .insta-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .insta-name {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .insta-pitch {
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .insta-cta {
+    flex-shrink: 0;
   }
 
   .project-name {

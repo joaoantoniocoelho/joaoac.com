@@ -5,14 +5,14 @@ import plexLatin from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-la
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import IchiroChat from '../components/IchiroChat.astro';
-import { pathForLocale, type Locale } from '../lib/locale.ts';
+import { localizedPath, pathForLocale, type Locale } from '../lib/locale.ts';
 import { absoluteUrl, languageAlternates, ogLocale, pageTitle } from '../lib/seo.ts';
 import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_URL } from '../lib/site.ts';
 import { SOCIALS } from '../lib/socials.ts';
 
 type Props = {
   locale: Locale;
-  // Path of the English version of this page; the Portuguese one is derived from it.
+  // Unprefixed (Portuguese) path of this page; the English one is derived from it.
   path: string;
   title: string;
   description: string;
@@ -89,7 +89,12 @@ const siteJsonLd = {
     {languageAlternates(path).map((alternate) => (
       <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
     ))}
-    <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href="/feed.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE_NAME}
+      href={localizedPath('/feed.xml', locale)}
+    />
     <link rel="icon" href="/icon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="author" content={SITE_AUTHOR} />
@@ -121,9 +126,9 @@ const siteJsonLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    {/* Runs before first paint so Portuguese readers never see the English page flash. An explicit
-        pick from a language switch wins over the browser's languages; /pt-BR URLs and noindex pages
-        (the 404) are never redirected, so shared links and crawlers keep landing where they point. */}
+    {/* Runs before first paint so English readers never see the Portuguese page flash. An explicit
+        pick from a language switch wins over the browser's languages; /en URLs, noindex pages (the
+        404) and crawlers are never redirected, so shared links keep landing where they point. */}
     <script is:inline>
       (() => {
         const key = 'locale';
@@ -139,13 +144,14 @@ const siteJsonLd = {
           } catch {}
         });
         const path = location.pathname;
-        if (path === '/pt-BR' || path.startsWith('/pt-BR/')) return;
+        if (path === '/en' || path.startsWith('/en/')) return;
         if (document.querySelector('meta[name="robots"][content~="noindex"]')) return;
         const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
         const detected = languages.find((lang) => /^(pt|en)\b/i.test(lang)) ?? 'en';
-        const wantsPt = saved ? saved === 'pt-BR' : /^pt/i.test(detected);
-        if (!wantsPt) return;
-        location.replace(`/pt-BR${path === '/' ? '' : path}${location.search}${location.hash}`);
+        const wantsEnglish = saved ? saved === 'en' : /^en/i.test(detected);
+        if (!wantsEnglish) return;
+        if (/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent)) return;
+        location.replace(`/en${path === '/' ? '' : path}${location.search}${location.hash}`);
       })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
@@ -165,5 +171,10 @@ const siteJsonLd = {
     </main>
     {!minimal && <Footer locale={locale} />}
     {!minimal && <IchiroChat locale={locale} />}
+    <script>
+      import { startTiltCards } from '../scripts/tilt-cards.ts';
+
+      startTiltCards();
+    </script>
   </body>
 </html>

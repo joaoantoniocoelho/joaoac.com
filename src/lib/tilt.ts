@@ -45,3 +45,28 @@ export function idleTilt(timeMs: number): Tilt {
     glareY: 50 - x * IDLE_GLARE_TRAVEL,
   };
 }
+
+// Eases the current pose toward the target a fraction of the way each frame, so the card settles
+// smoothly instead of snapping when the pointer arrives or leaves.
+export function lerpTilt(from: Tilt, to: Tilt, amount: number): Tilt {
+  const mix = (a: number, b: number) => a + (b - a) * amount;
+  return {
+    rotateX: mix(from.rotateX, to.rotateX),
+    rotateY: mix(from.rotateY, to.rotateY),
+    glareX: mix(from.glareX, to.glareX),
+    glareY: mix(from.glareY, to.glareY),
+  };
+}
+
+// Softens the lean for cards that should move less than the avatar; the glare keeps its full travel.
+export function scaleTilt(tilt: Tilt, strength: number): Tilt {
+  return { ...tilt, rotateX: tilt.rotateX * strength, rotateY: tilt.rotateY * strength };
+}
+
+const RESTING_EPSILON_DEG = 0.01;
+
+export function isResting(tilt: Tilt): boolean {
+  return (
+    Math.abs(tilt.rotateX) < RESTING_EPSILON_DEG && Math.abs(tilt.rotateY) < RESTING_EPSILON_DEG
+  );
+}

@@ -1,12 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import DigestBars from '../components/DigestBars.astro';
 import LinkAvatar from '../components/LinkAvatar.astro';
+import PostCover from '../components/PostCover.astro';
+import ProjectMark from '../components/ProjectMark.astro';
 import SocialIcon from '../components/SocialIcon.astro';
+import peeking from '../assets/ichiro/ichiro-peeking.png';
+import { projects } from '../data/projects.ts';
 import { postsFor } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { absoluteUrl } from '../lib/seo.ts';
-import { CONTACT_EMAIL } from '../lib/site.ts';
-import { SOCIALS } from '../lib/socials.ts';
+import { CONTACT_EMAIL, digestUrl } from '../lib/site.ts';
+import { INSTAGRAM_URL, SOCIALS, type SocialIconName } from '../lib/socials.ts';
 import { ui } from '../lib/ui.ts';
 
 type Props = { locale: Locale };
@@ -20,20 +26,21 @@ const identity = `${t.areas} · ${t.place}`;
 
 const [latestPost] = await postsFor(locale);
 // Absolute because this page is also served at me.joaoac.com, where / is the page itself.
-type Card = { title: string; text: string; href: string };
-const cards: Card[] = [
-  { title: t.site, text: t.siteText, href: absoluteUrl(localizedPath('/', locale)) },
-  {
-    title: t.writing,
-    text: latestPost ? `${t.latest}: ${latestPost.title}` : '',
-    href: absoluteUrl(localizedPath('/blog', locale)),
-  },
-  {
-    title: t.projects,
-    text: t.projectsText,
-    href: absoluteUrl(localizedPath('/projects', locale)),
-  },
-];
+const siteHref = absoluteUrl(localizedPath('/', locale));
+const writingHref = absoluteUrl(localizedPath('/blog', locale));
+const projectsHref = absoluteUrl(localizedPath('/projects', locale));
+
+// Instagram has its own card above, so the icon row leaves it out.
+const socials = SOCIALS.filter((social) => social.href !== INSTAGRAM_URL);
+// Colour each icon takes on hover; the rest fall back to the text colour.
+const BRAND_COLORS: Partial<Record<SocialIconName, string>> = {
+  linkedin: '#0a66c2',
+  email: 'var(--accent)',
+};
+const brandStyle = (icon: SocialIconName) => {
+  const color = BRAND_COLORS[icon];
+  return color ? `--brand: ${color}` : undefined;
+};
 ---
 
 <Base locale={locale} path="/links" title="links" description={t.metaDescription} minimal>
@@ -43,31 +50,83 @@ const cards: Card[] = [
     <p class="identity">{identity}</p>
 
     <ul class="cards">
-      {cards.map((card) => (
-        <li>
-          <a class="card" href={card.href}>
-            <span class="card-text">
-              <span class="card-title">{card.title}</span>
-              {card.text && <span class="card-desc">{card.text}</span>}
-            </span>
-            <span class="card-arrow" aria-hidden="true">
-              ›
-            </span>
-          </a>
-        </li>
-      ))}
+      <li class="digest-stage">
+        <a class="card featured" data-tilt-card data-tilt-idle href={digestUrl(locale, 'me')}>
+          <span class="card-text">
+            <span class="eyebrow">newsletter</span>
+            <span class="featured-title">tech digest</span>
+            <span class="card-desc">{t.digestText}</span>
+          </span>
+          <span class="featured-cta">{t.digestCta}</span>
+          <span class="bars-corner">
+            <DigestBars width={56} thickness={5} gap={7} />
+          </span>
+          <span class="tilt-glare-clip" aria-hidden="true">
+            <span class="tilt-glare" data-tilt-glare></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="card insta" href={INSTAGRAM_URL} rel="me">
+          <span class="insta-icon">
+            <SocialIcon name="instagram" size={24} />
+          </span>
+          <span class="card-text">
+            <span class="card-title">instagram</span>
+            <span class="card-desc">{t.instaText}</span>
+          </span>
+          <span class="insta-cta">{t.instaCta}</span>
+        </a>
+      </li>
+      <li>
+        <a class="card site" href={siteHref}>
+          <span class="card-text">
+            <span class="card-title">{t.site}</span>
+            <span class="card-desc">{t.siteText}</span>
+          </span>
+          <Image
+            src={peeking}
+            alt=""
+            widths={[80, 160]}
+            sizes="80px"
+            format="webp"
+            loading="lazy"
+            class="ichiro"
+          />
+        </a>
+      </li>
+      <li class="half">
+        <a class="card tall" href={writingHref}>
+          <span class="thumb thumb-dark">
+            {latestPost && <PostCover topic={latestPost.topic} cover={latestPost.cover} />}
+          </span>
+          <span class="card-title">{t.writing}</span>
+          {latestPost && <span class="card-desc">{latestPost.title}</span>}
+        </a>
+      </li>
+      <li class="half">
+        <a class="card tall" href={projectsHref}>
+          <span class="thumb marks" aria-hidden="true">
+            {projects.map((project) => (
+              <ProjectMark slug={project.slug} size={44} />
+            ))}
+          </span>
+          <span class="card-title">{t.projects}</span>
+          <span class="card-desc">{projects.map((project) => project.name).join(' · ')}</span>
+        </a>
+      </li>
     </ul>
 
     <ul class="socials" aria-label={t.social}>
-      {SOCIALS.map((social) => (
+      {socials.map((social) => (
         <li>
-          <a href={social.href} rel="me" aria-label={social.label}>
+          <a href={social.href} rel="me" aria-label={social.label} style={brandStyle(social.icon)}>
             <SocialIcon name={social.icon} />
           </a>
         </li>
       ))}
       <li>
-        <a href={`mailto:${CONTACT_EMAIL}`} aria-label={t.email}>
+        <a href={`mailto:${CONTACT_EMAIL}`} aria-label={t.email} style={brandStyle('email')}>
           <SocialIcon name="email" />
         </a>
       </li>
@@ -142,9 +201,17 @@ const cards: Card[] = [
   .cards {
     margin-top: 32px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .cards li {
+    grid-column: span 2;
+  }
+
+  .cards li.half {
+    grid-column: span 1;
   }
 
   .card {
@@ -168,6 +235,7 @@ const cards: Card[] = [
   }
 
   .card-text {
+    flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -201,16 +269,207 @@ const cards: Card[] = [
     height: 48px;
     display: grid;
     place-items: center;
-    border-radius: 14px;
-    color: var(--muted);
+    border-radius: 50%;
+    background: var(--tile);
+    color: var(--fg-secondary);
     transition:
       color 0.2s,
-      background 0.2s;
+      background 0.2s,
+      transform 0.5s var(--ease-out);
   }
 
   .socials a:hover {
+    color: #ffffff;
+    background: var(--brand, var(--fg));
+    transform: translateY(-3px);
+  }
+
+  /* The digest card leans in 3d: the parent gives it depth and the layers sit at different heights. */
+  .digest-stage {
+    margin-bottom: 8px;
+    perspective: 800px;
+  }
+
+  .featured {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 22px 20px 20px;
+    background: var(--tile-dark);
+    color: var(--on-dark);
+    box-shadow: 0 22px 44px rgb(0 0 0 / 26%);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: none;
+  }
+
+  .featured:hover {
+    background: var(--tile-dark);
+    transform: none;
+  }
+
+  .featured .card-text {
+    padding-right: 72px;
+    transform: translateZ(22px);
+  }
+
+  .featured .eyebrow,
+  .featured .card-desc {
+    color: var(--on-dark-muted);
+  }
+
+  .featured-title {
+    margin-top: 2px;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .featured .card-desc {
+    margin-top: 6px;
+    font-size: 15px;
+  }
+
+  .featured-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    background: var(--on-dark);
     color: var(--fg);
-    background: var(--tile);
+    font-size: 15px;
+    font-weight: 600;
+    transform: translateZ(40px);
+  }
+
+  .bars-corner {
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    transform-style: preserve-3d;
+  }
+
+  .insta {
+    min-height: 80px;
+    padding: 14px 16px;
+    gap: 14px;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--bg), var(--bg)) padding-box,
+      var(--insta-gradient) border-box;
+  }
+
+  .insta:hover {
+    background:
+      linear-gradient(var(--tile), var(--tile)) padding-box,
+      var(--insta-gradient) border-box;
+  }
+
+  .insta-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--insta-gradient);
+    color: #ffffff;
+  }
+
+  .insta-cta {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--fg);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Ichiro peeks in from the corner of the site card and leans in on hover. */
+  .site {
+    position: relative;
+    min-height: 84px;
+    padding-right: 96px;
+    overflow: hidden;
+  }
+
+  .site :global(.ichiro) {
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    width: 80px;
+    height: auto;
+    image-rendering: pixelated;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .site:hover :global(.ichiro) {
+    transform: translateX(-4px) rotate(-3deg);
+  }
+
+  .tall {
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 10px 10px 16px;
+  }
+
+  .tall .card-title {
+    margin-top: 12px;
+    padding-inline: 8px;
+  }
+
+  .tall .card-desc {
+    margin-top: 2px;
+    padding-inline: 8px;
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .thumb {
+    height: 96px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .thumb-dark {
+    background: var(--tile-dark);
+  }
+
+  .marks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .marks :global(.mark + .mark) {
+    margin-left: -8px;
+  }
+
+  .marks :global(.mark-tech-digest) {
+    transform: rotate(-8deg);
+  }
+
+  .marks :global(.mark-alturo) {
+    transform: rotate(8deg);
+  }
+
+  .marks :global(.mark-porque) {
+    z-index: 1;
+    transform: translateY(-4px);
   }
 
   .contact {

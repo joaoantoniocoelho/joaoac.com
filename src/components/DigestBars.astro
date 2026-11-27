@@ -1,0 +1,43 @@
+---
+// The tech digest mark as a stack of bars: each one a link of the day, the accent one the pick.
+// Bars step forward in depth, so inside a tilting card the stack reads as layered.
+type Props = { width: number; thickness: number; gap: number };
+
+const { width, thickness, gap } = Astro.props;
+const BARS = [100, 76, 58, 86, 42];
+const PICK = 2;
+const DEPTH_START_PX = 14;
+const DEPTH_STEP_PX = 9;
+---
+
+<span
+  class="bars"
+  style={`width: ${width}px; --thickness: ${thickness}px; gap: ${gap}px`}
+  aria-hidden="true"
+>
+  {BARS.map((barWidth, index) => (
+    <span
+      class:list={{ pick: index === PICK }}
+      style={`width: ${barWidth}%; transform: translateZ(${DEPTH_START_PX + index * DEPTH_STEP_PX}px)`}
+    />
+  ))}
+</span>
+
+<style>
+  .bars {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    transform-style: preserve-3d;
+  }
+
+  .bars span {
+    height: var(--thickness);
+    border-radius: calc(var(--thickness) / 2 + 0.5px);
+    background: var(--on-dark);
+  }
+
+  .bars .pick {
+    background: var(--accent);
+  }
+</style>

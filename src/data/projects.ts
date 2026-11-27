@@ -16,6 +16,8 @@ export type Project = {
   whatItDoes: Localized<string[]>;
   decisions: Localized<string[]>;
   stack: string;
+  // Background for the project's tile on the home page; tiles without one keep the default.
+  tint?: string;
 };
 
 export const projects: Project[] = [
@@ -29,9 +31,9 @@ export const projects: Project[] = [
       'pt-BR': 'uma seleção diária de links de tecnologia.',
     },
     oneLiner: {
-      en: 'tech digest checks a set of sources each day, filters out repeated stories, and emails up to eight links worth opening.',
+      en: 'tech digest checks a set of sources each day, filters out repeated stories, and emails up to five links worth opening.',
       'pt-BR':
-        'todo dia, o tech digest procura textos em fontes selecionadas, tira as repetições e envia por e-mail até oito links que valem abrir.',
+        'todo dia, o tech digest procura textos em fontes selecionadas, tira as repetições e envia por e-mail até cinco links que valem abrir.',
     },
     whatItDoes: {
       en: [
@@ -60,6 +62,7 @@ export const projects: Project[] = [
     status: 'coming-soon',
     name: 'por quê?',
     url: 'https://porque.app',
+    tint: '#fdf3cf',
     tagline: {
       en: 'one interesting question a day.',
       'pt-BR': 'uma pergunta interessante por dia.',
@@ -96,6 +99,7 @@ export const projects: Project[] = [
     status: 'coming-soon',
     name: 'alturo',
     url: 'https://usealturo.app',
+    tint: '#ffe9d6',
     tagline: {
       en: 'a little more focus for your reading time.',
       'pt-BR': 'um pouco mais de foco na hora de ler.',

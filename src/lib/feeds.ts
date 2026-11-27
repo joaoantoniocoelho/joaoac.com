@@ -16,12 +16,31 @@ const escapeXml = (value: string) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
 
-type RssInput = { siteUrl: string; siteName: string; author: string; posts: readonly FeedPost[] };
+type RssInput = {
+  siteUrl: string;
+  siteName: string;
+  author: string;
+  posts: readonly FeedPost[];
+  locale: Locale;
+};
 
-export function rssXml({ siteUrl, siteName, author, posts }: RssInput): string {
+const FEED_COPY: Record<Locale, { description: string; language: string }> = {
+  en: {
+    description: 'Notes on backend engineering, AI-assisted development and application security.',
+    language: 'en-US',
+  },
+  'pt-BR': {
+    description:
+      'Textos sobre engenharia de backend, desenvolvimento com IA e segurança de aplicações.',
+    language: 'pt-BR',
+  },
+};
+
+export function rssXml({ siteUrl, siteName, author, posts, locale }: RssInput): string {
+  const copy = FEED_COPY[locale];
   const items = posts
     .map((post) => {
-      const link = `${siteUrl}/blog/${post.slug}`;
+      const link = `${siteUrl}${localizedPath(`/blog/${post.slug}`, locale)}`;
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${link}</link>
@@ -36,9 +55,9 @@ export function rssXml({ siteUrl, siteName, author, posts }: RssInput): string {
 <rss version="2.0">
   <channel>
     <title>${escapeXml(siteName)}</title>
-    <link>${siteUrl}/blog</link>
-    <description>Notes on backend engineering, AI-assisted development and application security.</description>
-    <language>en-US</language>
+    <link>${siteUrl}${localizedPath('/blog', locale)}</link>
+    <description>${copy.description}</description>
+    <language>${copy.language}</language>
     <managingEditor>${escapeXml(author)}</managingEditor>
 ${items}
   </channel>

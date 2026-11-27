@@ -12,9 +12,12 @@ const dark = post.topic === 'ai';
 ---
 
 <a
-  class:list={['post-tile', 'tile', 'lift', { 'tile-dark': dark }]}
+  class:list={['post-tile', 'tile', { 'tile-dark': dark }]}
   href={localizedPath(`/blog/${post.slug}`, locale)}
   data-topic={post.topic}
+  data-tilt-card
+  data-tilt-strength="0.5"
+  data-tilt-perspective="1000"
 >
   <div class="cover-box">
     <PostCover topic={post.topic} cover={post.cover} />

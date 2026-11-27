@@ -45,6 +45,11 @@ export const ui = {
       readPost: 'read post',
       learnMore: 'learn more',
       comingSoon: 'coming soon',
+      digestPitch: 'up to five links a day on software and ai, in your inbox every morning.',
+      digestSubscribe: 'subscribe for free',
+      digestLatest: 'read the latest edition',
+      instaPitch: 'short videos on software and ai.',
+      instaFollow: 'follow',
     },
     outside: {
       title: 'outside of code.',
@@ -101,6 +106,9 @@ export const ui = {
       more: 'more writing.',
       copyCode: 'copy',
       codeCopied: 'copied',
+      digestPitch:
+        'liked this? tech digest sends up to five reads on software and ai every morning.',
+      digestCta: 'subscribe for free',
     },
     ambitionChart: {
       title: 'the more i can do, the more i want',
@@ -147,6 +155,10 @@ export const ui = {
       contactTitle: 'say hello.',
       metaDescription:
         'joão coelho, around the internet: his site, writing, projects, github, linkedin and email.',
+      digestText: 'up to five links a day on software and ai, in your inbox every morning.',
+      digestCta: 'subscribe for free',
+      instaText: 'short videos on software and ai.',
+      instaCta: 'follow',
     },
     notFound: {
       eyebrow: 'error 404',
@@ -195,6 +207,11 @@ export const ui = {
       readPost: 'ler o texto',
       learnMore: 'conhecer o projeto',
       comingSoon: 'em breve',
+      digestPitch: 'até cinco links por dia sobre software e ia, no seu e-mail toda manhã.',
+      digestSubscribe: 'assinar grátis',
+      digestLatest: 'ler a última edição',
+      instaPitch: 'vídeos curtos sobre software e ia.',
+      instaFollow: 'seguir',
     },
     outside: {
       title: 'fora do código.',
@@ -251,6 +268,8 @@ export const ui = {
       more: 'outros textos.',
       copyCode: 'copiar',
       codeCopied: 'copiado',
+      digestPitch: 'gostou? o tech digest envia até cinco leituras sobre software e ia toda manhã.',
+      digestCta: 'assinar grátis',
     },
     ambitionChart: {
       title: 'quanto mais consigo, mais quero',
@@ -297,6 +316,10 @@ export const ui = {
       contactTitle: 'diga olá.',
       metaDescription:
         'joão coelho pela internet: site, textos, projetos, github, linkedin e e-mail.',
+      digestText: 'até cinco links por dia sobre software e ia, no seu e-mail toda manhã.',
+      digestCta: 'assinar grátis',
+      instaText: 'vídeos curtos sobre software e ia.',
+      instaCta: 'seguir',
     },
     notFound: {
       eyebrow: 'erro 404',

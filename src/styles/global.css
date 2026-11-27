@@ -20,6 +20,9 @@
   --font-display: 'Fraunces Variable', Georgia, serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
+  --accent: #fca052;
+  --insta-gradient: linear-gradient(45deg, #f9ce34, #ee2a7b 50%, #6228d7);
+
   --radius-tile: 28px;
   --radius-pill: 999px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -276,6 +279,23 @@ h3,
 .tile-row > * {
   flex: 1 1 420px;
   min-width: 0;
+}
+
+/* Glare for [data-tilt-card] elements: twice the card's size, moved by scripts/tilt-cards.ts and
+   clipped to the card's corners. */
+.tilt-glare-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.tilt-glare {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle, rgb(255 255 255 / 20%), rgb(255 255 255 / 0%) 30%);
+  will-change: transform;
 }
 
 .lift {

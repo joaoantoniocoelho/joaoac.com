@@ -1,6 +1,6 @@
 ---
 import SocialIcon from './SocialIcon.astro';
-import type { Locale } from '../lib/locale.ts';
+import { localizedPath, type Locale } from '../lib/locale.ts';
 import { CONTACT_EMAIL } from '../lib/site.ts';
 import { SOCIALS } from '../lib/socials.ts';
 import { ui } from '../lib/ui.ts';
@@ -25,7 +25,7 @@ const year = new Date().getFullYear();
       <a href={`mailto:${CONTACT_EMAIL}`} aria-label={t.footer.email}>
         <SocialIcon name="email" size={16} />
       </a>
-      <a href="/feed.xml" aria-label="rss">
+      <a href={localizedPath('/feed.xml', Astro.props.locale)} aria-label="rss">
         <SocialIcon name="rss" size={16} />
       </a>
     </span>

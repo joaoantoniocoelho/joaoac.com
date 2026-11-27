@@ -5,13 +5,16 @@ const SITE_ORIGIN = 'https://www.joaoac.com';
 
 const PAGE_SOURCES: Record<string, string> = {
   '/': '/links',
-  '/pt-BR': '/pt-BR/links',
+  '/en': '/en/links',
 };
 
 // The page's language switch links to the paths it has on the main site.
+// The last two are where Portuguese lived before it became the unprefixed language.
 const PAGE_ALIASES: Record<string, string> = {
   '/links': '/',
-  '/pt-BR/links': '/pt-BR',
+  '/en/links': '/en',
+  '/pt-BR': '/',
+  '/pt-BR/links': '/',
 };
 
 const FILE_PATH = /\/[^/]*\.[a-z0-9]+$/i;

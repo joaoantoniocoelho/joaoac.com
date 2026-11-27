@@ -7,11 +7,21 @@ const posts = [
 ];
 
 describe('rssXml', () => {
-  const xml = rssXml({ siteUrl: 'https://example.com', siteName: 'Site', author: 'Me', posts });
+  const feed = (locale: 'en' | 'pt-BR') =>
+    rssXml({ siteUrl: 'https://example.com', siteName: 'Site', author: 'Me', posts, locale });
+  const xml = feed('pt-BR');
 
   it('links each post at its canonical URL', () => {
     assert.match(xml, /<link>https:\/\/example\.com\/blog\/idor<\/link>/);
     assert.match(xml, /<pubDate>Tue, 09 Sep 2025 00:00:00 GMT<\/pubDate>/);
+    assert.match(xml, /<language>pt-BR<\/language>/);
+  });
+
+  it('points the english feed at the /en pages', () => {
+    const english = feed('en');
+    assert.match(english, /<link>https:\/\/example\.com\/en\/blog<\/link>/);
+    assert.match(english, /<link>https:\/\/example\.com\/en\/blog\/idor<\/link>/);
+    assert.match(english, /<language>en-US<\/language>/);
   });
 
   it('escapes text so titles cannot break the XML', () => {
@@ -31,11 +41,11 @@ describe('sitemapXml', () => {
   it('lists every page in both languages', () => {
     for (const url of [
       'https://example.com<',
-      'https://example.com/pt-BR<',
+      'https://example.com/en<',
       'https://example.com/blog<',
-      'https://example.com/pt-BR/blog<',
+      'https://example.com/en/blog<',
       'https://example.com/blog/idor<',
-      'https://example.com/pt-BR/blog/idor<',
+      'https://example.com/en/blog/idor<',
     ]) {
       assert.ok(xml.includes(`<loc>${url}`), url);
     }

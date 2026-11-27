@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { MAX_TILT_X_DEG, MAX_TILT_Y_DEG, RESTING_TILT, idleTilt, tiltFor } from './tilt.ts';
+import {
+  MAX_TILT_X_DEG,
+  MAX_TILT_Y_DEG,
+  RESTING_TILT,
+  idleTilt,
+  isResting,
+  lerpTilt,
+  scaleTilt,
+  tiltFor,
+} from './tilt.ts';
 
 const box = { left: 100, top: 200, width: 400, height: 400 };
 
@@ -44,5 +53,39 @@ describe('idleTilt', () => {
   it('leans the glare the same way as the pointer tilt does', () => {
     const tilt = idleTilt(1750);
     assert.ok(tilt.rotateY > 0 && tilt.glareX > 50);
+  });
+});
+
+describe('lerpTilt', () => {
+  const target = { rotateX: 10, rotateY: -20, glareX: 100, glareY: 0 };
+
+  it('moves the given share of the way toward the target', () => {
+    assert.deepEqual(lerpTilt(RESTING_TILT, target, 0.5), {
+      rotateX: 5,
+      rotateY: -10,
+      glareX: 75,
+      glareY: 25,
+    });
+  });
+
+  it('reaches the target at a share of one', () => {
+    assert.deepEqual(lerpTilt(RESTING_TILT, target, 1), target);
+  });
+});
+
+describe('scaleTilt', () => {
+  it('scales the lean but leaves the glare alone', () => {
+    const tilt = { rotateX: 4, rotateY: -8, glareX: 80, glareY: 20 };
+    assert.deepEqual(scaleTilt(tilt, 0.5), { rotateX: 2, rotateY: -4, glareX: 80, glareY: 20 });
+  });
+});
+
+describe('isResting', () => {
+  it('treats a tiny lean as resting', () => {
+    assert.ok(isResting({ ...RESTING_TILT, rotateX: 0.001 }));
+  });
+
+  it('notices a visible lean', () => {
+    assert.ok(!isResting({ ...RESTING_TILT, rotateY: 1 }));
   });
 });

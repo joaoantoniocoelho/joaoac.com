@@ -103,6 +103,7 @@ const owned = columns + Math.floor(columns / 2) - 1;
     justify-content: center;
     width: 100%;
     height: 100%;
+    transition: transform 0.7s var(--ease-out);
   }
 
   .grid {
@@ -179,7 +180,19 @@ const owned = columns + Math.floor(columns / 2) - 1;
   }
 
   .tone-accent {
-    fill: #fca052;
+    fill: var(--accent);
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  /* Inside a tilting card, hovering zooms the cover a little and lets the accent shape grow. */
+  :global([data-tilt-card]:hover) .cover {
+    transform: scale(1.05);
+  }
+
+  :global([data-tilt-card]:hover) .tone-accent {
+    transform: scale(1.22);
   }
 
   .lines {

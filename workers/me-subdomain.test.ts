@@ -10,17 +10,17 @@ describe('routeFor', () => {
     assert.deepEqual(routeFor('https://me.joaoac.com/'), proxy('https://www.joaoac.com/links'));
   });
 
-  it('serves the portuguese links page at /pt-BR', () => {
+  it('serves the english links page at /en', () => {
     assert.deepEqual(
-      routeFor('https://me.joaoac.com/pt-BR'),
-      proxy('https://www.joaoac.com/pt-BR/links'),
+      routeFor('https://me.joaoac.com/en'),
+      proxy('https://www.joaoac.com/en/links'),
     );
   });
 
   it('accepts a trailing slash on the page paths', () => {
     assert.deepEqual(
-      routeFor('https://me.joaoac.com/pt-BR/'),
-      proxy('https://www.joaoac.com/pt-BR/links'),
+      routeFor('https://me.joaoac.com/en/'),
+      proxy('https://www.joaoac.com/en/links'),
     );
   });
 
@@ -34,8 +34,16 @@ describe('routeFor', () => {
   it('keeps the language switch on the subdomain', () => {
     assert.deepEqual(routeFor('https://me.joaoac.com/links'), redirect('https://me.joaoac.com/'));
     assert.deepEqual(
+      routeFor('https://me.joaoac.com/en/links?ref=x'),
+      redirect('https://me.joaoac.com/en?ref=x'),
+    );
+  });
+
+  it('sends the old portuguese addresses to the root', () => {
+    assert.deepEqual(routeFor('https://me.joaoac.com/pt-BR'), redirect('https://me.joaoac.com/'));
+    assert.deepEqual(
       routeFor('https://me.joaoac.com/pt-BR/links?ref=x'),
-      redirect('https://me.joaoac.com/pt-BR?ref=x'),
+      redirect('https://me.joaoac.com/?ref=x'),
     );
   });
 
@@ -59,8 +67,8 @@ describe('routeFor', () => {
 
   it('always lands on https', () => {
     assert.deepEqual(
-      routeFor('http://me.joaoac.com/pt-BR?ref=x'),
-      redirect('https://me.joaoac.com/pt-BR?ref=x'),
+      routeFor('http://me.joaoac.com/en?ref=x'),
+      redirect('https://me.joaoac.com/en?ref=x'),
     );
   });
 });

@@ -1,0 +1,78 @@
+---
+// Small app-icon style mark for each project, used on the home tiles and the links page.
+type Props = { slug: string; size: number };
+
+const { slug, size } = Astro.props;
+const DIGEST_LINES = [100, 70, 45];
+const ALTURO_STAGES = [34, 56, 78, 100];
+---
+
+<span class={`mark mark-${slug}`} style={`--size: ${size}px`} aria-hidden="true">
+  {slug === 'tech-digest' && DIGEST_LINES.map((width) => <i style={`width: ${width}%`} />)}
+  {slug === 'porque' && (
+    <svg viewBox="0 0 100 100">
+      <path
+        d="M30 36C30 20 42 11 53 11C66 11 75 20 75 32C75 45 64 50 57 55C52 59 50 63 50 69"
+        fill="none"
+        stroke="#000"
+        stroke-width="12"
+        stroke-linecap="round"
+      />
+      <circle cx="50" cy="87" r="8" fill="#f2b705" />
+    </svg>
+  )}
+  {slug === 'alturo' && ALTURO_STAGES.map((height) => <i style={`height: ${height}%`} />)}
+</span>
+
+<style>
+  .mark {
+    flex-shrink: 0;
+    width: var(--size);
+    height: var(--size);
+    border-radius: calc(var(--size) * 0.27);
+    box-shadow: 0 6px 14px rgb(0 0 0 / 14%);
+  }
+
+  .mark-tech-digest {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: calc(var(--size) * 0.3) calc(var(--size) * 0.23);
+    background: var(--tile-dark);
+  }
+
+  .mark-tech-digest i {
+    height: calc(var(--size) * 0.07);
+    border-radius: 2px;
+    background: var(--on-dark);
+  }
+
+  .mark-tech-digest i:nth-child(2) {
+    background: var(--accent);
+  }
+
+  .mark-porque {
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+  }
+
+  .mark-porque svg {
+    height: 60%;
+  }
+
+  .mark-alturo {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    gap: calc(var(--size) * 0.07);
+    padding: calc(var(--size) * 0.23) calc(var(--size) * 0.2) 0;
+    overflow: hidden;
+    background: var(--accent);
+  }
+
+  .mark-alturo i {
+    border-radius: 2px 2px 0 0;
+    background: var(--fg);
+  }
+</style>

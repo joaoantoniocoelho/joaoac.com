@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PostTile from '../components/PostTile.astro';
 import { postsFor } from '../lib/content.ts';
-import type { Locale } from '../lib/locale.ts';
+import { localizedPath, type Locale } from '../lib/locale.ts';
 import { topicsOf } from '../lib/posts.ts';
 import { topicLabel, ui } from '../lib/ui.ts';
 
@@ -42,7 +42,7 @@ const filters = [
   </section>
 
   <div class="rss">
-    <a class="chevron-link" href="/feed.xml">
+    <a class="chevron-link" href={localizedPath('/feed.xml', locale)}>
       {t.rss}
     </a>
   </div>

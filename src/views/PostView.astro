@@ -8,7 +8,7 @@ import { postsFor, type SitePost } from '../lib/content.ts';
 import { localizedPath, type Locale } from '../lib/locale.ts';
 import { formatPostDate } from '../lib/posts.ts';
 import { absoluteUrl } from '../lib/seo.ts';
-import { SITE_AUTHOR, SITE_URL } from '../lib/site.ts';
+import { SITE_AUTHOR, SITE_URL, digestUrl } from '../lib/site.ts';
 import { topicLabel, ui } from '../lib/ui.ts';
 
 type Props = { post: SitePost; locale: Locale };
@@ -95,6 +95,19 @@ const jsonLd = {
     </div>
   </article>
 
+  <aside class="page-narrow digest" aria-labelledby="post-digest">
+    <div class="tile digest-tile">
+      <span class="eyebrow">newsletter</span>
+      <h2 class="digest-name" id="post-digest">
+        tech digest
+      </h2>
+      <p class="digest-pitch">{t.digestPitch}</p>
+      <a class="pill" href={digestUrl(locale, 'post')}>
+        {t.digestCta}
+      </a>
+    </div>
+  </aside>
+
   {otherPosts.length > 0 && (
     <section class="page-wide more" aria-labelledby="more-writing">
       <h2 class="section-title" id="more-writing">
@@ -116,6 +129,32 @@ const jsonLd = {
 </script>
 
 <style>
+  .digest {
+    padding-top: 64px;
+  }
+
+  .digest-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 28px;
+  }
+
+  .digest-name {
+    margin-top: 4px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .digest-pitch {
+    margin: 8px 0 20px;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--fg-secondary);
+  }
+
   .head {
     padding-top: 56px;
     display: flex;
